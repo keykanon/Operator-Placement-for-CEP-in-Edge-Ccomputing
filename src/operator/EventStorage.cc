@@ -1109,7 +1109,7 @@ void EventStorage::handleMessage(cMessage *msg)
 
 
                 EV_INFO  << "app_num " << app_num << ":" << "- response time = " << response_time << " in " << time[app_num] << endl;
-                //out << "app_num " << app_num << ":" << timestamp << "- response time = " <<  response_time << " = " << tnow.dbl() << " - " << monitor_message->getSendTime() << endl;
+                out << "app_num " << app_num << ":" << timestamp << "- response time = " <<  response_time << " , predicted response time = " << og->getPredictedResponseTime() << endl;
                 //out << "process time = " << monitor_message->getProcessTime() << ". transmission time = " << monitor_message->getTransmissionTime() << ". QueueTime = " << monitor_message->getQueueTime() << endl;
 
                 endToEndDelayVec.record(response_time);

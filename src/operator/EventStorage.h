@@ -47,14 +47,14 @@ class EventStorage : public cSimpleModule
     vector<int> intensiveAddr;
     int intensiveAddrNum = 1;
     vector<double> RT_CONSTRAINTS = {1,1,1};//,1,1,1,1,1,1};
-    vector<int> type = {25,25,25};//,4,5,3,4,5};
+    vector<int> type = {10,10,10};//,4,5,3,4,5};
     const int OGNUM = RT_CONSTRAINTS.size();
     map<int, vector<int>> edgeCepMap;
     ofstream out;
 
     //strategy
-    int strategy = 1;
-    int algorithm =  4;
+    int strategy = 0;
+    int algorithm =  0;
 
     double sendDelay =  1200 * intensiveAddrNum;
 //record result

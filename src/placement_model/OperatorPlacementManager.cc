@@ -787,6 +787,8 @@ vector<vector<StreamPath*>> OperatorPlacementManager::getLoadBalance(double thet
     }
 
 
+
+
     map<int, map<int, double>> distable = Floyd();
 
     FogNode* es = fognetworks->getES();

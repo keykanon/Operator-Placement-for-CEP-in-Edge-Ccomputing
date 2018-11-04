@@ -125,9 +125,6 @@ void Router::handleMessage(cMessage *msg)
 
             if(pk->getMonitorID() > monitorID){
                 monitorID = pk->getMonitorID();
-
-
-
                 map<int,map<int, int>*>::iterator it;
 
                 it = appRecords.begin();
@@ -214,6 +211,7 @@ void Router::handleMessage(cMessage *msg)
 
 //-------------------------reply marker message----------------------
     if(pk->getReMarkerMessage()){
+
         EventPacket* remarker = new EventPacket();
         remarker->setReMarkerMessage(true);
         remarker->setEventNum(pk->getEventNum());
@@ -242,14 +240,15 @@ void Router::handleMessage(cMessage *msg)
         remarker->setQueueBeginTime(pk->getQueueBeginTime());
         remarker->setTransmissionBeginTime(pk->getTransmissionBeginTime());
 
-        remarker->setNetworkUsage(networkUsage);
+        remarker->setNetworkUsage(networkUsage+ pk->getNetworkUsage());
         networkUsage = 0;
-        remarker->setManagerNetworkUsage(managerNetworkUsage);
+        remarker->setManagerNetworkUsage(managerNetworkUsage + pk->getManagerNetworkUsage());
         managerNetworkUsage = 0;
 
-        send(remarker,"eventStorage$o");
+
 
         if(remarker->getDestAddr() == -1){
+            send(remarker,"eventStorage$o");
             return;
         }
 
