@@ -1,0 +1,1290 @@
+--3-4 -- 3 --2-3 -- 2 --0-2 -- 0 --es-0 -- es on 4--
+--3-4 -- 3 --2-3 -- 2 --1-2 -- 1 --es-1 -- es on 4--
+---------------------------------------------------
+--2-3 -- 2 --0-2 -- 0 --es-0 -- es on 4--
+--2-3 -- 2 --1-2 -- 1 --es-1 -- es on 4--
+---------------------------------------------------
+--0-2 -- 0 --es-0 -- es on 4--
+--1-2 -- 1 --es-1 -- es on 4--
+---------------------------------------------------
+--es-0 -- es on 4--
+---------------------------------------------------
+ogindex = 0 -- prt: -4.8367e-026 -- rt: 0
+ogindex = 1 -- prt: -4.8367e-026 -- rt: 0
+ogindex = 2 -- prt: -4.8367e-026 -- rt: 0
+ogindex = 3 -- prt: -4.8367e-026 -- rt: 0
+
+placement index = 0
+on 4--3-4 -- 3 on 4--2-3 -- 2 on 4--0-2 -- 0 on 4--es-0 -- es on 4--
+on 4--3-4 -- 3 on 4--2-3 -- 2 on 4--1-2 -- 1 on 4--es-1 -- es on 4--
+--------------------------------------------
+on 2--2-3 -- 2 on 2--0-2 -- 0 on 8--es-0 -- es on 4--
+on 2--2-3 -- 2 on 2--1-2 -- 1 on 8--es-1 -- es on 4--
+--------------------------------------------
+on 0--0-2 -- 0 on 7--es-0 -- es on 4--
+on 0--1-2 -- 1 on 7--es-1 -- es on 4--
+--------------------------------------------
+on 0--es-0 -- es on 4--
+--------------------------------------------
+ogindex = 0 -- prt: -4.8367e-026 -- rt: 0
+ogindex = 1 -- prt: -4.8367e-026 -- rt: 0.00118699
+ogindex = 2 -- prt: -4.8367e-026 -- rt: 0.00209502
+ogindex = 3 -- prt: -4.8367e-026 -- rt: 0.000969985
+
+placement index = 1
+on 4--3-4 -- 3 on 4--2-3 -- 2 on 4--0-2 -- 0 on 4--es-0 -- es on 4--
+on 4--3-4 -- 3 on 4--2-3 -- 2 on 4--1-2 -- 1 on 4--es-1 -- es on 4--
+--------------------------------------------
+on 2--2-3 -- 2 on 2--0-2 -- 0 on 8--es-0 -- es on 4--
+on 2--2-3 -- 2 on 2--1-2 -- 1 on 8--es-1 -- es on 4--
+--------------------------------------------
+on 0--0-2 -- 0 on 7--es-0 -- es on 4--
+on 0--1-2 -- 1 on 7--es-1 -- es on 4--
+--------------------------------------------
+on 0--es-0 -- es on 4--
+--------------------------------------------
+ogindex = 0 -- prt: -4.8367e-026 -- rt: 0
+ogindex = 1 -- prt: -4.8367e-026 -- rt: 0.00118699
+ogindex = 2 -- prt: -4.8367e-026 -- rt: 0.00209502
+ogindex = 3 -- prt: -4.8367e-026 -- rt: 0.000969985
+
+placement index = 2
+on 4--3-4 -- 3 on 4--2-3 -- 2 on 4--0-2 -- 0 on 4--es-0 -- es on 4--
+on 4--3-4 -- 3 on 4--2-3 -- 2 on 4--1-2 -- 1 on 4--es-1 -- es on 4--
+--------------------------------------------
+on 2--2-3 -- 2 on 2--0-2 -- 0 on 8--es-0 -- es on 4--
+on 2--2-3 -- 2 on 2--1-2 -- 1 on 8--es-1 -- es on 4--
+--------------------------------------------
+on 0--0-2 -- 0 on 7--es-0 -- es on 4--
+on 0--1-2 -- 1 on 7--es-1 -- es on 4--
+--------------------------------------------
+on 0--es-0 -- es on 4--
+--------------------------------------------
+ogindex = 0 -- prt: -4.8367e-026 -- rt: 0
+ogindex = 1 -- prt: -4.8367e-026 -- rt: 0.00118699
+ogindex = 2 -- prt: -4.8367e-026 -- rt: 0.00209502
+ogindex = 3 -- prt: -4.8367e-026 -- rt: 0.000969985
+
+placement index = 3
+on 4--3-4 -- 3 on 4--2-3 -- 2 on 4--0-2 -- 0 on 4--es-0 -- es on 4--
+on 4--3-4 -- 3 on 4--2-3 -- 2 on 4--1-2 -- 1 on 4--es-1 -- es on 4--
+--------------------------------------------
+on 2--2-3 -- 2 on 2--0-2 -- 0 on 8--es-0 -- es on 4--
+on 2--2-3 -- 2 on 2--1-2 -- 1 on 8--es-1 -- es on 4--
+--------------------------------------------
+on 0--0-2 -- 0 on 7--es-0 -- es on 4--
+on 0--1-2 -- 1 on 7--es-1 -- es on 4--
+--------------------------------------------
+on 0--es-0 -- es on 4--
+--------------------------------------------
+ogindex = 0 -- prt: -4.8367e-026 -- rt: 0
+ogindex = 1 -- prt: -4.8367e-026 -- rt: 0.000948983
+ogindex = 2 -- prt: -4.8367e-026 -- rt: 0.0101536
+ogindex = 3 -- prt: -4.8367e-026 -- rt: 0.000969985
+
+placement index = 4
+on 4--3-4 -- 3 on 4--2-3 -- 2 on 4--0-2 -- 0 on 4--es-0 -- es on 4--
+on 4--3-4 -- 3 on 4--2-3 -- 2 on 4--1-2 -- 1 on 4--es-1 -- es on 4--
+--------------------------------------------
+on 2--2-3 -- 2 on 2--0-2 -- 0 on 8--es-0 -- es on 4--
+on 2--2-3 -- 2 on 2--1-2 -- 1 on 8--es-1 -- es on 4--
+--------------------------------------------
+on 0--0-2 -- 0 on 7--es-0 -- es on 4--
+on 0--1-2 -- 1 on 7--es-1 -- es on 4--
+--------------------------------------------
+on 0--es-0 -- es on 4--
+--------------------------------------------
+ogindex = 0 -- prt: -4.8367e-026 -- rt: 0
+ogindex = 1 -- prt: -4.8367e-026 -- rt: 0.000948983
+ogindex = 2 -- prt: -4.8367e-026 -- rt: 0.0198424
+ogindex = 3 -- prt: -4.8367e-026 -- rt: 0.000969985
+
+placement index = 5
+on 4--3-4 -- 3 on 4--2-3 -- 2 on 4--0-2 -- 0 on 4--es-0 -- es on 4--
+on 4--3-4 -- 3 on 4--2-3 -- 2 on 4--1-2 -- 1 on 4--es-1 -- es on 4--
+--------------------------------------------
+on 2--2-3 -- 2 on 2--0-2 -- 0 on 8--es-0 -- es on 4--
+on 2--2-3 -- 2 on 2--1-2 -- 1 on 8--es-1 -- es on 4--
+--------------------------------------------
+on 0--0-2 -- 0 on 7--es-0 -- es on 4--
+on 0--1-2 -- 1 on 7--es-1 -- es on 4--
+--------------------------------------------
+on 0--es-0 -- es on 4--
+--------------------------------------------
+time = 0
+-- app 0 sent 0events
+-- app 1 sent 0events
+-- app 2 sent 0events
+-- app 3 sent 0events
+------------------------------------
+time = 1
+-- app 0 sent 1050events
+-- app 1 sent 1051events
+-- app 2 sent 1050events
+-- app 3 sent 1050events
+------------------------------------
+time = 2
+-- app 0 sent 1050events
+-- app 1 sent 1050events
+-- app 2 sent 1051events
+-- app 3 sent 1050events
+------------------------------------
+time = 3
+-- app 0 sent 342events
+-- app 1 sent 1286events
+-- app 2 sent 1286events
+-- app 3 sent 1287events
+------------------------------------
+time = 4
+-- app 0 sent 957events
+-- app 1 sent 958events
+-- app 2 sent 1143events
+-- app 3 sent 1143events
+------------------------------------
+time = 5
+-- app 0 sent 656events
+-- app 1 sent 655events
+-- app 2 sent 1445events
+-- app 3 sent 1445events
+------------------------------------
+time = 6
+-- app 0 sent 334events
+-- app 1 sent 1289events
+-- app 2 sent 1289events
+-- app 3 sent 1289events
+------------------------------------
+time = 7
+-- app 0 sent 1020events
+-- app 1 sent 545events
+-- app 2 sent 1071events
+-- app 3 sent 1565events
+------------------------------------
+time = 8
+-- app 0 sent 780events
+-- app 1 sent 1321events
+-- app 2 sent 780events
+-- app 3 sent 1320events
+------------------------------------
+time = 9
+-- app 0 sent 517events
+-- app 1 sent 517events
+-- app 2 sent 1583events
+-- app 3 sent 1584events
+------------------------------------
+time = 10
+-- app 0 sent 831events
+-- app 1 sent 831events
+-- app 2 sent 1270events
+-- app 3 sent 1269events
+------------------------------------
+time = 11
+-- app 0 sent 960events
+-- app 1 sent 959events
+-- app 2 sent 661events
+-- app 3 sent 1621events
+------------------------------------
+time = 12
+-- app 0 sent 263events
+-- app 1 sent 1297events
+-- app 2 sent 1241events
+-- app 3 sent 1400events
+------------------------------------
+time = 13
+-- app 0 sent 1051events
+-- app 1 sent 349events
+-- app 2 sent 1400events
+-- app 3 sent 1401events
+------------------------------------
+time = 14
+-- app 0 sent 433events
+-- app 1 sent 1256events
+-- app 2 sent 1256events
+-- app 3 sent 1256events
+------------------------------------
+time = 15
+-- app 0 sent 1344events
+-- app 1 sent 757events
+-- app 2 sent 757events
+-- app 3 sent 1343events
+------------------------------------
+time = 16
+-- app 0 sent 622events
+-- app 1 sent 986events
+-- app 2 sent 985events
+-- app 3 sent 1608events
+------------------------------------
+time = 17
+-- app 0 sent 868events
+-- app 1 sent 1111events
+-- app 2 sent 1111events
+-- app 3 sent 1111events
+------------------------------------
+time = 18
+-- app 0 sent 415events
+-- app 1 sent 415events
+-- app 2 sent 1686events
+-- app 3 sent 1685events
+------------------------------------
+time = 19
+-- app 0 sent 1050events
+-- app 1 sent 1050events
+-- app 2 sent 1050events
+-- app 3 sent 1051events
+------------------------------------
+time = 20
+-- app 0 sent 723events
+-- app 1 sent 723events
+-- app 2 sent 722events
+-- app 3 sent 2033events
+------------------------------------
+time = 21
+-- app 0 sent 817events
+-- app 1 sent 817events
+-- app 2 sent 1284events
+-- app 3 sent 1283events
+------------------------------------
+time = 22
+-- app 0 sent 606events
+-- app 1 sent 606events
+-- app 2 sent 1494events
+-- app 3 sent 1495events
+------------------------------------
+time = 23
+-- app 0 sent 770events
+-- app 1 sent 770events
+-- app 2 sent 1331events
+-- app 3 sent 1330events
+------------------------------------
+time = 24
+-- app 0 sent 843events
+-- app 1 sent 843events
+-- app 2 sent 836events
+-- app 3 sent 1679events
+------------------------------------
+time = 25
+-- app 0 sent 576events
+-- app 1 sent 576events
+-- app 2 sent 1236events
+-- app 3 sent 1813events
+------------------------------------
+time = 26
+-- app 0 sent 948events
+-- app 1 sent 948events
+-- app 2 sent 1153events
+-- app 3 sent 1152events
+------------------------------------
+time = 27
+-- app 0 sent 514events
+-- app 1 sent 514events
+-- app 2 sent 1586events
+-- app 3 sent 1587events
+------------------------------------
+time = 28
+-- app 0 sent 844events
+-- app 1 sent 844events
+-- app 2 sent 1257events
+-- app 3 sent 1256events
+------------------------------------
+time = 29
+-- app 0 sent 668events
+-- app 1 sent 667events
+-- app 2 sent 667events
+-- app 3 sent 2199events
+------------------------------------
+time = 30
+-- app 0 sent 1050events
+-- app 1 sent 1051events
+-- app 2 sent 1050events
+-- app 3 sent 1050events
+------------------------------------
+time = 31
+-- app 0 sent 500events
+-- app 1 sent 500events
+-- app 2 sent 1601events
+-- app 3 sent 1600events
+------------------------------------
+time = 32
+-- app 0 sent 812events
+-- app 1 sent 812events
+-- app 2 sent 1288events
+-- app 3 sent 1289events
+------------------------------------
+time = 33
+-- app 0 sent 787events
+-- app 1 sent 787events
+-- app 2 sent 1314events
+-- app 3 sent 1313events
+------------------------------------
+time = 34
+-- app 0 sent 506events
+-- app 1 sent 506events
+-- app 2 sent 1594events
+-- app 3 sent 1595events
+------------------------------------
+time = 35
+-- app 0 sent 1050events
+-- app 1 sent 1050events
+-- app 2 sent 1051events
+-- app 3 sent 1050events
+------------------------------------
+time = 36
+-- app 0 sent 262events
+-- app 1 sent 1749events
+-- app 2 sent 262events
+-- app 3 sent 1928events
+------------------------------------
+time = 37
+-- app 0 sent 1401events
+-- app 1 sent 0events
+-- app 2 sent 1400events
+-- app 3 sent 1400events
+------------------------------------
+time = 38
+-- app 0 sent 110events
+-- app 1 sent 1290events
+-- app 2 sent 1401events
+-- app 3 sent 1400events
+------------------------------------
+time = 39
+-- app 0 sent 977events
+-- app 1 sent 423events
+-- app 2 sent 1400events
+-- app 3 sent 1401events
+------------------------------------
+time = 40
+-- app 0 sent 1241events
+-- app 1 sent 480events
+-- app 2 sent 1240events
+-- app 3 sent 1240events
+------------------------------------
+time = 41
+-- app 0 sent 1050events
+-- app 1 sent 1050events
+-- app 2 sent 1051events
+-- app 3 sent 1050events
+------------------------------------
+time = 42
+-- app 0 sent 232events
+-- app 1 sent 1323events
+-- app 2 sent 1323events
+-- app 3 sent 1323events
+------------------------------------
+time = 43
+-- app 0 sent 1067events
+-- app 1 sent 689events
+-- app 2 sent 689events
+-- app 3 sent 1756events
+------------------------------------
+time = 44
+-- app 0 sent 740events
+-- app 1 sent 907events
+-- app 2 sent 907events
+-- app 3 sent 1647events
+------------------------------------
+time = 45
+-- app 0 sent 473events
+-- app 1 sent 927events
+-- app 2 sent 1400events
+-- app 3 sent 1401events
+------------------------------------
+time = 46
+-- app 0 sent 1387events
+-- app 1 sent 14events
+-- app 2 sent 1400events
+-- app 3 sent 1400events
+------------------------------------
+time = 47
+-- app 0 sent 0events
+-- app 1 sent 1400events
+-- app 2 sent 1401events
+-- app 3 sent 1400events
+------------------------------------
+time = 48
+-- app 0 sent 927events
+-- app 1 sent 473events
+-- app 2 sent 1400events
+-- app 3 sent 1401events
+------------------------------------
+time = 49
+-- app 0 sent 987events
+-- app 1 sent 620events
+-- app 2 sent 987events
+-- app 3 sent 1607events
+------------------------------------
+time = 50
+-- app 0 sent 519events
+-- app 1 sent 1322events
+-- app 2 sent 519events
+-- app 3 sent 1841events
+------------------------------------
+time = 51
+-- app 0 sent 1401events
+-- app 1 sent 0events
+-- app 2 sent 1400events
+-- app 3 sent 1400events
+------------------------------------
+time = 52
+-- app 0 sent 49events
+-- app 1 sent 1351events
+-- app 2 sent 1401events
+-- app 3 sent 1400events
+------------------------------------
+time = 53
+-- app 0 sent 755events
+-- app 1 sent 645events
+-- app 2 sent 1400events
+-- app 3 sent 1401events
+------------------------------------
+time = 54
+-- app 0 sent 1269events
+-- app 1 sent 132events
+-- app 2 sent 1400events
+-- app 3 sent 1400events
+------------------------------------
+time = 55
+-- app 0 sent 0events
+-- app 1 sent 1400events
+-- app 2 sent 1401events
+-- app 3 sent 1400events
+------------------------------------
+time = 56
+-- app 0 sent 880events
+-- app 1 sent 520events
+-- app 2 sent 1400events
+-- app 3 sent 1401events
+------------------------------------
+time = 57
+-- app 0 sent 1199events
+-- app 1 sent 302events
+-- app 2 sent 1199events
+-- app 3 sent 1501events
+------------------------------------
+time = 58
+-- app 0 sent 198events
+-- app 1 sent 1804events
+-- app 2 sent 198events
+-- app 3 sent 2001events
+------------------------------------
+time = 59
+-- app 0 sent 1400events
+-- app 1 sent 0events
+-- app 2 sent 1400events
+-- app 3 sent 1401events
+------------------------------------
+time = 60
+-- app 0 sent 536events
+-- app 1 sent 865events
+-- app 2 sent 1400events
+-- app 3 sent 1400events
+------------------------------------
+time = 61
+-- app 0 sent 311events
+-- app 1 sent 676events
+-- app 2 sent 1607events
+-- app 3 sent 1607events
+------------------------------------
+time = 62
+-- app 0 sent 649events
+-- app 1 sent 0events
+-- app 2 sent 598events
+-- app 3 sent 2954events
+------------------------------------
+time = 63
+-- app 0 sent 0events
+-- app 1 sent 0events
+-- app 2 sent 0events
+-- app 3 sent 4201events
+------------------------------------
+time = 64
+-- app 0 sent 0events
+-- app 1 sent 0events
+-- app 2 sent 0events
+-- app 3 sent 4201events
+------------------------------------
+time = 65
+-- app 0 sent 0events
+-- app 1 sent 0events
+-- app 2 sent 0events
+-- app 3 sent 4201events
+------------------------------------
+time = 66
+-- app 0 sent 0events
+-- app 1 sent 0events
+-- app 2 sent 0events
+-- app 3 sent 4201events
+------------------------------------
+time = 67
+-- app 0 sent 0events
+-- app 1 sent 0events
+-- app 2 sent 0events
+-- app 3 sent 4201events
+------------------------------------
+time = 68
+-- app 0 sent 0events
+-- app 1 sent 0events
+-- app 2 sent 0events
+-- app 3 sent 4201events
+------------------------------------
+time = 69
+-- app 0 sent 0events
+-- app 1 sent 0events
+-- app 2 sent 0events
+-- app 3 sent 4201events
+------------------------------------
+time = 70
+-- app 0 sent 0events
+-- app 1 sent 0events
+-- app 2 sent 0events
+-- app 3 sent 4201events
+------------------------------------
+time = 71
+-- app 0 sent 0events
+-- app 1 sent 0events
+-- app 2 sent 0events
+-- app 3 sent 4201events
+------------------------------------
+time = 72
+-- app 0 sent 0events
+-- app 1 sent 0events
+-- app 2 sent 0events
+-- app 3 sent 4201events
+------------------------------------
+time = 73
+-- app 0 sent 0events
+-- app 1 sent 0events
+-- app 2 sent 0events
+-- app 3 sent 4201events
+------------------------------------
+time = 74
+-- app 0 sent 0events
+-- app 1 sent 0events
+-- app 2 sent 0events
+-- app 3 sent 4201events
+------------------------------------
+time = 75
+-- app 0 sent 0events
+-- app 1 sent 0events
+-- app 2 sent 0events
+-- app 3 sent 4201events
+------------------------------------
+time = 76
+-- app 0 sent 0events
+-- app 1 sent 0events
+-- app 2 sent 0events
+-- app 3 sent 4201events
+------------------------------------
+time = 77
+-- app 0 sent 0events
+-- app 1 sent 0events
+-- app 2 sent 0events
+-- app 3 sent 4201events
+------------------------------------
+time = 78
+-- app 0 sent 0events
+-- app 1 sent 0events
+-- app 2 sent 0events
+-- app 3 sent 4201events
+------------------------------------
+time = 79
+-- app 0 sent 0events
+-- app 1 sent 0events
+-- app 2 sent 0events
+-- app 3 sent 4201events
+------------------------------------
+time = 80
+-- app 0 sent 0events
+-- app 1 sent 0events
+-- app 2 sent 0events
+-- app 3 sent 4201events
+------------------------------------
+time = 81
+-- app 0 sent 0events
+-- app 1 sent 0events
+-- app 2 sent 0events
+-- app 3 sent 4201events
+------------------------------------
+time = 82
+-- app 0 sent 0events
+-- app 1 sent 0events
+-- app 2 sent 0events
+-- app 3 sent 4201events
+------------------------------------
+time = 83
+-- app 0 sent 0events
+-- app 1 sent 0events
+-- app 2 sent 0events
+-- app 3 sent 4201events
+------------------------------------
+time = 84
+-- app 0 sent 0events
+-- app 1 sent 0events
+-- app 2 sent 0events
+-- app 3 sent 4201events
+------------------------------------
+time = 85
+-- app 0 sent 0events
+-- app 1 sent 0events
+-- app 2 sent 0events
+-- app 3 sent 4201events
+------------------------------------
+time = 86
+-- app 0 sent 0events
+-- app 1 sent 0events
+-- app 2 sent 0events
+-- app 3 sent 4201events
+------------------------------------
+time = 87
+-- app 0 sent 0events
+-- app 1 sent 0events
+-- app 2 sent 0events
+-- app 3 sent 4201events
+------------------------------------
+time = 88
+-- app 0 sent 0events
+-- app 1 sent 0events
+-- app 2 sent 0events
+-- app 3 sent 4201events
+------------------------------------
+time = 89
+-- app 0 sent 0events
+-- app 1 sent 0events
+-- app 2 sent 0events
+-- app 3 sent 4201events
+------------------------------------
+time = 90
+-- app 0 sent 0events
+-- app 1 sent 0events
+-- app 2 sent 0events
+-- app 3 sent 4201events
+------------------------------------
+time = 91
+-- app 0 sent 0events
+-- app 1 sent 0events
+-- app 2 sent 0events
+-- app 3 sent 4201events
+------------------------------------
+time = 92
+-- app 0 sent 0events
+-- app 1 sent 0events
+-- app 2 sent 0events
+-- app 3 sent 4201events
+------------------------------------
+time = 93
+-- app 0 sent 0events
+-- app 1 sent 0events
+-- app 2 sent 0events
+-- app 3 sent 4201events
+------------------------------------
+time = 94
+-- app 0 sent 0events
+-- app 1 sent 0events
+-- app 2 sent 0events
+-- app 3 sent 4201events
+------------------------------------
+time = 95
+-- app 0 sent 0events
+-- app 1 sent 0events
+-- app 2 sent 0events
+-- app 3 sent 4201events
+------------------------------------
+time = 96
+-- app 0 sent 0events
+-- app 1 sent 0events
+-- app 2 sent 0events
+-- app 3 sent 4201events
+------------------------------------
+time = 97
+-- app 0 sent 0events
+-- app 1 sent 0events
+-- app 2 sent 0events
+-- app 3 sent 4201events
+------------------------------------
+time = 98
+-- app 0 sent 0events
+-- app 1 sent 0events
+-- app 2 sent 0events
+-- app 3 sent 4201events
+------------------------------------
+time = 99
+-- app 0 sent 0events
+-- app 1 sent 0events
+-- app 2 sent 0events
+-- app 3 sent 4201events
+------------------------------------
+time = 100
+-- app 0 sent 0events
+-- app 1 sent 0events
+-- app 2 sent 0events
+-- app 3 sent 4201events
+------------------------------------
+time = 101
+-- app 0 sent 0events
+-- app 1 sent 0events
+-- app 2 sent 0events
+-- app 3 sent 4201events
+------------------------------------
+time = 102
+-- app 0 sent 0events
+-- app 1 sent 0events
+-- app 2 sent 0events
+-- app 3 sent 4201events
+------------------------------------
+------------------algorithm time----------------------
+algorithm_time 0 = 3
+algorithm_time 1 = 6
+algorithm_time 2 = 2
+algorithm_time 3 = 3
+algorithm_time 4 = 3
+algorithm_time 5 = 2
+avg algorithm time = 3.16667
+-------------------------------------------------
+total time = 107.635
+app 0 total events number 46577, throughput 776.283
+app 1 total events number 50059, throughput 863.086
+app 2 total events number 73163, throughput 1180.05
+app 3 total events number 260142, throughput 2550.41
+process time = 28059 -- avg = 260.686
+total network usage = 5325.62
+time 0: net use -- 0.000784395 manager net use -- 0.000784395
+time 1: net use -- 76.8007 manager net use -- 0.00505929
+time 2: net use -- 77.4832 manager net use -- 0
+time 3: net use -- 94.7425 manager net use -- 0
+time 4: net use -- 82.2903 manager net use -- 0
+time 5: net use -- 88.5649 manager net use -- 0
+time 6: net use -- 95.3645 manager net use -- 0
+time 7: net use -- 81.9201 manager net use -- 0
+time 8: net use -- 79.9614 manager net use -- 0
+time 9: net use -- 99.6097 manager net use -- 0
+time 10: net use -- 85.0735 manager net use -- 0
+time 11: net use -- 72.9539 manager net use -- 0
+time 12: net use -- 96.6897 manager net use -- 0
+time 13: net use -- 81.6428 manager net use -- 0
+time 14: net use -- 92.4834 manager net use -- 0
+time 15: net use -- 70.6307 manager net use -- 0
+time 16: net use -- 87.8064 manager net use -- 0
+time 17: net use -- 81.1503 manager net use -- 0
+time 18: net use -- 104.752 manager net use -- 0
+time 19: net use -- 68.6247 manager net use -- 0
+time 20: net use -- 85.8509 manager net use -- 0.00292184
+time 21: net use -- 90.947 manager net use -- 0
+time 22: net use -- 88.4427 manager net use -- 0
+time 23: net use -- 90.8054 manager net use -- 0
+time 24: net use -- 75.5434 manager net use -- 0
+time 25: net use -- 102.662 manager net use -- 0
+time 26: net use -- 70.0393 manager net use -- 0
+time 27: net use -- 106.725 manager net use -- 0
+time 28: net use -- 74.1683 manager net use -- 0
+time 29: net use -- 82.1993 manager net use -- 0
+time 30: net use -- 81.2523 manager net use -- 0
+time 31: net use -- 108.626 manager net use -- 0
+time 32: net use -- 73.4635 manager net use -- 0
+time 33: net use -- 90.7198 manager net use -- 0
+time 34: net use -- 93.7565 manager net use -- 0
+time 35: net use -- 72.1889 manager net use -- 0
+time 36: net use -- 92.9002 manager net use -- 0
+time 37: net use -- 72.9756 manager net use -- 0
+time 38: net use -- 100.66 manager net use -- 0
+time 39: net use -- 83.3969 manager net use -- 0
+time 40: net use -- 75.7867 manager net use -- 0.00292184
+time 41: net use -- 76.9357 manager net use -- 0
+time 42: net use -- 96.7 manager net use -- 0
+time 43: net use -- 77.3545 manager net use -- 0
+time 44: net use -- 85.8873 manager net use -- 0
+time 45: net use -- 93.4258 manager net use -- 0
+time 46: net use -- 75.261 manager net use -- 0
+time 47: net use -- 101.997 manager net use -- 0
+time 48: net use -- 84.2142 manager net use -- 0
+time 49: net use -- 82.3539 manager net use -- 0
+time 50: net use -- 86.4309 manager net use -- 0
+time 51: net use -- 72.7425 manager net use -- 0
+time 52: net use -- 101.859 manager net use -- 0
+time 53: net use -- 87.8297 manager net use -- 0
+time 54: net use -- 77.1096 manager net use -- 0
+time 55: net use -- 103.178 manager net use -- 0
+time 56: net use -- 86.1043 manager net use -- 0
+time 57: net use -- 79.0664 manager net use -- 0
+time 58: net use -- 94.3486 manager net use -- 0
+time 59: net use -- 73.0456 manager net use -- 0
+time 60: net use -- 92.3808 manager net use -- 0.00292184
+time 61: net use -- 102.712 manager net use -- 0
+time 62: net use -- 52.7689 manager net use -- 0
+time 63: net use -- 0.246892 manager net use -- 0
+time 64: net use -- 0.271971 manager net use -- 0
+time 65: net use -- 0.246892 manager net use -- 0
+time 66: net use -- 0.246892 manager net use -- 0
+time 67: net use -- 0.271971 manager net use -- 0
+time 68: net use -- 0.246892 manager net use -- 0
+time 69: net use -- 0.271971 manager net use -- 0
+time 70: net use -- 0.246892 manager net use -- 0
+time 71: net use -- 0.246892 manager net use -- 0
+time 72: net use -- 0.271971 manager net use -- 0
+time 73: net use -- 0.246892 manager net use -- 0
+time 74: net use -- 0.246892 manager net use -- 0
+time 75: net use -- 0.271971 manager net use -- 0
+time 76: net use -- 0.246892 manager net use -- 0
+time 77: net use -- 0.246892 manager net use -- 0
+time 78: net use -- 0.271971 manager net use -- 0
+time 79: net use -- 0.248289 manager net use -- 0.00139638
+time 80: net use -- 0.272807 manager net use -- 0.000836464
+time 81: net use -- 0.246892 manager net use -- 0
+time 82: net use -- 0.271971 manager net use -- 0
+time 83: net use -- 0.246892 manager net use -- 0
+time 84: net use -- 0.246892 manager net use -- 0
+time 85: net use -- 0.271971 manager net use -- 0
+time 86: net use -- 0.246892 manager net use -- 0
+time 87: net use -- 0.246892 manager net use -- 0
+time 88: net use -- 0.271971 manager net use -- 0
+time 89: net use -- 0.246892 manager net use -- 0
+time 90: net use -- 0.246892 manager net use -- 0
+time 91: net use -- 0.271971 manager net use -- 0
+time 92: net use -- 0.246892 manager net use -- 0
+time 93: net use -- 0.246892 manager net use -- 0
+time 94: net use -- 0.271971 manager net use -- 0
+time 95: net use -- 0.246892 manager net use -- 0
+time 96: net use -- 0.271971 manager net use -- 0
+time 97: net use -- 0.246892 manager net use -- 0
+time 98: net use -- 0.246892 manager net use -- 0
+time 99: net use -- 0.273367 manager net use -- 0.00139638
+time 100: net use -- 0.247729 manager net use -- 0.000836464
+time 101: net use -- 0.271971 manager net use -- 0
+time 102: net use -- 0.246892 manager net use -- 0
+network usage average = 51.705
+---------response time---------------
+time 0 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:0;
+time 1 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00209502; -- app 3:0.000969985;
+time 2 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00253849; -- app 3:0.000969985;
+time 3 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00209502; -- app 3:0.000969985;
+time 4 -- app 0:0; -- app 1:0.00118699; -- app 2:0.0691397; -- app 3:0.000969985;
+time 5 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00209502; -- app 3:0.000969985;
+time 6 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00209502; -- app 3:0.000969985;
+time 7 -- app 0:0; -- app 1:0.118244; -- app 2:0.00209502; -- app 3:0.000969985;
+time 8 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00253849; -- app 3:0.000969985;
+time 9 -- app 0:0; -- app 1:0.00118699; -- app 2:0.243318; -- app 3:0.000969985;
+time 10 -- app 0:0; -- app 1:0.00118699; -- app 2:0.161485; -- app 3:0.000969985;
+time 11 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00209502; -- app 3:0.000969985;
+time 12 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00253849; -- app 3:0.000969985;
+time 13 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00209502; -- app 3:0.000969985;
+time 14 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00209502; -- app 3:0.000969985;
+time 15 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00253849; -- app 3:0.000969985;
+time 16 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00209502; -- app 3:0.000969985;
+time 17 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00209502; -- app 3:0.000969985;
+time 18 -- app 0:0; -- app 1:0.00118699; -- app 2:0.444; -- app 3:0.000969985;
+time 19 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00209502; -- app 3:0.000969985;
+time 20 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00209502; -- app 3:0.000969985;
+time 21 -- app 0:0; -- app 1:0.00118699; -- app 2:0.170979; -- app 3:0.000969985;
+time 22 -- app 0:0; -- app 1:0.00118699; -- app 2:0.135448; -- app 3:0.000969985;
+time 23 -- app 0:0; -- app 1:0.00118699; -- app 2:0.205759; -- app 3:0.000969985;
+time 24 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00253849; -- app 3:0.000969985;
+time 25 -- app 0:0; -- app 1:0.00118699; -- app 2:0.450157; -- app 3:0.000969985;
+time 26 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00298196; -- app 3:0.000969985;
+time 27 -- app 0:0; -- app 1:0.00118699; -- app 2:0.390596; -- app 3:0.000969985;
+time 28 -- app 0:0; -- app 1:0.00118699; -- app 2:0.0430665; -- app 3:0.000969985;
+time 29 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00215737; -- app 3:0.403857;
+time 30 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00209502; -- app 3:0.000969985;
+time 31 -- app 0:0; -- app 1:0.00118699; -- app 2:0.40111; -- app 3:0.000969985;
+time 32 -- app 0:0; -- app 1:0.00118699; -- app 2:0.0950857; -- app 3:0.000969985;
+time 33 -- app 0:0; -- app 1:0.00118699; -- app 2:0.193047; -- app 3:0.000969985;
+time 34 -- app 0:0; -- app 1:0.00118699; -- app 2:0.289476; -- app 3:0.000969985;
+time 35 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00253849; -- app 3:0.000969985;
+time 36 -- app 0:0; -- app 1:0.184946; -- app 2:0.00209502; -- app 3:0.000969985;
+time 37 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00209502; -- app 3:0.000969985;
+time 38 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00253849; -- app 3:0.000969985;
+time 39 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00209502; -- app 3:0.000969985;
+time 40 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00209502; -- app 3:0.000969985;
+time 41 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00253849; -- app 3:0.000969985;
+time 42 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00253849; -- app 3:0.000969985;
+time 43 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00253849; -- app 3:0.000969985;
+time 44 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00253849; -- app 3:0.000969985;
+time 45 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00209502; -- app 3:0.000969985;
+time 46 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00209502; -- app 3:0.000969985;
+time 47 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00253849; -- app 3:0.000969985;
+time 48 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00209502; -- app 3:0.000969985;
+time 49 -- app 0:0; -- app 1:0.148223; -- app 2:0.00209502; -- app 3:0.000969985;
+time 50 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00209502; -- app 3:0.000969985;
+time 51 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00209502; -- app 3:0.000969985;
+time 52 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00253849; -- app 3:0.000969985;
+time 53 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00209502; -- app 3:0.000969985;
+time 54 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00209502; -- app 3:0.000969985;
+time 55 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00253849; -- app 3:0.000969985;
+time 56 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00209502; -- app 3:0.000969985;
+time 57 -- app 0:0; -- app 1:0.0729253; -- app 2:0.00209502; -- app 3:0.000969985;
+time 58 -- app 0:0; -- app 1:0.265584; -- app 2:0.00253849; -- app 3:0.000969985;
+time 59 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00209502; -- app 3:0.000969985;
+time 60 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00209502; -- app 3:0.000969985;
+time 61 -- app 0:0; -- app 1:0.00118699; -- app 2:0.190916; -- app 3:0.000969985;
+time 62 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00232226; -- app 3:0.317835;
+time 63 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00287294; -- app 3:0.316611;
+time 64 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00386709; -- app 3:0.315388;
+time 65 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00441777; -- app 3:0.314165;
+time 66 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00496845; -- app 3:0.312942;
+time 67 -- app 0:0; -- app 1:0.00118699; -- app 2:0.0059626; -- app 3:0.311719;
+time 68 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00651328; -- app 3:0.310495;
+time 69 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00750743; -- app 3:0.309272;
+time 70 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00805812; -- app 3:0.308049;
+time 71 -- app 0:0; -- app 1:0.00118699; -- app 2:0.0086088; -- app 3:0.306826;
+time 72 -- app 0:0; -- app 1:0.00118699; -- app 2:0.00960295; -- app 3:0.305603;
+time 73 -- app 0:0; -- app 1:0.00118699; -- app 2:0.0101536; -- app 3:0.304379;
+time 74 -- app 0:0; -- app 1:0.00118699; -- app 2:0.0107043; -- app 3:0.303156;
+time 75 -- app 0:0; -- app 1:0.00118699; -- app 2:0.0116985; -- app 3:0.301933;
+time 76 -- app 0:0; -- app 1:0.00118699; -- app 2:0.0122491; -- app 3:0.30071;
+time 77 -- app 0:0; -- app 1:0.00118699; -- app 2:0.0127998; -- app 3:0.299487;
+time 78 -- app 0:0; -- app 1:0.00118699; -- app 2:0.013794; -- app 3:0.298263;
+time 79 -- app 0:0; -- app 1:0.00118699; -- app 2:0.0143447; -- app 3:0.29704;
+time 80 -- app 0:0; -- app 1:0.00118699; -- app 2:0.0151007; -- app 3:0.295579;
+time 81 -- app 0:0; -- app 1:0.00118699; -- app 2:0.0156514; -- app 3:0.294356;
+time 82 -- app 0:0; -- app 1:0.00118699; -- app 2:0.0166455; -- app 3:0.293132;
+time 83 -- app 0:0; -- app 1:0.00118699; -- app 2:0.0171962; -- app 3:0.291909;
+time 84 -- app 0:0; -- app 1:0.00118699; -- app 2:0.0177469; -- app 3:0.290686;
+time 85 -- app 0:0; -- app 1:0.00118699; -- app 2:0.0187411; -- app 3:0.289463;
+time 86 -- app 0:0; -- app 1:0.00118699; -- app 2:0.0192917; -- app 3:0.28824;
+time 87 -- app 0:0; -- app 1:0.00118699; -- app 2:0.0198424; -- app 3:0.287016;
+time 88 -- app 0:0; -- app 1:0.00118699; -- app 2:0.0208366; -- app 3:0.285793;
+time 89 -- app 0:0; -- app 1:0.00118699; -- app 2:0.0213873; -- app 3:0.28457;
+time 90 -- app 0:0; -- app 1:0.00118699; -- app 2:0.0219379; -- app 3:0.283347;
+time 91 -- app 0:0; -- app 1:0.00118699; -- app 2:0.0229321; -- app 3:0.282124;
+time 92 -- app 0:0; -- app 1:0.00118699; -- app 2:0.0234828; -- app 3:0.280901;
+time 93 -- app 0:0; -- app 1:0.00118699; -- app 2:0.0240334; -- app 3:0.279677;
+time 94 -- app 0:0; -- app 1:0.00118699; -- app 2:0.0250276; -- app 3:0.278454;
+time 95 -- app 0:0; -- app 1:0.00118699; -- app 2:0.0255783; -- app 3:0.277231;
+time 96 -- app 0:0; -- app 1:0.00118699; -- app 2:0.0265724; -- app 3:0.276008;
+time 97 -- app 0:0; -- app 1:0.00118699; -- app 2:0.0271231; -- app 3:0.274785;
+time 98 -- app 0:0; -- app 1:0.00118699; -- app 2:0.0276738; -- app 3:0.273561;
+time 99 -- app 0:0; -- app 1:0.00118699; -- app 2:0.0286679; -- app 3:0.272338;
+time 100 -- app 0:0; -- app 1:0.00118699; -- app 2:0.0289805; -- app 3:0.270877;
+time 101 -- app 0:0; -- app 1:0.00118699; -- app 2:0.0299747; -- app 3:0.269654;
+time 102 -- app 0:0; -- app 1:0.00118699; -- app 2:0.0305254; -- app 3:0.26843;
+app 0 avg time = 0
+app 1 avg time = 0.008787
+app 2 avg time = 0.0413879
+app 3 avg time = 0.121204
+avg = 0.0428448
+---------process_time_record---------------
+time 0 -- app 0:1; -- app 1:0; -- app 2:1; -- app 3:0;
+time 1 -- app 0:0; -- app 1:1; -- app 2:0; -- app 3:0;
+time 2 -- app 0:1; -- app 1:0; -- app 2:0; -- app 3:0;
+time 3 -- app 0:1; -- app 1:0; -- app 2:0; -- app 3:0;
+time 4 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:0;
+time 5 -- app 0:1; -- app 1:0; -- app 2:0; -- app 3:0;
+time 6 -- app 0:0; -- app 1:0; -- app 2:1; -- app 3:0;
+time 7 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:1;
+time 8 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:0;
+time 9 -- app 0:1; -- app 1:0; -- app 2:0; -- app 3:0;
+time 10 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:0;
+time 11 -- app 0:1; -- app 1:0; -- app 2:0; -- app 3:0;
+time 12 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:0;
+time 13 -- app 0:0; -- app 1:0; -- app 2:1; -- app 3:0;
+time 14 -- app 0:0; -- app 1:0; -- app 2:1; -- app 3:0;
+time 15 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:0;
+time 16 -- app 0:1; -- app 1:0; -- app 2:1; -- app 3:0;
+time 17 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:1;
+time 18 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:0;
+time 19 -- app 0:0; -- app 1:1; -- app 2:0; -- app 3:1;
+time 20 -- app 0:0; -- app 1:0; -- app 2:1; -- app 3:0;
+time 21 -- app 0:0; -- app 1:1; -- app 2:0; -- app 3:0;
+time 22 -- app 0:0; -- app 1:0; -- app 2:1; -- app 3:0;
+time 23 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:1;
+time 24 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:0;
+time 25 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:0;
+time 26 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:1;
+time 27 -- app 0:1; -- app 1:0; -- app 2:0; -- app 3:0;
+time 28 -- app 0:0; -- app 1:0; -- app 2:1; -- app 3:0;
+time 29 -- app 0:0; -- app 1:1; -- app 2:0; -- app 3:1;
+time 30 -- app 0:1; -- app 1:0; -- app 2:1; -- app 3:0;
+time 31 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:0;
+time 32 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:0;
+time 33 -- app 0:1; -- app 1:0; -- app 2:0; -- app 3:0;
+time 34 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:0;
+time 35 -- app 0:0; -- app 1:1; -- app 2:0; -- app 3:1;
+time 36 -- app 0:0; -- app 1:1; -- app 2:1; -- app 3:0;
+time 37 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:0;
+time 38 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:0;
+time 39 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:0;
+time 40 -- app 0:0; -- app 1:0; -- app 2:1; -- app 3:0;
+time 41 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:0;
+time 42 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:0;
+time 43 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:0;
+time 44 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:0;
+time 45 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:0;
+time 46 -- app 0:1; -- app 1:0; -- app 2:0; -- app 3:0;
+time 47 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:0;
+time 48 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:0;
+time 49 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:0;
+time 50 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:0;
+time 51 -- app 0:1; -- app 1:0; -- app 2:0; -- app 3:0;
+time 52 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:0;
+time 53 -- app 0:1; -- app 1:0; -- app 2:0; -- app 3:0;
+time 54 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:0;
+time 55 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:0;
+time 56 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:1;
+time 57 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:0;
+time 58 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:0;
+time 59 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:0;
+time 60 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:0;
+time 61 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:0;
+time 62 -- app 0:2; -- app 1:0; -- app 2:0; -- app 3:0;
+time 63 -- app 0:0; -- app 1:0; -- app 2:1; -- app 3:0;
+time 64 -- app 0:1; -- app 1:0; -- app 2:1; -- app 3:1;
+time 65 -- app 0:0; -- app 1:2; -- app 2:1; -- app 3:0;
+time 66 -- app 0:1; -- app 1:0; -- app 2:0; -- app 3:0;
+time 67 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:0;
+time 68 -- app 0:0; -- app 1:1; -- app 2:0; -- app 3:0;
+time 69 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:1;
+time 70 -- app 0:0; -- app 1:1; -- app 2:1; -- app 3:0;
+time 71 -- app 0:2; -- app 1:0; -- app 2:0; -- app 3:0;
+time 72 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:0;
+time 73 -- app 0:0; -- app 1:1; -- app 2:0; -- app 3:0;
+time 74 -- app 0:1; -- app 1:1; -- app 2:0; -- app 3:0;
+time 75 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:0;
+time 76 -- app 0:0; -- app 1:0; -- app 2:1; -- app 3:0;
+time 77 -- app 0:1; -- app 1:0; -- app 2:0; -- app 3:1;
+time 78 -- app 0:0; -- app 1:1; -- app 2:0; -- app 3:0;
+time 79 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:1;
+time 80 -- app 0:0; -- app 1:0; -- app 2:1; -- app 3:0;
+time 81 -- app 0:1; -- app 1:0; -- app 2:0; -- app 3:0;
+time 82 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:0;
+time 83 -- app 0:1; -- app 1:0; -- app 2:0; -- app 3:0;
+time 84 -- app 0:1; -- app 1:0; -- app 2:1; -- app 3:0;
+time 85 -- app 0:0; -- app 1:1; -- app 2:1; -- app 3:1;
+time 86 -- app 0:1; -- app 1:0; -- app 2:1; -- app 3:0;
+time 87 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:0;
+time 88 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:0;
+time 89 -- app 0:0; -- app 1:1; -- app 2:0; -- app 3:0;
+time 90 -- app 0:1; -- app 1:0; -- app 2:0; -- app 3:0;
+time 91 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:0;
+time 92 -- app 0:0; -- app 1:0; -- app 2:1; -- app 3:2;
+time 93 -- app 0:2; -- app 1:0; -- app 2:1; -- app 3:1;
+time 94 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:1;
+time 95 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:0;
+time 96 -- app 0:0; -- app 1:1; -- app 2:0; -- app 3:1;
+time 97 -- app 0:1; -- app 1:0; -- app 2:1; -- app 3:0;
+time 98 -- app 0:2; -- app 1:0; -- app 2:1; -- app 3:2;
+time 99 -- app 0:1; -- app 1:1; -- app 2:1; -- app 3:0;
+time 100 -- app 0:1; -- app 1:0; -- app 2:1; -- app 3:1;
+time 101 -- app 0:1; -- app 1:0; -- app 2:0; -- app 3:0;
+time 102 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:0;
+app 0 avg time = 0.330097
+app 1 avg time = 0.165049
+app 2 avg time = 0.252427
+app 3 avg time = 0.203883
+avg = 0.237864
+---------transmission_time_record---------------
+time 0 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:0;
+time 1 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 2 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 3 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 4 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 5 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 6 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 7 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 8 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 9 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 10 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 11 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 12 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 13 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 14 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 15 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 16 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 17 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 18 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 19 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 20 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 21 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 22 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 23 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 24 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 25 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 26 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 27 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 28 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 29 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 30 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 31 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 32 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 33 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 34 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 35 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 36 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 37 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 38 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 39 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 40 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 41 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 42 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 43 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 44 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 45 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 46 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 47 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 48 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 49 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 50 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 51 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 52 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 53 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 54 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 55 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 56 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 57 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 58 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 59 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 60 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 61 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 62 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 63 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 64 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 65 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 66 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 67 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 68 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 69 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 70 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 71 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 72 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 73 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 74 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 75 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 76 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 77 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 78 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 79 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 80 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 81 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 82 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 83 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 84 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 85 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 86 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 87 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 88 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 89 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 90 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 91 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 92 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 93 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 94 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 95 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 96 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 97 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 98 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 99 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 100 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 101 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+time 102 -- app 0:0; -- app 1:0.00141009; -- app 2:0.00192004; -- app 3:0.00143163;
+app 0 avg time = 0
+app 1 avg time = 0.0013964
+app 2 avg time = 0.0019014
+app 3 avg time = 0.00141773
+avg = 0.00117888
+---------queue_time_record---------------
+time 0 -- app 0:0; -- app 1:0; -- app 2:0; -- app 3:0;
+time 1 -- app 0:0; -- app 1:0.000238009; -- app 2:0.000636621; -- app 3:0;
+time 2 -- app 0:0; -- app 1:0.000238009; -- app 2:0.00108009; -- app 3:0;
+time 3 -- app 0:0; -- app 1:0.000238009; -- app 2:0.000636621; -- app 3:0;
+time 4 -- app 0:0; -- app 1:0.000238009; -- app 2:0.0676813; -- app 3:0;
+time 5 -- app 0:0; -- app 1:0.000238009; -- app 2:0.000636621; -- app 3:0;
+time 6 -- app 0:0; -- app 1:0.000238009; -- app 2:0.000636621; -- app 3:0;
+time 7 -- app 0:0; -- app 1:0.117295; -- app 2:0.000636621; -- app 3:0;
+time 8 -- app 0:0; -- app 1:0.000238009; -- app 2:0.00108009; -- app 3:0;
+time 9 -- app 0:0; -- app 1:0.000238009; -- app 2:0.24186; -- app 3:0;
+time 10 -- app 0:0; -- app 1:0.000238009; -- app 2:0.160026; -- app 3:0;
+time 11 -- app 0:0; -- app 1:0.000238009; -- app 2:0.000636621; -- app 3:0;
+time 12 -- app 0:0; -- app 1:0.000238009; -- app 2:0.00108009; -- app 3:0;
+time 13 -- app 0:0; -- app 1:0.000238009; -- app 2:0.000636621; -- app 3:0;
+time 14 -- app 0:0; -- app 1:0.000238009; -- app 2:0.000636621; -- app 3:0;
+time 15 -- app 0:0; -- app 1:0.000238009; -- app 2:0.00108009; -- app 3:0;
+time 16 -- app 0:0; -- app 1:0.000238009; -- app 2:0.000636621; -- app 3:0;
+time 17 -- app 0:0; -- app 1:0.000238009; -- app 2:0.000636621; -- app 3:0;
+time 18 -- app 0:0; -- app 1:0.000238009; -- app 2:0.442541; -- app 3:0;
+time 19 -- app 0:0; -- app 1:0.000238009; -- app 2:0.000636621; -- app 3:0;
+time 20 -- app 0:0; -- app 1:0.000238009; -- app 2:0.000636621; -- app 3:0;
+time 21 -- app 0:0; -- app 1:0.000238009; -- app 2:0.169521; -- app 3:0;
+time 22 -- app 0:0; -- app 1:0.000238009; -- app 2:0.13399; -- app 3:0;
+time 23 -- app 0:0; -- app 1:0.000238009; -- app 2:0.204301; -- app 3:0;
+time 24 -- app 0:0; -- app 1:0.000238009; -- app 2:0.00108009; -- app 3:0;
+time 25 -- app 0:0; -- app 1:0.000238009; -- app 2:0.448699; -- app 3:0;
+time 26 -- app 0:0; -- app 1:0.000238009; -- app 2:0.00152356; -- app 3:0;
+time 27 -- app 0:0; -- app 1:0.000238009; -- app 2:0.389138; -- app 3:0;
+time 28 -- app 0:0; -- app 1:0.000238009; -- app 2:0.0416081; -- app 3:0;
+time 29 -- app 0:0; -- app 1:0.000238009; -- app 2:0.000698973; -- app 3:0.402887;
+time 30 -- app 0:0; -- app 1:0.000238009; -- app 2:0.000636621; -- app 3:0;
+time 31 -- app 0:0; -- app 1:0.000238009; -- app 2:0.399652; -- app 3:0;
+time 32 -- app 0:0; -- app 1:0.000238009; -- app 2:0.0936273; -- app 3:0;
+time 33 -- app 0:0; -- app 1:0.000238009; -- app 2:0.191589; -- app 3:0;
+time 34 -- app 0:0; -- app 1:0.000238009; -- app 2:0.288018; -- app 3:0;
+time 35 -- app 0:0; -- app 1:0.000238009; -- app 2:0.00108009; -- app 3:0;
+time 36 -- app 0:0; -- app 1:0.183997; -- app 2:0.000636621; -- app 3:0;
+time 37 -- app 0:0; -- app 1:0.000238009; -- app 2:0.000636621; -- app 3:0;
+time 38 -- app 0:0; -- app 1:0.000238009; -- app 2:0.00108009; -- app 3:0;
+time 39 -- app 0:0; -- app 1:0.000238009; -- app 2:0.000636621; -- app 3:0;
+time 40 -- app 0:0; -- app 1:0.000238009; -- app 2:0.000636621; -- app 3:0;
+time 41 -- app 0:0; -- app 1:0.000238009; -- app 2:0.00108009; -- app 3:0;
+time 42 -- app 0:0; -- app 1:0.000238009; -- app 2:0.00108009; -- app 3:0;
+time 43 -- app 0:0; -- app 1:0.000238009; -- app 2:0.00108009; -- app 3:0;
+time 44 -- app 0:0; -- app 1:0.000238009; -- app 2:0.00108009; -- app 3:0;
+time 45 -- app 0:0; -- app 1:0.000238009; -- app 2:0.000636621; -- app 3:0;
+time 46 -- app 0:0; -- app 1:0.000238009; -- app 2:0.000636621; -- app 3:0;
+time 47 -- app 0:0; -- app 1:0.000238009; -- app 2:0.00108009; -- app 3:0;
+time 48 -- app 0:0; -- app 1:0.000238009; -- app 2:0.000636621; -- app 3:0;
+time 49 -- app 0:0; -- app 1:0.147274; -- app 2:0.000636621; -- app 3:0;
+time 50 -- app 0:0; -- app 1:0.000238009; -- app 2:0.000636621; -- app 3:0;
+time 51 -- app 0:0; -- app 1:0.000238009; -- app 2:0.000636621; -- app 3:0;
+time 52 -- app 0:0; -- app 1:0.000238009; -- app 2:0.00108009; -- app 3:0;
+time 53 -- app 0:0; -- app 1:0.000238009; -- app 2:0.000636621; -- app 3:0;
+time 54 -- app 0:0; -- app 1:0.000238009; -- app 2:0.000636621; -- app 3:0;
+time 55 -- app 0:0; -- app 1:0.000238009; -- app 2:0.00108009; -- app 3:0;
+time 56 -- app 0:0; -- app 1:0.000238009; -- app 2:0.000636621; -- app 3:0;
+time 57 -- app 0:0; -- app 1:0.0719763; -- app 2:0.000636621; -- app 3:0;
+time 58 -- app 0:0; -- app 1:0.264635; -- app 2:0.00108009; -- app 3:0;
+time 59 -- app 0:0; -- app 1:0.000238009; -- app 2:0.000636621; -- app 3:0;
+time 60 -- app 0:0; -- app 1:0.000238009; -- app 2:0.000636621; -- app 3:0;
+time 61 -- app 0:0; -- app 1:0.000238009; -- app 2:0.189458; -- app 3:0;
+time 62 -- app 0:0; -- app 1:0.000238009; -- app 2:0.000863856; -- app 3:0.316865;
+time 63 -- app 0:0; -- app 1:0.000238009; -- app 2:0.00141454; -- app 3:0.315641;
+time 64 -- app 0:0; -- app 1:0.000238009; -- app 2:0.00240869; -- app 3:0.314418;
+time 65 -- app 0:0; -- app 1:0.000238009; -- app 2:0.00295937; -- app 3:0.313195;
+time 66 -- app 0:0; -- app 1:0.000238009; -- app 2:0.00351005; -- app 3:0.311972;
+time 67 -- app 0:0; -- app 1:0.000238009; -- app 2:0.0045042; -- app 3:0.310749;
+time 68 -- app 0:0; -- app 1:0.000238009; -- app 2:0.00505488; -- app 3:0.309525;
+time 69 -- app 0:0; -- app 1:0.000238009; -- app 2:0.00604903; -- app 3:0.308302;
+time 70 -- app 0:0; -- app 1:0.000238009; -- app 2:0.00659972; -- app 3:0.307079;
+time 71 -- app 0:0; -- app 1:0.000238009; -- app 2:0.0071504; -- app 3:0.305856;
+time 72 -- app 0:0; -- app 1:0.000238009; -- app 2:0.00814455; -- app 3:0.304633;
+time 73 -- app 0:0; -- app 1:0.000238009; -- app 2:0.00869523; -- app 3:0.303409;
+time 74 -- app 0:0; -- app 1:0.000238009; -- app 2:0.00924591; -- app 3:0.302186;
+time 75 -- app 0:0; -- app 1:0.000238009; -- app 2:0.0102401; -- app 3:0.300963;
+time 76 -- app 0:0; -- app 1:0.000238009; -- app 2:0.0107907; -- app 3:0.29974;
+time 77 -- app 0:0; -- app 1:0.000238009; -- app 2:0.0113414; -- app 3:0.298517;
+time 78 -- app 0:0; -- app 1:0.000238009; -- app 2:0.0123356; -- app 3:0.297293;
+time 79 -- app 0:0; -- app 1:0.000238009; -- app 2:0.0128863; -- app 3:0.29607;
+time 80 -- app 0:0; -- app 1:0.000238009; -- app 2:0.0136423; -- app 3:0.294609;
+time 81 -- app 0:0; -- app 1:0.000238009; -- app 2:0.014193; -- app 3:0.293386;
+time 82 -- app 0:0; -- app 1:0.000238009; -- app 2:0.0151871; -- app 3:0.292162;
+time 83 -- app 0:0; -- app 1:0.000238009; -- app 2:0.0157378; -- app 3:0.290939;
+time 84 -- app 0:0; -- app 1:0.000238009; -- app 2:0.0162885; -- app 3:0.289716;
+time 85 -- app 0:0; -- app 1:0.000238009; -- app 2:0.0172827; -- app 3:0.288493;
+time 86 -- app 0:0; -- app 1:0.000238009; -- app 2:0.0178333; -- app 3:0.28727;
+time 87 -- app 0:0; -- app 1:0.000238009; -- app 2:0.018384; -- app 3:0.286047;
+time 88 -- app 0:0; -- app 1:0.000238009; -- app 2:0.0193782; -- app 3:0.284823;
+time 89 -- app 0:0; -- app 1:0.000238009; -- app 2:0.0199289; -- app 3:0.2836;
+time 90 -- app 0:0; -- app 1:0.000238009; -- app 2:0.0204795; -- app 3:0.282377;
+time 91 -- app 0:0; -- app 1:0.000238009; -- app 2:0.0214737; -- app 3:0.281154;
+time 92 -- app 0:0; -- app 1:0.000238009; -- app 2:0.0220244; -- app 3:0.279931;
+time 93 -- app 0:0; -- app 1:0.000238009; -- app 2:0.022575; -- app 3:0.278707;
+time 94 -- app 0:0; -- app 1:0.000238009; -- app 2:0.0235692; -- app 3:0.277484;
+time 95 -- app 0:0; -- app 1:0.000238009; -- app 2:0.0241199; -- app 3:0.276261;
+time 96 -- app 0:0; -- app 1:0.000238009; -- app 2:0.025114; -- app 3:0.275038;
+time 97 -- app 0:0; -- app 1:0.000238009; -- app 2:0.0256647; -- app 3:0.273815;
+time 98 -- app 0:0; -- app 1:0.000238009; -- app 2:0.0262154; -- app 3:0.272591;
+time 99 -- app 0:0; -- app 1:0.000238009; -- app 2:0.0272095; -- app 3:0.271368;
+time 100 -- app 0:0; -- app 1:0.000238009; -- app 2:0.0275221; -- app 3:0.269907;
+time 101 -- app 0:0; -- app 1:0.000238009; -- app 2:0.0285163; -- app 3:0.268684;
+time 102 -- app 0:0; -- app 1:0.000238009; -- app 2:0.029067; -- app 3:0.26746;
+app 0 avg time = 0
+app 1 avg time = 0.00784723
+app 2 avg time = 0.0399436
+app 3 avg time = 0.120244
+avg = 0.0420087
+------------------END-----------------------
+H = 2
+sim_time = 103

@@ -1,0 +1,3 @@
+package mogp;
+
+@license(LGPL);
