@@ -2023,6 +2023,12 @@ void OperatorPlacementManager::resetOperatorGraph(int index){
 void OperatorPlacementManager::resetCapacity(){
     map<int,FogNode*>::iterator it;
     map<int,FogNode*> fognodes = fognetworks->getFogNodes();
+    vector<FogEdge*> fogedges = fognetworks->getFogedges();
+
+    for(int i = 0; i < fogedges.size(); ++ i){
+        fogedges[i]->setTotalEventNum(0);
+    }
+
     it = fognodes.begin();
 
     //reset node's capacity and its edges

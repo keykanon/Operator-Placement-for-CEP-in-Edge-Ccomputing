@@ -134,7 +134,7 @@ void OperatorGraphModel::initialOG3(){
 //define compare function
 struct operator_cmp{
     bool operator ()(OperatorModel* a,OperatorModel* b){
-        return( atoi(a->getOperatorID().c_str()) < atoi(b->getOperatorID().c_str()));//最小值优先
+        return( atoi(a->getOperatorID().c_str()) < atoi(b->getOperatorID().c_str()));//锟斤拷小值锟斤拷锟斤拷
     }
 };
 
@@ -351,8 +351,11 @@ int OperatorGraphModel::getFirstServicedStreamPathIndex(double averageW, double 
             maxResponseTime = predicted_rt;
             maxPathIndex = i;
         }
+        if(predicted_rt > this->predicted_response_time){
+            this->predicted_response_time = predicted_rt;
+        }
     }
-    this->predicted_response_time = maxResponseTime;
+
     return maxPathIndex;
 }
 

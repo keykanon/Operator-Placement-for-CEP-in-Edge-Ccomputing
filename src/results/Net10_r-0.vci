@@ -1,4 +1,4 @@
-file 15968 1517316906                                           
+file 15587 1541384395                                           
 version 2
 run Net10_r-0-20180130-20:53:10-6616
 attr configname Net10_r
@@ -19,5 +19,4 @@ param **.eventStorage.packetLength "1024 byte"
 param **.node[*].operator[*].packetLength "1024 byte"
 
 vector 0 Net10_r.eventStorage "End-to-End Delay" ETV
-0	540 15426 52 1908252 5 64.522409659985 360 0 0.666282275228 22.118554832474 3.5568418554525
-
+0	520 15067 52 1908252 5 64.522409659985 360 0 0.666282275228 22.118554832474 3.5568418554525

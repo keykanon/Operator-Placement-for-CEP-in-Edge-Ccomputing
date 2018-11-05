@@ -56,7 +56,7 @@ class EventStorage : public cSimpleModule
     int strategy = 0;
     int algorithm =  0;
 
-    double sendDelay =  1200 * intensiveAddrNum;
+    double sendDelay =  4000 * intensiveAddrNum;
 //record result
     cOutVector endToEndDelayVec;
     cStdDev eedStats;

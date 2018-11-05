@@ -5,7 +5,8 @@
   placement_model/CEPModel/StreamModel.h \
   placement_model/CEPModel/../FogModel/FogEdge.h \
   placement_model/CEPModel/StreamPath.h \
-  placement_model/CEPModel/../FogModel/FogNode.h
+  placement_model/CEPModel/../FogModel/FogNode.h \
+  placement_model/CEPModel/../FogModel/../CEPModel/OperatorModel.h
 
 placement_model/CEPModel/OperatorGraphModel.h:
 
@@ -18,3 +19,5 @@ placement_model/CEPModel/../FogModel/FogEdge.h:
 placement_model/CEPModel/StreamPath.h:
 
 placement_model/CEPModel/../FogModel/FogNode.h:
+
+placement_model/CEPModel/../FogModel/../CEPModel/OperatorModel.h:

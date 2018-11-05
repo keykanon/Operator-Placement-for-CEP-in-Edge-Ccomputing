@@ -1,9 +1,9 @@
 ../out/clang-debug/src/node/Queue.o: node/Queue.cc node/Queue.h \
-  C:/environment/omnetpp-5.2-src-windows/omnetpp-5.2/include\omnetpp.h \
+  /Users/airsola/Desktop/omnetpp-5.4.1/include/omnetpp.h \
   node/../message/EventPacket_m.h
 
 node/Queue.h:
 
-C:/environment/omnetpp-5.2-src-windows/omnetpp-5.2/include\omnetpp.h:
+/Users/airsola/Desktop/omnetpp-5.4.1/include/omnetpp.h:
 
 node/../message/EventPacket_m.h:

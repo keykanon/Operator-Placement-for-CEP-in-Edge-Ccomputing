@@ -289,9 +289,9 @@ void EventStorage::init(){
 
     // TODO - Generated method body
     //get sumo data
-    net = new NetInputHandle("C:\\study\\Placement_of_MCEP\\sumoData\\map.net.xml");
+    net = new NetInputHandle("/Users/airsola/Desktop/omnetpp-5.4.1/samples/sumoData/map.net.xml");
     trafficmap = net->getMap();
-    sumotr = new SumotrInputHandle("C:\\study\\Placement_of_MCEP\\sumoData\\map.sumo.tr", trafficmap);
+    sumotr = new SumotrInputHandle("/Users/airsola/Desktop/omnetpp-5.4.1/samples/sumoData/map.sumo.tr", trafficmap);
 
 
     //get traffic logs
@@ -749,7 +749,7 @@ void EventStorage::handleMessage(cMessage *msg)
 
 
         }
-        sendDelay +=  50 * OGNUM * intensiveAddrNum;
+        //sendDelay +=  50 * OGNUM * intensiveAddrNum;
         eventsRecord.push_back(record);
         sim_time ++;
 
