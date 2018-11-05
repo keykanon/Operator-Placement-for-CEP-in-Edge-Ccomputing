@@ -1,4 +1,4 @@
-# Operator-Placement-for-CEP-inj-Edge-Computing
+# Operator-Placement-for-CEP-in-Edge-Computing
 
 It is a simulation experiment to deploy complex event processing in edge network.
 
