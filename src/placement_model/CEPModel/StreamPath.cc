@@ -50,12 +50,90 @@ double StreamPath::ErlangC(int n, double c){
 
 }
 
+double StreamPath::calResponseTime(double averageW, double averageThroughput,  map<int,map<int, double>> &distable,map<int, int> eventTable){
+    double tp = 0;
+        //source node
+        int size = operators.size();
+        double rate = 1.0; //8.0 * 1024.0;
+        FogNode* fs = operators[size-1]->getFogNode();
+
+        for(int i = operators.size()-1; i >= 0; i --){
+            //predict event number for every operator
+            operators[i]->predictEventNumber(0);
+
+            FogNode* fd = operators[i]->getFogNode();
+            double transmission_time = 0;
+            if(fs != NULL && fd != NULL && distable.count(fs->getNodeID()) > 0 && distable[fs->getNodeID()].count(fd->getNodeID())){
+                if(fs->getNodeID() == fd->getNodeID()){
+                    tp += 1.0 / fd->getThroughput();
+                    fs = fd;
+                    continue;
+                }
+
+
+
+                //calculate response time
+
+                transmission_time =  distable[fs->getNodeID()][fd->getNodeID()];
+                transmission_time += 0.01;
+                //EV << "dis[" << fs->getNodeID() << "][" << fd->getNodeID() << "] = " <<  distable[fs->getNodeID()][fd->getNodeID()] << endl;
+                double bandwidth = 1.0 / distable[fs->getNodeID()][fd->getNodeID()];
+                double p = ErlangC(fd->getOriginCapacity(), eventTable[fd->getNodeID()]/bandwidth);
+                if(p > 1 || p < 0 || eventTable[fd->getNodeID()] > bandwidth){
+                    p = 1;
+                    transmission_time += (((double)eventTable[fd->getNodeID()] ) * distable[fs->getNodeID()][fd->getNodeID()]);
+                }
+                else {
+                    transmission_time += p * distable[fs->getNodeID()][fd->getNodeID()];
+
+                }
+
+                tp += transmission_time  + 1.0 / fd->getThroughput();
+
+
+            }
+            else{
+
+                transmission_time = rate / averageW;
+                transmission_time += 0.01;
+                //EV << "averageW : " << averageW << endl;
+                //double bandwidth = 1.0 / transmission_time;
+                double p = ErlangC(this->getOperators()[this->getOperators().size()-1]->getFogNode()->getOriginCapacity(), rate*operators[i]->getPredictEventNumber()/averageW);
+                if(p > 1 || p < 0 ){
+                    p = 1;
+                    transmission_time = rate * (operators[i]->getPredictEventNumber() )/averageW;
+                }
+                else {
+                    transmission_time += p*rate / averageW;
+                }
+
+
+
+                if(fs != NULL && fd != NULL && fs->getNodeID() == fd->getNodeID()){
+                    transmission_time = 0;
+                }
+
+                tp += transmission_time +
+                        1.0 / averageThroughput;
+            }
+
+
+
+
+            fs = fd;
+
+        }
+
+        this->predicted_response_time = tp;
+        return tp;
+}
+
 double StreamPath::predictResponseTime(double averageW, double averageThroughput,  map<int,map<int, double>> &distable,map<int, int> eventTable){
 
     double tp = 0;
     //source node
     int size = operators.size();
-    double rate = 8.0 * 1024.0;
+    double rate = 1.0; //8.0 * 1024.0;
     FogNode* fs = operators[size-1]->getFogNode();
 
     for(int i = operators.size()-1; i >= 0; i --){
@@ -118,6 +196,7 @@ double StreamPath::predictResponseTime(double averageW, double averageThroughput
             //calculate response time
 
             transmission_time =  distable[fs->getNodeID()][fd->getNodeID()];
+            transmission_time += 0.01;
             //EV << "dis[" << fs->getNodeID() << "][" << fd->getNodeID() << "] = " <<  distable[fs->getNodeID()][fd->getNodeID()] << endl;
             double bandwidth = 1.0 / distable[fs->getNodeID()][fd->getNodeID()];
             double p = ErlangC(fd->getOriginCapacity(), eventTable[fd->getNodeID()]/bandwidth);
@@ -133,6 +212,7 @@ double StreamPath::predictResponseTime(double averageW, double averageThroughput
             //transmission_time +=  ((double)eventTable[fs->getNodeID()][fd->getNodeID()] - rate / distable[fs->getNodeID()][fd->getNodeID()]) / distable[fs->getNodeID()][fd->getNodeID()];
                 //transmission_time /= (double) eventTable[fs->getNodeID()][fd->getNodeID()];
             //}
+
             tp += transmission_time  + 1.0 / fd->getThroughput();
 
 
@@ -140,6 +220,7 @@ double StreamPath::predictResponseTime(double averageW, double averageThroughput
         else{
 
             transmission_time = rate / averageW;
+            transmission_time += 0.01;
             //EV << "averageW : " << averageW << endl;
             //double bandwidth = 1.0 / transmission_time;
             double p = ErlangC(this->getOperators()[this->getOperators().size()-1]->getFogNode()->getOriginCapacity(), rate*operators[i]->getPredictEventNumber()/averageW);
@@ -154,6 +235,8 @@ double StreamPath::predictResponseTime(double averageW, double averageThroughput
             //    transmission_time += (rate* operators[i]->getPredictEventNumber() - averageW)/averageW;
                 //transmission_time /= operators[i]->getPredictEventNumber();
             //}
+
+
             if(fs != NULL && fd != NULL && fs->getNodeID() == fd->getNodeID()){
                 transmission_time = 0;
             }

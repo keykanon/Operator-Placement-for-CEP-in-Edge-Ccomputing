@@ -320,12 +320,26 @@ void OperatorGraphModel::calStreamPath(OperatorModel* consumer){
 	//return this->stream_paths;
 }
 
+
+/*------------------return the total event number of this operator graph-------------
+ *
+ */
+int OperatorGraphModel::getEventNumber(){
+    int eventNumber = 0;
+    for(int i = 1; i < this->operators.size(); ++ i){
+        if(operators[i]->getPredictEventNumber() > eventNumber){
+            eventNumber = operators[i]->getPredictEventNumber();
+        }
+    }
+    return eventNumber;
+}
+
 //calculate response time of the operator graph
 int OperatorGraphModel::calResponseTime(double averageW, double averageThroughput, map<int, map<int, double>>& distable, map<int,int>& eventTable){
     double maxResponseTime = -1;
     int maxPathIndex = 0;
     for(int i = 0; i < stream_paths.size(); i ++){
-        double predicted_rt = stream_paths[i]->predictResponseTime(averageW, averageThroughput, distable, eventTable );
+        double predicted_rt = stream_paths[i]->calResponseTime(averageW, averageThroughput, distable, eventTable );
 
         //find the max response time stream path index
         if(predicted_rt > maxResponseTime){

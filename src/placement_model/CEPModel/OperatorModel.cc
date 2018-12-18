@@ -109,9 +109,8 @@ void OperatorModel::addThroughput(double throughput){
 void OperatorModel::addEventNum(int time, int eventnum){
     if(historicalEventNum.size() > time){
         int orinum = historicalEventNum[time];
-        if(orinum < eventnum){
-            historicalEventNum[time] = eventnum;
-        }
+        historicalEventNum[time] = orinum + eventnum;
+
     }
     else{
         historicalEventNum.push_back(eventnum);

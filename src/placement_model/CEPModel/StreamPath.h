@@ -25,6 +25,7 @@ public:
 
 	//void calTransmissionDelay();
 	//void calProcessDelay();
+	double calResponseTime(double averageW, double averageThroughput,  map<int,map<int,double>> &distable, map<int, int>);
 	double predictResponseTime(double averageW, double averageThroughput,  map<int,map<int,double>> &distable, map<int, int>);
 	double getPredictedResponseTime();
 	double getTransmissionDelay();

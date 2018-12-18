@@ -175,7 +175,8 @@ void Operator::processPacket(EventPacket *pk)
         if(rand() % 4 == 0){
             EventPacket* ep = generatePacket( event->getDestAddrs(),event);
             process_end = clock();
-            sendDelayed(ep, lambda, "out");
+            send(ep, "out");
+            //sendDelayed(ep, lambda, "out");
         }
     }
 

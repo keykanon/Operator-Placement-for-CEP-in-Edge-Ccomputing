@@ -105,6 +105,7 @@ public:
 
 	//predict the response time
 	double predictResponseTime(vector<OperatorModel>);
+	void calOperatorGraphResponseTime();
 
 	//migration aware algorithm
 	vector<Migration> migrationAware(int index);

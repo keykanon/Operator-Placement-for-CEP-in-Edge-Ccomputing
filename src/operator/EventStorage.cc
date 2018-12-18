@@ -96,10 +96,14 @@ void EventStorage::finish(){
    out << "manager usage = " << managerUse << endl;
 
 
-
+   out << "------------event number record---------------" << endl;
+   printRecord(eventNumber_record);
    //---------response time record-------------------------
    out << "---------response time---------------" << endl;
    printRecord(response_time_record);
+
+   out << "---------predicted response time----------" << endl;
+   printRecord(predicted_response_time_record);
 
    out << "---------process_time_record---------------" << endl;
    printRecord(process_time_record);
@@ -1060,7 +1064,7 @@ void EventStorage::handleMessage(cMessage *msg)
             opm[nodeIndex]->updateEventNumber(monitor_message->getAppNum(),
                     monitor_message->getOperatorType(monitor_message->getHopCount()-1),
                     tid, monitor_message->getEventNum());
-
+            out << "time: " << tid << ", app:" << ogIndex << "event num: " << monitor_message->getEventNum() << endl;
             double response_time = tnow.dbl() - monitor_message->getSendTime();
 
             //int tid = monitor_message->getTime();
@@ -1106,10 +1110,14 @@ void EventStorage::handleMessage(cMessage *msg)
                 //update transmission time record
                 updateRecord(transmission_time_record, tid, appIndex, monitor_message->getTransmissionTime());
 
+                //update the event number record
+                updateRecord(eventNumber_record, tid, appIndex,  og->getEventNumber());
 
+                opm[nodeIndex]->calOperatorGraphResponseTime();
+                updateRecord(predicted_response_time_record, tid, appIndex, og->getPredictedResponseTime());
 
-                EV_INFO  << "app_num " << app_num << ":" << "- response time = " << response_time << " in " << time[app_num] << endl;
-                out << "app_num " << app_num << ":" << timestamp << "- response time = " <<  response_time << " , predicted response time = " << og->getPredictedResponseTime() << endl;
+                //EV_INFO  << "app_num " << app_num << ":" << "- response time = " << response_time << " in " << time[app_num] << endl;
+                //out << "app_num " << app_num << ":" << timestamp << "- response time = " <<  response_time << " , predicted response time = " << og->getPredictedResponseTime() << endl;
                 //out << "process time = " << monitor_message->getProcessTime() << ". transmission time = " << monitor_message->getTransmissionTime() << ". QueueTime = " << monitor_message->getQueueTime() << endl;
 
                 endToEndDelayVec.record(response_time);
