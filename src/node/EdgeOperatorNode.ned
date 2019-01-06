@@ -30,11 +30,11 @@ network EdgeOperatorNode
         inout es;
 
     submodules:
-        operator[capacity]:Operator{
+        operator[capacity]: Operator {
             address = Naddress;
             destAddresses = NdestAddress;
-            lambda = executionTime; 
-            @display("p=140,60");
+            lambda = executionTime;
+            @display("p=140,48");
         }
         //eventStorage: EventStorage {
         //    address = EdgeNode.address;
@@ -53,19 +53,19 @@ network EdgeOperatorNode
                 gate[sizeof(g)];
                 localIn[capacity];
                 localOut[capacity];
-            
+
 
         }
         queue[sizeof(g)]: Queue {
-           parameters:
+            parameters:
                 @display("p=80,200,row");
         }
     connections allowunconnected:
 
-    	for i = 0..capacity-1{
+        for i=0..capacity-1 {
             routing.localIn[i] <-- operator[i].out;
             routing.localOut[i] --> operator[i].in;
-    	} 
+        }
         //routing.localIn[2] <-- eventStorage.speed;
         //routing.localIn[3] <-- eventStorage.lane;
 
@@ -74,6 +74,6 @@ network EdgeOperatorNode
             queue[i].line <--> g[i];
 			//routing.gate[i] <--> g[i];
         }
-        
+
         routing.eventStorage <--> es;
 }

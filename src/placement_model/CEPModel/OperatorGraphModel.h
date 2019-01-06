@@ -36,6 +36,8 @@ public:
 	//get StreamPath through operators and streams
 	void calStreamPath(OperatorModel* comsumer);
 
+	int getEventNumber();
+
 	//calculate response time of the operator graph
 	int calResponseTime(double averageW, double averageThroughput, map<int, map<int, double>>& distable, map<int,int>& eventTable);
 

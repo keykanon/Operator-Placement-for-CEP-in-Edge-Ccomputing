@@ -47,7 +47,7 @@ class EventStorage : public cSimpleModule
     vector<int> intensiveAddr;
     int intensiveAddrNum = 1;
     vector<double> RT_CONSTRAINTS = {1,1,1};//,1,1,1,1,1,1};
-    vector<int> type = {10,10,10};//,4,5,3,4,5};
+    vector<int> type = {5,5,5};//,4,5,3,4,5};
     const int OGNUM = RT_CONSTRAINTS.size();
     map<int, vector<int>> edgeCepMap;
     ofstream out;
@@ -56,7 +56,7 @@ class EventStorage : public cSimpleModule
     int strategy = 0;
     int algorithm =  0;
 
-    double sendDelay =  1200 * intensiveAddrNum;
+    double sendDelay =  6000 * intensiveAddrNum;
 //record result
     cOutVector endToEndDelayVec;
     cStdDev eedStats;
@@ -71,7 +71,7 @@ class EventStorage : public cSimpleModule
     //double delta;
     int app_num;
     vector<string> vehicleIDs = {"0","2","4"};//,"8", "9","17","19","22","28"};//,"28","29"};
-    int sumoStart = 110, sumoEnd = 130;
+    int sumoStart = 110, sumoEnd = 150;
     const int TIME_INIT = 110;
     vector<int> time ;//= {110,110,110,110};//,150,150};
     vector<int> timeEnd ;//= {170,170,170,170};//,250,250};
@@ -123,6 +123,8 @@ class EventStorage : public cSimpleModule
     map<int, std::map<int, double>> process_time_record;
     map<int,std::map<int, double>> queue_time_record;
     map<int,std::map<int, double>> transmission_time_record;
+    map<int, std::map<int, double>> predicted_response_time_record;
+    map<int, std::map<int, double>> eventNumber_record;
 
     double totalNetworkUsage;
     std::map<int, double> networkUsage;

@@ -246,7 +246,7 @@ vector<vector<StreamPath*>> OperatorPlacementManager::getReMultiOperatorGraphPla
 
                 double time = 0, transmission_time = 0;
                 double eventNum = in[maxRTR_index][maxPathIndex[maxRTR_index]]->getPredictEventNumber();
-                eventNum *= 32 / ogModel.size();
+                //eventNum *= 32 / ogModel.size();
                 transmission_time =  distable[inFog->getNodeID()][fit->second->getNodeID()];
 
                double bandwidth = 1.0 / distable[inFog->getNodeID()][fit->second->getNodeID()];
@@ -303,9 +303,42 @@ vector<vector<StreamPath*>> OperatorPlacementManager::getReMultiOperatorGraphPla
 
     }
 
+    for(int index = 0; index < ogModel.size(); index ++){
+        ogModel[index]->calResponseTime(averageW, averageThroughput, distable,eventTable);
+    }
+
 
     return ans;
 }
+
+void OperatorPlacementManager::calOperatorGraphResponseTime(){
+    double averageW = fognetworks->getAverageW();
+    double averageThroughput = fognetworks->getAverageExecutionSpeed();
+
+    map<int, FogNode*> fognodes = fognetworks->getFogNodes();
+
+    map<int, map<int, double>> distable = Floyd();
+    map<int,int> eventTable;
+    map<int, FogNode*>::iterator fit = fognodes.begin();
+    while(fit != fognodes.end()){
+        eventTable[fit->first] = 0;
+        fit ++;
+    }
+    for(int index = 0; index < ogModel.size(); index ++){
+        vector<OperatorModel*> ops = ogModel[index]->getOperatorModel();
+        for(int opIndex = 0; opIndex < ops.size(); ++ opIndex){
+            FogNode* fognode = ops[opIndex]->getFogNode();
+            if(fognode != NULL){
+                eventTable[fognode->getNodeID()] += ops[opIndex]->getPredictEventNumber();
+            }
+        }
+    }
+
+    for(int index = 0; index < ogModel.size(); index ++){
+        ogModel[index]->calResponseTime(averageW, averageThroughput, distable,eventTable);
+    }
+}
+
 
 vector<vector<StreamPath*>> OperatorPlacementManager::getSelfishMultiOperatorPlacement(){
 
@@ -2023,6 +2056,12 @@ void OperatorPlacementManager::resetOperatorGraph(int index){
 void OperatorPlacementManager::resetCapacity(){
     map<int,FogNode*>::iterator it;
     map<int,FogNode*> fognodes = fognetworks->getFogNodes();
+    vector<FogEdge*> fogedges = fognetworks->getFogedges();
+
+    for(int i = 0; i < fogedges.size(); ++ i){
+        fogedges[i]->setTotalEventNum(0);
+    }
+
     it = fognodes.begin();
 
     //reset node's capacity and its edges
