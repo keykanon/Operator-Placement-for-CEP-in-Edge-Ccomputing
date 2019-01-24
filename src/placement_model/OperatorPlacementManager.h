@@ -51,6 +51,9 @@ public:
 	//simple operator placement using selfish policy
 	vector<vector<StreamPath*>> getSimpleGreedyPlacement(vector<bool>& replace);
 
+    //response time greedy operator placement using selfish policy
+    vector<vector<StreamPath*>> getResponseTimeGreedyPlacement(vector<bool>& replace);
+
 	//Simulated Annealing operator graph placement using policy reschedule
 	vector<vector<StreamPath*>> getReSAOperatorGraphPlacement(double alpha, double T);
 
@@ -83,6 +86,7 @@ public:
 	vector<StreamPath*> getSimulatedAnealingPlacement(int index, double alpha, double T);
 	vector<StreamPath*> getRandomPlacement(int index);
 	vector<StreamPath*> getSimpleGreedyPlacement(int index,vector<bool>& replace);
+	vector<StreamPath*> getResponseTimeGreedyPlacement(int index,vector<bool>& replace);
 
 	//predict response time of path
 	double predictResponseTime(StreamPath* stream_path);

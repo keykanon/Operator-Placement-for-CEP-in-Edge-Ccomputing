@@ -298,6 +298,7 @@ void EventStorage::init(){
     sumotr = new SumotrInputHandle("/Users/airsola/Desktop/omnetpp-5.4.1/samples/sumoData/map.sumo.tr", trafficmap);
 
 
+
     //get traffic logs
     trafficLogs = sumotr->getTrafficLogs();
 
@@ -375,9 +376,6 @@ void EventStorage::init(){
 }
 
 void EventStorage::processMessage(cMessage* msg){
-
-
-
     app_num = (app_num + 1)% OGNUM;
 
     //only the time of event in the application request can be sent
@@ -438,66 +436,7 @@ void EventStorage::processMessage(cMessage* msg){
           //send(setMarker( destAddress, 1, time), "out", destAddress);
     }
     string destAddrs;
-    //bool used = true;
-    //simtime_t tnow = simTime();
 
-    /*if(smarker[app_num]){
-        smarker[app_num] = false;
-
-        //if(app_num != 0){
-
-        //}
-        destAddrs = getDestAddrs(0, used);
-
-        //process_end = clock();
-
-
-        //cGate* outGate = gateHalf("gate" , cGate::OUTPUT, destAddress[0]);
-        EventPacket* pk = setEventMarker(destAddrs, 0, time[app_num], used);
-        //simtime_t endTransmission = outGate->getTransmissionChannel()->getTransmissionFinishTime();
-        //if(endTransmission < tnow){
-        queue.insert(pk);
-        //    sendDelayed(pk, (double(process_end - process_begin))/1000.0, outGate);
-        //    endTransmission = tnow;
-        //}
-        //else{
-        //    sendDelayed(pk, (endTransmission-tnow) + (double(process_end - process_begin))/1000.0, outGate);
-        //}
-        //sendDelayed(pk, (double(process_end - process_begin))/1000.0, outGate);
-
-
-
-
-        //scheduleAt(simTime()+(double(process_end - process_begin))/1000.0, SENDMESSAGE);
-
-    }
-
-
-
-    if(lmarker[app_num]){
-        lmarker[app_num] = false;
-
-        destAddrs = getDestAddrs( 1, used);
-        //process_end = clock();
-        //cGate* outGate = gateHalf("gate" , cGate::OUTPUT, destAddress[0]);
-        EventPacket* pk = setEventMarker(destAddrs, 1, time[app_num], used);
-
-        //simtime_t endTransmission = outGate->getTransmissionChannel()->getTransmissionFinishTime();
-        //if(endTransmission < tnow){
-        queue.insert(pk);
-        //sendDelayed(pk, (double(process_end - process_begin))/1000.0, outGate);
-        //    endTransmission = tnow;
-        //}
-        //else{
-        //    sendDelayed(pk, (endTransmission-tnow) + (double(process_end - process_begin))/1000.0, outGate);
-        //}
-
-        //scheduleAt(simTime()+(double(process_end - process_begin))/1000.0, SENDMESSAGE);
-
-    }*/
-
-
-   //for( ; time <  timeEnd; time ++){
    if(time[app_num] < timeEnd[app_num]){
 
        vehicleStatus* vehs = (*vehicles[app_num])[vehicles[app_num]->size()-1];
@@ -523,56 +462,9 @@ void EventStorage::processMessage(cMessage* msg){
 
            queue.insert(pk);
        }
-      /*
-           destAddrs = getDestAddrs(app_num, 0, used);
-           //process_end = clock();
-
-           EventPacket* pk = setEventPacket(vehs,destAddrs, 0, time[app_num], app_num, used);
-
-           //endTransmission = outGate->getTransmissionChannel()->getTransmissionFinishTime();
-           //if(endTransmission < tnow){
-           queue.insert(pk);
-           //    sendDelayed(pk, (double(process_end - process_begin))/1000.0, outGate);
-            //   endTransmission = tnow;
-           //}
-           //else{
-           //    sendDelayed(pk, (endTransmission-tnow) + (double(process_end - process_begin))/1000.0, outGate);
-           //}
-
-           //sendDelayed(, (double(process_end - process_begin))/1000.0, outGate);
-           //send(, outGate );
 
 
-           //s_or_l[app_num] = false;
-       //}
-       //else{
-           //cGate* outGate = gateHalf("gate" , cGate::OUTPUT, destAddress[0]);
-
-          destAddrs = getDestAddrs(app_num,1, used);
-          //endTransmission = outGate->getTransmissionChannel()->getTransmissionFinishTime();
-
-          pk = setEventPacket(vehs,destAddrs, 1, time[app_num], app_num, used);
-          //if(endTransmission < tnow){
-          queue.insert(pk);
-          //    sendDelayed(pk, (double(process_end - process_begin))/1000.0, outGate);
-          //    endTransmission = tnow;
-         // }
-          //else{
-          //    sendDelayed(pk, (endTransmission-tnow) + (double(process_end - process_begin))/1000.0, outGate);
-         // }
-
-          //sendDelayed(, (double(process_end - process_begin))/1000.0, outGate);
-          //send(setEventPacket(vehs,destAddrs, 1, time[app_num], app_num), outGate);
-           //s_or_l[app_num] = true;
-
-            */
-           vehicles[app_num]->pop_back();
-
-       //}
-
-
-       //scheduleAt(simTime()+(double(process_end - process_begin))/1000.0, SENDMESSAGE);
-      // scheduleAt(endTransmission, SENDMESSAGE);
+       vehicles[app_num]->pop_back();
    }
    else{
        if(time[app_num] == timeEnd[app_num]){
@@ -629,7 +521,7 @@ void EventStorage::initialize()
         srand(i);
         intensiveAddr.push_back(rand()%destAddresses[1]);
     }
-    intensiveAddr[0] = 7;
+    intensiveAddr[0] = intensiveNodeID;
 
     for(int i = 0; i < OGNUM; i ++){
         srand(i);
@@ -679,15 +571,16 @@ void EventStorage::initialize()
     //monitorFlag->setMonitorH(opm->getH());
 
     //cGate* outGate = gateHalf("gate" , cGate::OUTPUT, destAddress[0]);
-    //send(monitorFlag, outGate);
+    //send(monitorFlag, outGate)
 
 
     //********************************************
 
     //open result file
+        //int c = getParentModule()->par("initCapacity");
         char filename[1024];
         memset(filename, 0 , 1024);
-        sprintf(filename, "result_c5_n3_og%d_r%d_%d_%d.txt",type[0], opm[7]->getOperatorGraph(0)->randSeed ,  strategy, algorithm);
+        sprintf(filename, "result_c3_n3_i%d_og%d_r%d_%d_%d.txt",  intensiveNodeID, type[0], opm[intensiveNodeID]->getOperatorGraph(0)->randSeed ,  strategy, algorithm);
         out.open(filename, ios::out);
 
 
@@ -753,7 +646,7 @@ void EventStorage::handleMessage(cMessage *msg)
 
 
         }
-        //sendDelay +=  50 * OGNUM * intensiveAddrNum;
+        sendDelay +=  delayChange;
         eventsRecord.push_back(record);
         sim_time ++;
 
@@ -763,7 +656,7 @@ void EventStorage::handleMessage(cMessage *msg)
     if(tnow - monitorTime >= monitor_interval ){
         //***********send monitor message**************************
         if(first){
-            monitor_interval = 20;
+            monitor_interval = 5;
         }
         //timeMarker[app_num] = time[app_num] + 5;
 
@@ -864,6 +757,9 @@ void EventStorage::handleMessage(cMessage *msg)
                    }
                    else if(algorithm == 5){
                        placement[nodeIndex] = opm[nodeIndex]->getOveralGraphPlacement(replace);
+                   }
+                   else if(algorithm == 6){
+                       placement[nodeIndex] = opm[nodeIndex]->getResponseTimeGreedyPlacement(replace);
                    }
                    break;
                case 2:
@@ -1007,6 +903,9 @@ void EventStorage::handleMessage(cMessage *msg)
                 }
                 else if(algorithm == 5){
                     placement[nodeIndex] = opm[nodeIndex]->getOveralGraphPlacement(replace);
+                }
+                else if(algorithm == 6){
+                    placement[nodeIndex] = opm[nodeIndex]->getResponseTimeGreedyPlacement(replace);
                 }
                 break;
             case 2:

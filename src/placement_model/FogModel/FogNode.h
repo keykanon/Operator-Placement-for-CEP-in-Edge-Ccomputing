@@ -23,7 +23,7 @@ private:
 	vector<OperatorModel*> operators;
 	int opNum;
 public:
-	FogNode(int nodeID, int capacity = 10,double throughput = 4000.0,double bandwidth = 2e4/8.0);
+	FogNode(int nodeID, int capacity = 5,double throughput = 4000.0,double bandwidth = 2e4/8.0);
 	~FogNode(void);
 
 

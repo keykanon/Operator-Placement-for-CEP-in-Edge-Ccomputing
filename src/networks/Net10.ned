@@ -26,11 +26,12 @@ network Net10
 {
     parameters:
         int nodeNum = 10;
+        //int initCapacity = 4；
     @display("bgb=396,217");
     submodules:
         node[10]: EdgeOperatorNode {
             Naddress = index;
-            capacity = 10;
+            capacity = 3;
             NdestAddress = "1 9";
         }
 		eventStorage: EventStorage{

@@ -47,16 +47,18 @@ class EventStorage : public cSimpleModule
     vector<int> intensiveAddr;
     int intensiveAddrNum = 1;
     vector<double> RT_CONSTRAINTS = {1,1,1};//,1,1,1,1,1,1};
-    vector<int> type = {5,5,5};//,4,5,3,4,5};
-    const int OGNUM = RT_CONSTRAINTS.size();
+    vector<int> type = {3,4,5};//,4,5,3,4,5};
+    const int OGNUM = 3;
     map<int, vector<int>> edgeCepMap;
     ofstream out;
 
     //strategy
-    int strategy = 0;
-    int algorithm =  0;
+    int strategy = 1;
+    int algorithm =  6;
 
-    double sendDelay =  6000 * intensiveAddrNum;
+    double sendDelay =  1200 * intensiveAddrNum;
+    double delayChange = 50 * OGNUM * intensiveAddrNum;
+    int intensiveNodeID = 0;
 //record result
     cOutVector endToEndDelayVec;
     cStdDev eedStats;
@@ -69,7 +71,7 @@ class EventStorage : public cSimpleModule
     TrafficLogs* trafficLogs;
     //int temp;
     //double delta;
-    int app_num;
+    int app_num = 3;
     vector<string> vehicleIDs = {"0","2","4"};//,"8", "9","17","19","22","28"};//,"28","29"};
     int sumoStart = 110, sumoEnd = 150;
     const int TIME_INIT = 110;

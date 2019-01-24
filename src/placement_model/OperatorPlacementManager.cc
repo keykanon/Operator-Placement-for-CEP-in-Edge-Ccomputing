@@ -636,6 +636,132 @@ vector<StreamPath*> OperatorPlacementManager::getSimpleGreedyPlacement(int index
 }
 
 
+//response time greedy operator placement using selfish policy
+vector<vector<StreamPath*>> OperatorPlacementManager::getResponseTimeGreedyPlacement(vector<bool>& replace){
+    vector<vector<StreamPath*>> ans;
+    for(int i = 0; i < ogModel.size(); i ++){
+        vector<StreamPath*> p = getResponseTimeGreedyPlacement(i, replace);
+        ans.push_back(p);
+    }
+
+    return ans;
+}
+
+/*----------------------getResponseTimeGreedyPlacement----------------------------
+ * get fog node with the minimum delay to es
+ * return the stream path of the cep graph
+ */
+vector<StreamPath*> OperatorPlacementManager::getResponseTimeGreedyPlacement(int index,vector<bool>& replace){
+//error index
+    if(ogModel.size() <= index){
+        EV << "error index in get Simple Greedy Placement." << endl;
+        vector<StreamPath*> ans;
+        return ans;
+    }
+
+    //if the operator graph is placed and need not to be replaced,just return
+    if(ogModel[index]->isAllPlaced() && !ogModel[index]->isNeedReplaced()){
+        replace[ogModel[index]->getOperatorGraphId()] = false;
+        return ogModel[index]->getStreamPath();
+    }
+
+    resetOperatorGraph(index);
+    map<int, map<int, double>> distable = Floyd();
+    map<int, FogNode*> fognodes = fognetworks->getFogNodes();
+    map<int, int> eventTable;
+
+    FogNode* es = fognetworks->getES();
+
+    vector<OperatorModel*> ops = ogModel[index]->getOperatorModel();
+    for(int i = 1; i < ops.size(); i ++){
+    //for(int i = ops.size()-1; i > 0; i --){
+        //FogNode* neighborNode = fognetworks->getES()->getSpecialFogNode(index,1000,getTransmissionTime);
+        //calculate the capacity of operator graph
+        int opCapacity = ops[i]->getResourceRequire();
+
+        //if the event source edge node has capacity to host all operator graph
+        if(es->getCapacity() >= opCapacity){
+            ops[i]->setFogNode(es);
+
+            es->setCapacity(es->getCapacity() - opCapacity);
+        }
+        else{
+            if(ops[i]->getFogNode() != NULL){
+                continue;
+            }
+
+            //find the edge node of the frontier operator deployed
+            bool back = false;
+            OperatorModel* tmpOp = ops[i];
+            while(tmpOp->getInputStreams()[0]->getSource()->getFogNode() == NULL){
+                back = true;
+                tmpOp = tmpOp->getInputStreams()[0]->getSource();
+            }
+
+            int sourceID = tmpOp->getInputStreams()[0]->getSource()->getFogNode()->getNodeID();
+
+            map<int, double> dest_distance = distable[sourceID];
+            double minD = 1e12, delay = 0.0;
+            int minDIndex = -1;
+
+            //travel all node in distance table
+            map<int, double>::iterator dit = dest_distance.begin();
+            while(dit != dest_distance.end()){
+
+                //the edge node host the frontier operator
+                if(fognodes[dit->first]->getNodeID() == sourceID && fognodes[dit->first]->getCapacity() >= opCapacity){
+                    minDIndex = dit->first;
+                    break;
+                }
+
+                //calculate the delay
+                delay =  distable[sourceID][dit->first] + 0.01;
+
+                double bandwidth = 1.0 / distable[sourceID][dit->first];
+                double p = ErlangC(1, (eventTable[dit->first]+ tmpOp->getPredictEventNumber())/bandwidth);//(fognodes[dit->first]->getOriginCapacity(), eventTable[dit->first]/bandwidth);
+                if(p > 1 || p < 0 || eventTable[dit->first]+ tmpOp->getPredictEventNumber() > bandwidth){
+                    p = 1;
+                    delay += (((double)eventTable[dit->first] + tmpOp->getPredictEventNumber() ) * distable[sourceID][dit->first]);
+                }
+                else {
+                    delay += p *((double)eventTable[dit->first] + tmpOp->getPredictEventNumber() )* distable[sourceID][dit->first];
+                }
+
+                delay += 1.0 / fognodes[dit->first]->getThroughput();
+
+                //find the edge node with the minimum delay
+                if(delay < minD && fognodes[dit->first]->getCapacity() >= opCapacity){
+                    minD = delay;
+                    minDIndex = dit->first;
+                }
+                dit ++;
+            }
+            //find the best node
+            if(minDIndex != -1){
+                fognodes[minDIndex]->setCapacity(fognodes[minDIndex]->getCapacity() - opCapacity);
+
+                tmpOp->setFogNode(fognodes[minDIndex]);
+                eventTable[dit->first] += tmpOp->getPredictEventNumber();
+
+            }
+            else{
+                if(monitorIncrease){
+                    fognetworks->increaseHops();
+                    monitorIncrease = false;
+                }
+                break;
+            }
+            if(back){
+                i --;
+            }
+        }
+
+    }
+
+    return  ogModel[index]->getStreamPath();
+
+}
+
 //operator graph placement using policy selfless
 /*vector<vector<StreamPath*>> OperatorPlacementManager::getSelflessOperatorPlacement(){
     for(int i = 0; i < ogModel.size(); i ++){
