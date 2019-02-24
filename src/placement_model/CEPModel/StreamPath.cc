@@ -133,7 +133,7 @@ double StreamPath::predictResponseTime(double averageW, double averageThroughput
     double tp = 0;
     //source node
     int size = operators.size();
-    double rate = 8.0 * 1024.0;
+    double rate = 1.0;//8.0 * 1024.0;
     FogNode* fs = operators[size-1]->getFogNode();
 
     for(int i = operators.size()-1; i >= 0; i --){

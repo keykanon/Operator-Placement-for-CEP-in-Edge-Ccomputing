@@ -27,14 +27,24 @@
 #include <vector>
 #include <map>
 #include <ctime>
+#include <cmath>
 #include <fstream>
 #include "../placement_model/OperatorPlacementManager.h"
 #include "../placement_model/CEPModel/StreamPath.h"
 
+
 using namespace omnetpp;
+
+
+
+
 
 /**
  * TODO - Generated class
+ * 发送事件
+ * 监控附近的边缘节点
+ * 得到数据
+ * 假设部署在最近的边缘节点上，图上之所以用连线的方式，主要是为了实验方便，（假设部署在节点e时，只是用该连线，其他连线无用）
  */
 class EventStorage : public cSimpleModule
 {
@@ -53,10 +63,19 @@ class EventStorage : public cSimpleModule
     ofstream out;
 
     //strategy
-    int strategy = 1;
-    int algorithm =  6;
+    int strategy = 0;
+    int algorithm =  2;
 
-    double sendDelay =  6000 * intensiveAddrNum;
+    int sendDelayType = 0;
+    int poisson_lambda = 30;
+    int monte_carlo_type = 0; // 0 for test, 1 for run
+    //bool first_monte_carlo_policy = true;
+
+    const int TOTALSENDTIME = 2;
+    vector<int> sendTime = {1,1,1};
+    double sendDelay =  1200 * intensiveAddrNum;
+    double delayChange = 50 * OGNUM * intensiveAddrNum;
+    int intensiveNodeID = 7;
 //record result
     cOutVector endToEndDelayVec;
     cStdDev eedStats;
@@ -119,11 +138,14 @@ class EventStorage : public cSimpleModule
 
     vector<double> algorithm_time;
 
+    vector<int> roundTimeRecord;
+    vector<double> avg_response_time_record;
     map<int,std::map<int, double>> response_time_record;
     map<int, std::map<int, double>> process_time_record;
     map<int,std::map<int, double>> queue_time_record;
     map<int,std::map<int, double>> transmission_time_record;
     map<int, std::map<int, double>> predicted_response_time_record;
+    map<int, double> avg_eventNumber_record;
     map<int, std::map<int, double>> eventNumber_record;
 
     double totalNetworkUsage;
@@ -135,15 +157,44 @@ class EventStorage : public cSimpleModule
     int numReceived;
     cPar *packetLengthBytes;
 
+    //Reinforcement Learning learner
+
     // signals
     simsignal_t endToEndDelaySignal;
     simsignal_t hopCountSignal;
     simsignal_t sourceAddressSignal;
 
+
+    //calculate average record between last time period
+    void avgRecordCal(map<int, map<int, double>>& record, vector<double>& avgRecord);
     //update record
     void updateRecord(map<int,map<int, double>>& record, int tid, int appIndex, double time);
     void printRecord( map<int,map<int, double>>& record);
   protected:
+    double fac(int k){
+        double ret = 1;
+        for(int i = 2; i <= k; ++ i){
+            ret *= i;
+        }
+        return ret;
+    }
+
+    vector<double> getLastRecord(map<int, map<int,double>>& record){
+        vector<double> ret;
+        if(record.size() < 2){
+            return ret;
+        }
+        map<int, map<int, double>>::iterator rit = record.end();
+        rit --;
+        rit --;
+        map<int, double> rt = rit->second;
+        for(int i = 0; i < OGNUM; ++ i){
+            ret.push_back(rt[i]);
+        }
+        return ret;
+    }
+
+
 
      virtual void initialize() override;
      virtual void handleMessage(cMessage *msg) override;

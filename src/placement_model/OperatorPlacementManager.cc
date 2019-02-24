@@ -1,6 +1,8 @@
 #include "OperatorPlacementManager.h"
 
-OperatorPlacementManager::OperatorPlacementManager(vector<double> rt_constraints, vector<int> type, vector<int> ogID){
+OperatorPlacementManager::OperatorPlacementManager(vector<double> rt_constraints, vector<int> type, vector<int> ogID)
+:rlearner(minimum_input_rate, maximum_input_rate)
+{
 	FogNode* es = new FogNode(0);
 	fognetworks = new FogNetworks(es);
 	//ogModel = new vector<OperatorGraphModel*>();
@@ -23,9 +25,11 @@ OperatorPlacementManager::OperatorPlacementManager(vector<double> rt_constraints
     }
     es->setOpNum(size);
 
+    //rlearner = new Reinforcement_Learning(minimum_input_rate, maximum_input_rate);
 	//Wt = 100;
 }
 OperatorPlacementManager::OperatorPlacementManager(FogNode* es,vector<double> rt_constraints, vector<int> type, vector<int> ogID)
+:rlearner(minimum_input_rate, maximum_input_rate)
 {
     //EV << "es:" << es->getNodeID() << " -c :" << es->getCapacity() << endl;
 	fognetworks = new FogNetworks(es);
@@ -1865,6 +1869,10 @@ void OperatorPlacementManager::test_init(){
 void OperatorPlacementManager::updateFogNode(NodeMessage nodeMessage){
     fognetworks->updateFogNode(nodeMessage);
 
+}
+
+void OperatorPlacementManager::Monte_Carlo_update_parameter(){
+    rlearner.setParameter(&ogModel, fognetworks->getEdgeNodes());
 }
 
 void OperatorPlacementManager::updateCapacity(int fognodeID, int capacity){

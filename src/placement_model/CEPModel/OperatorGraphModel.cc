@@ -82,53 +82,53 @@ OperatorGraphModel::OperatorGraphModel(double rt_constraint, int type, int ogID)
 
 
 //initial operator graph 3
-void OperatorGraphModel::initialOG3(){
-    /* accident detect cep
-    es --> speed --> accident
-        \->lane -/>
-    */
-    //init OperatorModel
-    OperatorModel* es = new OperatorModel("eventstorage");
-    OperatorModel* speed = new OperatorModel("op1");
-    OperatorModel* lane = new OperatorModel("op2");
-    OperatorModel* accident = new OperatorModel("op3");
-
-    //set source
-    source.push_back(es);
-
-    operators.push_back(es);
-    operators.push_back(speed);
-    operators.push_back(lane);
-    operators.push_back(accident);
-
-    //init StreamModel
-    StreamModel* es_speed = new StreamModel("es-op1",es, speed);
-    StreamModel* es_lane = new StreamModel("es-op2", es, lane);
-    StreamModel* speed_acc = new StreamModel("op1-op3", speed, accident);
-    StreamModel* lane_acc = new StreamModel("op2-op3", lane, accident);
-
-    streams.push(es_speed);
-    streams.push(es_lane);
-    streams.push(speed_acc);
-    streams.push(lane_acc);
-
-    //add streams to operators
-    es->addOutputStreams(es_speed);
-    es->addOutputStreams(es_lane);
-
-    speed->addInputStreams(es_speed);
-    speed->addOutputStreams(speed_acc);
-
-    lane->addInputStreams(es_lane);
-    lane->addOutputStreams(lane_acc);
-
-    accident->addInputStreams(speed_acc);
-    accident->addInputStreams(lane_acc);
-
-    //calculate StreamPath
-    calStreamPath(accident);
-
-}
+//void OperatorGraphModel::initialOG3(){
+//    /* accident detect cep
+//    es --> speed --> accident
+//        \->lane -/>
+//    */
+//    //init OperatorModel
+//    OperatorModel* es = new OperatorModel("eventstorage");
+//    OperatorModel* speed = new OperatorModel("op1");
+//    OperatorModel* lane = new OperatorModel("op2");
+//    OperatorModel* accident = new OperatorModel("op3");
+//
+//    //set source
+//    source.push_back(es);
+//
+//    operators.push_back(es);
+//    operators.push_back(speed);
+//    operators.push_back(lane);
+//    operators.push_back(accident);
+//
+//    //init StreamModel
+//    StreamModel* es_speed = new StreamModel("es-op1",es, speed);
+//    StreamModel* es_lane = new StreamModel("es-op2", es, lane);
+//    StreamModel* speed_acc = new StreamModel("op1-op3", speed, accident);
+//    StreamModel* lane_acc = new StreamModel("op2-op3", lane, accident);
+//
+//    streams.push(es_speed);
+//    streams.push(es_lane);
+//    streams.push(speed_acc);
+//    streams.push(lane_acc);
+//
+//    //add streams to operators
+//    es->addOutputStreams(es_speed);
+//    es->addOutputStreams(es_lane);
+//
+//    speed->addInputStreams(es_speed);
+//    speed->addOutputStreams(speed_acc);
+//
+//    lane->addInputStreams(es_lane);
+//    lane->addOutputStreams(lane_acc);
+//
+//    accident->addInputStreams(speed_acc);
+//    accident->addInputStreams(lane_acc);
+//
+//    //calculate StreamPath
+//    calStreamPath(accident);
+//
+//}
 
 
 //define compare function
@@ -141,7 +141,7 @@ struct operator_cmp{
 
 void OperatorGraphModel::randomOG(int opNum){
     //initial OperatorModel
-    OperatorModel* es = new OperatorModel("es");
+    OperatorModel* es = new OperatorModel("es", this->operatorGraphID);
     //set source
     source.push_back(es);
     operators.push_back(es);
@@ -153,7 +153,7 @@ void OperatorGraphModel::randomOG(int opNum){
     for(int i = 0; i < opNum; i ++){
         char name[3] = "\0\0";
         sprintf(name, "%d", i);
-        op[i] = new OperatorModel(name);
+        op[i] = new OperatorModel(name, this->operatorGraphID);
         operators.push_back(op[i]);
         opLeft.push_back(op[i]);
     }

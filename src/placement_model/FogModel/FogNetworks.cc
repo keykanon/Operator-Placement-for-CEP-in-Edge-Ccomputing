@@ -28,6 +28,9 @@ FogNode* FogNetworks::getES()
 //add a fog node to fog networks
 void FogNetworks::addFogNode(FogNode* node)
 {
+    if(node == NULL){
+        return;
+    }
     if(node->getNodeID() > maxFogNodeID){
         maxFogNodeID = node->getNodeID();
     }
@@ -271,8 +274,12 @@ bool FogNetworks::isEmpty(){
     return true;
 }
 
-map<int, FogNode*> FogNetworks::getFogNodes(){
+map<int, FogNode*>& FogNetworks::getFogNodes(){
     return fognodes;
+}
+
+map<int, FogNode*>* FogNetworks::getEdgeNodes(){
+    return &fognodes;
 }
 
 //get the left resource

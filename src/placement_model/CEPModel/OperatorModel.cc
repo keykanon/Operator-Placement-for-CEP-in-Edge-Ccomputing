@@ -1,10 +1,11 @@
 #include "OperatorModel.h"
 
 
-OperatorModel::OperatorModel(string operatorID, int resourceRequire)
+OperatorModel::OperatorModel(string operatorID, int operatorGraphID, int resourceRequire)
 {
 	throughput = INIT_THROUGHPUT;
 	this->operatorID = operatorID;
+	this->operatorGraphID = operatorGraphID;
 	fognode = NULL;
 	this->resourceRequire = resourceRequire;
 	

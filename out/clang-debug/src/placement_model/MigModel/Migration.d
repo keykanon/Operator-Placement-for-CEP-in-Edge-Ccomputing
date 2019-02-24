@@ -13,7 +13,8 @@
   placement_model/MigModel/../FogModel/../CEPModel/StreamPath.h \
   placement_model/MigModel/../MigModel/Migration.h \
   placement_model/MigModel/../MigModel/MigrationTime.h \
-  placement_model/MigModel/../../message/EventPacket_m.h
+  placement_model/MigModel/../../message/EventPacket_m.h \
+  placement_model/MigModel/../../placement_model/Reinforcement_Learning.h
 
 placement_model/MigModel/Migration.h:
 
@@ -42,3 +43,5 @@ placement_model/MigModel/../MigModel/Migration.h:
 placement_model/MigModel/../MigModel/MigrationTime.h:
 
 placement_model/MigModel/../../message/EventPacket_m.h:
+
+placement_model/MigModel/../../placement_model/Reinforcement_Learning.h:

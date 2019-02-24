@@ -30,7 +30,8 @@ public:
 	FogNetworks(FogNode* es);
 	~FogNetworks(void);
 
-	map<int, FogNode*> getFogNodes();
+	map<int, FogNode*>& getFogNodes();
+	map<int, FogNode*>* getEdgeNodes();
 
 	//get the left resource
 	vector<FogNode*> getResources();

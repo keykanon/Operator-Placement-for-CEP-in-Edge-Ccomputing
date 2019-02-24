@@ -23,7 +23,8 @@
   operator/../placement_model/FogModel/../CEPModel/StreamPath.h \
   operator/../placement_model/MigModel/Migration.h \
   operator/../placement_model/MigModel/MigrationTime.h \
-  operator/../placement_model/../message/EventPacket_m.h
+  operator/../placement_model/../message/EventPacket_m.h \
+  operator/../placement_model/../placement_model/Reinforcement_Learning.h
 
 operator/EventStorage.h:
 
@@ -74,3 +75,5 @@ operator/../placement_model/MigModel/Migration.h:
 operator/../placement_model/MigModel/MigrationTime.h:
 
 operator/../placement_model/../message/EventPacket_m.h:
+
+operator/../placement_model/../placement_model/Reinforcement_Learning.h:

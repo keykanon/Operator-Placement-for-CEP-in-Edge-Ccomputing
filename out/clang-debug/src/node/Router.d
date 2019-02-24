@@ -12,7 +12,8 @@
   node/../placement_model/FogModel/../CEPModel/StreamPath.h \
   node/../placement_model/MigModel/Migration.h \
   node/../placement_model/MigModel/MigrationTime.h \
-  node/../placement_model/../message/EventPacket_m.h
+  node/../placement_model/../message/EventPacket_m.h \
+  node/../placement_model/../placement_model/Reinforcement_Learning.h
 
 node/Router.h:
 
@@ -43,3 +44,5 @@ node/../placement_model/MigModel/Migration.h:
 node/../placement_model/MigModel/MigrationTime.h:
 
 node/../placement_model/../message/EventPacket_m.h:
+
+node/../placement_model/../placement_model/Reinforcement_Learning.h:

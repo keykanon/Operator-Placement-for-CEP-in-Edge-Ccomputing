@@ -44,18 +44,33 @@ void EventStorage::finish(){
         sendTime.push_back(0);
     }
 
-  for(int i = 0; i < eventsRecord.size(); i ++){
-      map<int, int > record = eventsRecord[i];
-      out << "time = " << i << endl;
-      for(int j = 0; j < OGNUM; j ++){
-          out << "-- app " << j << " sent " << record[j] << "events"  << endl;
-          if(record[j] > 0){
-              //throughputs[j] = throughputs[j] + record[j];
-              sendTime[j] = sendTime[j] + 1;
-          }
-      }
-      out << "------------------------------------" << endl;
-  }
+//  for(int i = 0; i < eventsRecord.size(); i ++){
+//      map<int, int > record = eventsRecord[i];
+//     // out << "time = " << i << endl;
+//      for(int j = 0; j < OGNUM; j ++){
+//         // out << "-- app " << j << " sent " << record[j] << "events"  << endl;
+//          if(record[j] > 0){
+//              //throughputs[j] = throughputs[j] + record[j];
+//              sendTime[j] = sendTime[j] + 1;
+//          }
+//      }
+//      out << "-----------------input_rate-------------------" << endl;
+//  }
+   out << "-----------------input_rate-------------------" << endl;
+   out << eventsRecord.size() << endl;
+   for(int i = 0; i < eventsRecord.size(); i ++){
+        map<int, int > record = eventsRecord[i];
+        int num = 0;
+        for(int j = 0; j < OGNUM; j ++){
+            num += record[j];
+            out <<  record[j] << " "  ;
+            if(record[j] > 0){
+                sendTime[j] + 1;
+            }
+
+        }
+        out << num << endl;
+   }
 
   double tnow = simTime().dbl();
   //---------------total algorithm time---------------
@@ -102,6 +117,11 @@ void EventStorage::finish(){
    out << "---------response time---------------" << endl;
    printRecord(response_time_record);
 
+   out << "---------round avg response time----------" << endl;
+   for(int i = 0; i < avg_response_time_record.size(); ++ i){
+       out << avg_response_time_record[i] << endl;
+   }
+
    out << "---------predicted response time----------" << endl;
    printRecord(predicted_response_time_record);
 
@@ -125,6 +145,12 @@ void EventStorage::finish(){
    out << "sim_time = " << sim_time << endl;
 
    out.flush();
+
+   if(strategy == 0 && algorithm == 2){
+       char mc_filename[1024];
+       sprintf(mc_filename, "t%d", TOTALSENDTIME);
+       opm[intensiveNodeID]->Monte_carlo_output(mc_filename);
+   }
 
 }
 
@@ -395,20 +421,32 @@ void EventStorage::processMessage(cMessage* msg){
           //whether to increase time stamp
           bool timeIncrease = true;
           for(int i = 0; i < OGNUM; i ++){
-              if(time[i] == timestamp && time[i] < timeEnd[i]){
+              if(time[i] == timestamp ){//&& time[i] < timeEnd[i]){
                   timeIncrease = false;
               }
           }
           if(timeIncrease){
               timestamp ++;
-              for(int i = 0; i < OGNUM; i ++){
-                  if(timestamp == time[i] && time[i] < timeEnd[i]){
-                      app_active[i] = true;
+              if(timestamp >= sumoEnd){
+                  //calculate average resposne time in this time period
+                  roundTimeRecord.push_back(sim_time);
+                  avgRecordCal(response_time_record, avg_response_time_record);
+
+                  if(TOTALSENDTIME > 1){
+                      queue.clear();
                   }
-                  else{
-                      app_active[i] = false;
+                  for(int i = 0; i < sendTime.size(); ++ i){
+                      if(sendTime[i] < TOTALSENDTIME){
+                          timestamp = sumoStart;
+
+                          break;
+                      }
+                  }
+                  if(strategy == 0 && algorithm == 2 && monte_carlo_type == 1){
+                      opm[intensiveNodeID]->Monte_Carlo_increase_round_time();
                   }
               }
+
           }
 
               //********************************************
@@ -467,34 +505,31 @@ void EventStorage::processMessage(cMessage* msg){
    }
    else{
        if(time[app_num] == timeEnd[app_num]){
-           time[app_num] = time[app_num]+1;
+           if(sendTime[app_num] >= TOTALSENDTIME){
+               time[app_num] = time[app_num]+1;
+               app_active[app_num] = false;
+               sendTime[app_num] ++;
 
-           app_active[app_num] = false;
-           SimTime tnow = simTime();
-           EV_INFO << "time = " << tnow << endl;
 
-           for(int i = 0; i < OGNUM;i ++){
-               EV_INFO  << "app " << i << " total events number " << totalNumSent[i] << ", throughput " << double(totalNumSent[i])/tnow << endl;
-
+              //***********send monitor message**************************
+              for(int i = 0; i < destAddresses[1]; i ++){
+                  EventPacket* monitorFlag = new EventPacket();
+                  monitorFlag->setDestAddr(i);
+                  monitorFlag->setSrcAddr(i);
+                  monitorFlag->setMonitorFlag(true);
+                  monitorFlag->setMonitorH(-1);
+                  //monitorFlag->setSrcAddr(i);
+                  //cGate* outGate = gateHalf("gate" , cGate::OUTPUT, i);
+                  //send(monitorFlag, outGate);
+                  queue.insert(monitorFlag);
+              }
+              return;
            }
 
+           time[app_num] = sumoStart;
+           sendTime[app_num] ++;
 
-
-           //***********send monitor message**************************
-           for(int i = 0; i < destAddresses[1]; i ++){
-               EventPacket* monitorFlag = new EventPacket();
-               monitorFlag->setDestAddr(i);
-               monitorFlag->setSrcAddr(i);
-               monitorFlag->setMonitorFlag(true);
-               monitorFlag->setMonitorH(-1);
-               //monitorFlag->setSrcAddr(i);
-               //cGate* outGate = gateHalf("gate" , cGate::OUTPUT, i);
-               //send(monitorFlag, outGate);
-               queue.insert(monitorFlag);
-           }
        }
-
-
    }
 
 }
@@ -520,7 +555,7 @@ void EventStorage::initialize()
         srand(i);
         intensiveAddr.push_back(rand()%destAddresses[1]);
     }
-    intensiveAddr[0] = 7;
+    intensiveAddr[0] = intensiveNodeID;
 
     for(int i = 0; i < OGNUM; i ++){
         srand(i);
@@ -578,7 +613,7 @@ void EventStorage::initialize()
     //open result file
         char filename[1024];
         memset(filename, 0 , 1024);
-        sprintf(filename, "result_c5_n3_og%d_r%d_%d_%d.txt",type[0], opm[7]->getOperatorGraph(0)->randSeed ,  strategy, algorithm);
+        sprintf(filename, "result_c5_n3_og%d_r%d_%d_%d_dr%d_%d.txt",type[0], opm[7]->getOperatorGraph(0)->randSeed ,  strategy, algorithm, sendDelayType, poisson_lambda);
         out.open(filename, ios::out);
 
 
@@ -644,7 +679,32 @@ void EventStorage::handleMessage(cMessage *msg)
 
 
         }
-        //sendDelay +=  50 * OGNUM * intensiveAddrNum;
+        switch(sendDelayType){
+        case 0:{
+            int randNum = rand() % 100000;
+            double total_probability = 0;
+            for(int k = 1; k < 2.5 * poisson_lambda; ++ k){
+                double p = pow(poisson_lambda, k) / fac(k) * exp(-poisson_lambda);
+                total_probability += p;
+                if(randNum < p*100000){
+                    sendDelay = k * 100;
+                }
+            }
+
+            break;
+        }
+        case 1:{
+            sendDelay += delayChange;
+            break;
+        }
+        case 2:{
+            sendDelay -= delayChange;
+            break;
+        }
+        default:
+            break;
+        }
+        //
         eventsRecord.push_back(record);
         sim_time ++;
 
@@ -654,7 +714,12 @@ void EventStorage::handleMessage(cMessage *msg)
     if(tnow - monitorTime >= monitor_interval ){
         //***********send monitor message**************************
         if(first){
-            monitor_interval = 20;
+            if(strategy == 0 && algorithm == 2 && monte_carlo_type == 0){
+                monitor_interval = 1;
+            }
+            else{
+                monitor_interval = 5;
+            }
         }
         //timeMarker[app_num] = time[app_num] + 5;
 
@@ -696,6 +761,14 @@ void EventStorage::handleMessage(cMessage *msg)
 
         bool process = false;
         for(int i = 0; i < OGNUM; i ++){
+          if(timestamp == time[i] && time[i] < timeEnd[i]){
+              app_active[i] = true;
+          }
+          else{
+              app_active[i] = false;
+          }
+        }
+        for(int i = 0; i < OGNUM; i ++){
             if(app_active[i]){
                 process = true;
                 break;
@@ -706,6 +779,8 @@ void EventStorage::handleMessage(cMessage *msg)
         }
 
         simtime_t endTransmission;
+
+        int size = queue.getLength();
         if(!queue.isEmpty()){
 
 
@@ -732,6 +807,19 @@ void EventStorage::handleMessage(cMessage *msg)
                    }
                    else if(algorithm == 1){
                        placement[nodeIndex] = opm[nodeIndex]->getReSAOperatorGraphPlacement(0.99, 100);
+                   }
+                   else if(algorithm == 2){
+                       opm[nodeIndex]->Monte_Carlo_update_parameter();
+//                       if(first_monte_carlo_policy){
+//                           first_monte_carlo_policy = false;
+//                           char mc_filename[1024];
+//                           sprintf(mc_filename, "t%d", TOTALSENDTIME);
+//                           opm[nodeIndex]->Monte_carlo_input(mc_filename);
+//                       }
+                       vector<int> node_capacity = opm[nodeIndex]->getFogNodeCapacity();
+                       vector<double> input_rate = getLastRecord(eventNumber_record);
+                       vector<double> response_time = getLastRecord(response_time_record);
+                       placement[nodeIndex] = opm[nodeIndex]->Monte_Carlo(node_capacity, input_rate, response_time);
                    }
                break;
                case 1:
@@ -772,23 +860,23 @@ void EventStorage::handleMessage(cMessage *msg)
 
                map<int, OperatorPlacementManager*>::iterator opmIt = opm.begin();
 
-               while(opmIt != opm.end()){
-
-                   out << "edge node id = " << opmIt->first << endl;
-
-                   OperatorPlacementManager* opm_i = opmIt->second;
-
-                   vector<int> ogvec = edgeCepMap[opmIt->first];
-                   for(int i = 0; i < ogvec.size(); i ++){
-                       OperatorGraphModel* ogm = opm_i->getOperatorGraph(ogvec[i]);
-
-                       double prt = ogm->getPredictedResponseTime();
-                       out << "ogindex = " << ogvec[i] << " -- prt: " << prt  << " -- rt: "<< ogm->getResponseTime() << endl;
-                       //vector<OperatorModel*> ops =  ogm->getOperatorModel();
-                   }
-
-                   opmIt ++;
-               }
+//               while(opmIt != opm.end()){
+//
+//                   out << "edge node id = " << opmIt->first << endl;
+//
+//                   OperatorPlacementManager* opm_i = opmIt->second;
+//
+//                   vector<int> ogvec = edgeCepMap[opmIt->first];
+//                   for(int i = 0; i < ogvec.size(); i ++){
+//                       OperatorGraphModel* ogm = opm_i->getOperatorGraph(ogvec[i]);
+//
+//                       double prt = ogm->getPredictedResponseTime();
+//                       out << "ogindex = " << ogvec[i] << " -- prt: " << prt  << " -- rt: "<< ogm->getResponseTime() << endl;
+//                       //vector<OperatorModel*> ops =  ogm->getOperatorModel();
+//                   }
+//
+//                   opmIt ++;
+//               }
 
                clock_t end = clock();
                algorithm_time.push_back((double)(end - begin));
@@ -823,17 +911,19 @@ void EventStorage::handleMessage(cMessage *msg)
         //}
        bool end = queue.isEmpty();
 
+       for(int i = 0; i < sendTime.size(); ++i){
+           if(sendTime[i] < TOTALSENDTIME ||(sendTime[i] == TOTALSENDTIME &&  time[i] < timeEnd[i])){
+               end = false;
+           }
+       }
+
+
+
        if(!end){
            scheduleAt(endTransmission + 1.0 / sendDelay, SENDMESSAGE);
            return;
        }
-       for(int i = 0; i < OGNUM; i ++){
-           if(time[i] < timeEnd[i]){
-               scheduleAt(endTransmission + 1.0 / sendDelay, SENDMESSAGE);
-               //scheduleAt(endTransmission + msg_processTime/1000.0, SENDMESSAGE);
-               return;
-           }
-       }
+
 
 
 
@@ -879,6 +969,14 @@ void EventStorage::handleMessage(cMessage *msg)
                 else if(algorithm == 1){
                     placement[nodeIndex] = opm[nodeIndex]->getReSAOperatorGraphPlacement(0.99, 100);
                 }
+                else if(algorithm == 2){
+                    opm[nodeIndex]->Monte_Carlo_update_parameter();
+
+                   vector<int> node_capacity = opm[nodeIndex]->getFogNodeCapacity();
+                   vector<double> input_rate = getLastRecord(eventNumber_record);
+                   vector<double> response_time = getLastRecord(response_time_record);
+                   placement[nodeIndex] = opm[nodeIndex]->Monte_Carlo(node_capacity, input_rate, response_time);
+               }
             break;
             case 1:
                 if(algorithm == 0){
@@ -916,23 +1014,23 @@ void EventStorage::handleMessage(cMessage *msg)
 
             map<int, OperatorPlacementManager*>::iterator opmIt = opm.begin();
 
-            while(opmIt != opm.end()){
-
-                out << "edge node id = " << opmIt->first << endl;
-
-                OperatorPlacementManager* opm_i = opmIt->second;
-
-                vector<int> ogvec = edgeCepMap[opmIt->first];
-                for(int i = 0; i < ogvec.size(); i ++){
-                    OperatorGraphModel* ogm = opm_i->getOperatorGraph(ogvec[i]);
-
-                    double prt = ogm->getPredictedResponseTime();
-                    out << "ogindex = " << ogvec[i] << " -- prt: " << prt  << " -- rt: "<< ogm->getResponseTime() << endl;
-                    //vector<OperatorModel*> ops =  ogm->getOperatorModel();
-                }
-
-                opmIt ++;
-            }
+//            while(opmIt != opm.end()){
+//
+//                out << "edge node id = " << opmIt->first << endl;
+//
+//                OperatorPlacementManager* opm_i = opmIt->second;
+//
+//                vector<int> ogvec = edgeCepMap[opmIt->first];
+//                for(int i = 0; i < ogvec.size(); i ++){
+//                    OperatorGraphModel* ogm = opm_i->getOperatorGraph(ogvec[i]);
+//
+//                    double prt = ogm->getPredictedResponseTime();
+//                    out << "ogindex = " << ogvec[i] << " -- prt: " << prt  << " -- rt: "<< ogm->getResponseTime() << endl;
+//                    //vector<OperatorModel*> ops =  ogm->getOperatorModel();
+//                }
+//
+//                opmIt ++;
+//            }
 
             clock_t end = clock();
             algorithm_time.push_back((double)(end - begin));
@@ -961,7 +1059,7 @@ void EventStorage::handleMessage(cMessage *msg)
             opm[nodeIndex]->updateEventNumber(monitor_message->getAppNum(),
                     monitor_message->getOperatorType(monitor_message->getHopCount()-1),
                     tid, monitor_message->getEventNum());
-            out << "time: " << tid << ", app:" << ogIndex << "event num: " << monitor_message->getEventNum() << endl;
+            //out << "time: " << tid << ", app:" << ogIndex << "event num: " << monitor_message->getEventNum() << endl;
             double response_time = tnow.dbl() - monitor_message->getSendTime();
 
             //int tid = monitor_message->getTime();
@@ -1103,6 +1201,35 @@ void EventStorage::updateRecord(map<int,map<int, double>>& record, int tid, int 
         time_record[appIndex] = time;
         record[tid] = time_record;
     }
+}
+
+//calculate average record between last time period
+void EventStorage::avgRecordCal(map<int, map<int, double>>& record, vector<double>& avgRecord){
+    int roundTimeRecordSize = roundTimeRecord.size(), timeBegin = 0, timeEnd = 0;
+    double avg = 0;
+    int count = 0;
+    if(roundTimeRecordSize < 1){
+        return;
+    }
+    //get the first time and end time
+    timeEnd = roundTimeRecord[roundTimeRecordSize-1];
+    if(roundTimeRecordSize > 1){
+        timeBegin = roundTimeRecord[roundTimeRecordSize-2];
+    }
+
+    //plus total record
+    for(int i = timeBegin; i < timeEnd; ++ i){
+        map<int, double>::iterator mit = record[i].begin();
+        while(mit != record[i].end()){
+            avg += mit->second;
+            ++ count;
+            mit ++;
+        }
+
+    }
+    //calculate average record
+    avg /= (double) count;
+    avgRecord.push_back(avg);
 }
 
 //print record

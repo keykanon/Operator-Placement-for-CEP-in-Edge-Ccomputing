@@ -2,6 +2,7 @@
 
 
 #include <omnetpp.h>
+
 #include "FogModel/FogNetworks.h"
 #include "CEPModel/OperatorModel.h"
 #include "CEPModel/StreamModel.h"
@@ -11,6 +12,7 @@
 #include "../message/EventPacket_m.h"
 #include <fstream>
 #include <algorithm>
+#include "../placement_model/Reinforcement_Learning.h"
 
 using namespace omnetpp;
 class Migration;
@@ -30,7 +32,15 @@ private:
 
 	vector<OperatorModel> placement;
 
+    double minimum_input_rate = 100;
+    double maximum_input_rate = 2500;
+
+
+	bool init = true;
+
 	const int INIT_BANDWIDTH_COST = 500;
+
+	Reinforcement_Learning rlearner;
 
 	const int Wt = 100;
 public:
@@ -67,6 +77,30 @@ public:
 
 	vector<vector<StreamPath*>> getLoadBalance(double theta, double epsilon, double delta,vector<bool>& replace);
 	//vector<vector<StreamPath*>> getGraphLoadBalance(double theta, double epsilon, double delta);
+
+	vector<vector<StreamPath*>> Monte_Carlo(vector<int>& capacity, vector<double>& inputs, vector<double>& response_time){
+	    return rlearner.Monte_Carlo_update(capacity, inputs, response_time);
+	}
+
+
+	// ----------Monte Carlo method-----------------
+	//输出训练模型
+	void Monte_carlo_output(string type){
+	    rlearner.Monte_Carlo_output(type);
+	}
+
+	//得到之前运行的训练模型
+	void Monte_carlo_input(string name){
+	    rlearner.Monte_Carlo_input(name);
+	}
+
+	//设置基本参数
+	void Monte_Carlo_update_parameter();
+
+	//增加训练循环计数
+	void Monte_Carlo_increase_round_time(){
+	    rlearner.increase_round_time();
+	}
 
 	int** minLatencyFlow(double averageD, vector<int> Vs, vector<int> Vt, vector<int> Vs_phi, vector<int> Vt_phi, double epsilon );
 
@@ -156,6 +190,22 @@ public:
     FogNode* getES();
 
     int getFogNodeNum();
+
+    vector<int> getFogNodeCapacity(){
+        vector<int> capacity;
+        map<int, FogNode*> fognodes = fognetworks->getFogNodes();
+        map<int, FogNode*>::iterator nit = fognodes.begin();
+        while(nit != fognodes.end()){
+            if(nit->second == NULL){
+                ++ nit;
+                continue;
+            }
+            capacity.push_back(nit->second->getCapacity());
+            nit++;
+        }
+
+        return capacity;
+    }
 
     void updateCapacity(int fogNodeID, int capacity);
 };

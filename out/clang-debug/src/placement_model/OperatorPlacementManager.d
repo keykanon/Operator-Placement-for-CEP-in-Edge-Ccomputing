@@ -11,7 +11,8 @@
   placement_model/FogModel/../CEPModel/StreamPath.h \
   placement_model/MigModel/Migration.h \
   placement_model/MigModel/MigrationTime.h \
-  placement_model/../message/EventPacket_m.h
+  placement_model/../message/EventPacket_m.h \
+  placement_model/../placement_model/Reinforcement_Learning.h
 
 placement_model/OperatorPlacementManager.h:
 
@@ -38,3 +39,5 @@ placement_model/MigModel/Migration.h:
 placement_model/MigModel/MigrationTime.h:
 
 placement_model/../message/EventPacket_m.h:
+
+placement_model/../placement_model/Reinforcement_Learning.h:

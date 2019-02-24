@@ -39,6 +39,7 @@ OBJS = \
     $O/operator/Operator.o \
     $O/operator/SpeedOperator.o \
     $O/placement_model/OperatorPlacementManager.o \
+    $O/placement_model/Reinforcement_Learning.o \
     $O/placement_model/CEPModel/OperatorGraphModel.o \
     $O/placement_model/CEPModel/OperatorModel.o \
     $O/placement_model/CEPModel/StreamModel.o \

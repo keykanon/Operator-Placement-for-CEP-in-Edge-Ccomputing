@@ -29,7 +29,7 @@ private:
 
 	void randomOG(int ogNum);
 public:
-	int randSeed = 1;
+	int randSeed = 0;
 	OperatorGraphModel(double rt_constraint,int type, int ogID);
 	~OperatorGraphModel(void);
 

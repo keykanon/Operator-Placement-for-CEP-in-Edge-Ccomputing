@@ -16,6 +16,7 @@ class OperatorModel
 {
 private:
 	string operatorID;
+	int operatorGraphID;
 	static const int INIT_THROUGHPUT = 1500;
 	static const int INIT_PREDICT_NUMBER = 1500;
 	int predictedNumber;
@@ -33,7 +34,7 @@ private:
 
 	FogNode* fognode;
 public:
-	OperatorModel(string operatorID,int resourceRequire = 1);
+	OperatorModel(string operatorID, int operatorGraphID, int resourceRequire = 1);
 	~OperatorModel(void);
 
 	//inline OperatorModel& operator = ( OperatorModel& op);
@@ -65,5 +66,8 @@ public:
     vector<int> getHistoricalEventNum();
     int getResourceRequire() const;
     void setResourceRequire(int resourceRequire);
+    int getOperatorGraphID(){
+        return this->operatorGraphID;
+    }
 };
 
