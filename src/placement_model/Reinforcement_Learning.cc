@@ -30,6 +30,21 @@ void Reinforcement_Learning::setParameter( vector<OperatorGraphModel*>* ogModels
         initial_policy();
         action = policy.begin()->second;
         apply_action();
+
+        //init state
+        map<int, FogNode*>::iterator nit = fognodes->begin();
+        while(nit != fognodes->end()){
+            if(nit->second == NULL){
+                ++ nit;
+                continue;
+            }
+            state.capacity.push_back(nit->second->getCapacity());
+            nit++;
+        }
+
+        for(int i = 0; i < ogModels->size(); ++ i){
+            state.input_rate.push_back( transformInputRate((*ogModels)[i]->getEventNumber()));
+        }
     }
 }
 
@@ -168,12 +183,12 @@ vector<vector<StreamPath*>> Reinforcement_Learning::Monte_Carlo_update(vector<in
     r /= response_time.size();
 
     //update reward
-    reward.r[qp.s][qp.a] = (reward.r[qp.s][qp.a] * reward.count[qp.s][qp.a] + r) / (1+reward.count[qp.s][qp.a]);
-    ++reward.count[qp.s][qp.a];
+    reward.r[state][qp.a] = (reward.r[state][qp.a] * reward.count[state][qp.a] + r) / (1+reward.count[state][qp.a]);
+    ++reward.count[state][qp.a];
 
     //update Q
-    Q[qp.s][qp.a] = (Q[qp.s][qp.a] * Qcount[qp.s][qp.a] + r) / (Qcount[qp.s][qp.a]+1);
-    Qcount[qp.s][qp.a] ++;
+    Q[state][qp.a] = (Q[state][qp.a] * Qcount[state][qp.a] + reward.r[state][qp.a]) / (Qcount[state][qp.a]+1);
+    Qcount[state][qp.a] ++;
 
     //travel and reward random: if randNum > epsilon, argmax Q; else random action
     int randNum = rand() % N;
@@ -193,6 +208,7 @@ vector<vector<StreamPath*>> Reinforcement_Learning::Monte_Carlo_update(vector<in
     //choose a random action
     else{
         getRandomAction();
+        apply_action();
         double averageW = fognetworks->getAverageW();
         double averageThroughput = fognetworks->getAverageExecutionSpeed();
         map<int, map<int, double>> distable = fognetworks->Floyd();
@@ -212,7 +228,10 @@ vector<vector<StreamPath*>> Reinforcement_Learning::Monte_Carlo_update(vector<in
         reward.r[qp.s][action] = (reward.r[qp.s][action] * reward.count[qp.s][action] + avg_predicted_response_time)
                 /(reward.count[qp.s][action] +1);
         reward.r[qp.s][action] ++;
+
     }
+
+    state = qp.s;
 
     return transformAction(action);
 }

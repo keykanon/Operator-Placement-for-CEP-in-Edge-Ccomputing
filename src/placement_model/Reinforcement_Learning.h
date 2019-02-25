@@ -120,7 +120,7 @@ protected:
     int roundTime = 0;
     double gamma = 0.8;        //елЫувђзг
 
-    int type = 0; // 0 for train, 1 for test, 2 apply policy once
+    int type = 1; // 0 for train, 1 for test, 2 apply policy once
     double epsilon = 1.0;
     bool first_init = true;
     //result policy
