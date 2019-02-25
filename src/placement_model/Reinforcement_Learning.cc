@@ -14,9 +14,10 @@ void Reinforcement_Learning::increase_round_time(){
     epsilon -= 1.0/N;
 }
 
-void Reinforcement_Learning::setParameter( vector<OperatorGraphModel*>* ogModels, map<int, FogNode*>* fognodes){
+void Reinforcement_Learning::setParameter( vector<OperatorGraphModel*>* ogModels, map<int, FogNode*>* fognodes, FogNetworks* fognetworks){
     this->ogModels = ogModels;
     this->fognodes = fognodes;
+    this->fognetworks = fognetworks;
 
     randNumToFogID.clear();
     map<int, FogNode*>::iterator nit = fognodes->begin();
@@ -167,10 +168,12 @@ vector<vector<StreamPath*>> Reinforcement_Learning::Monte_Carlo_update(vector<in
     r /= response_time.size();
 
     //update reward
-    reward.r[qp.s][qp.a] = (reward.r[qp.s][qp.a] * reward.count[qp.s][qp.a] + r) / (++reward.count[qp.s][qp.a]);
+    reward.r[qp.s][qp.a] = (reward.r[qp.s][qp.a] * reward.count[qp.s][qp.a] + r) / (1+reward.count[qp.s][qp.a]);
+    ++reward.count[qp.s][qp.a];
 
     //update Q
-    Q[qp.s][qp.a] = (Q[qp.s][qp.a] * Qcount[qp.s][qp.a] + r) / (++ Qcount[qp.s][qp.a]);
+    Q[qp.s][qp.a] = (Q[qp.s][qp.a] * Qcount[qp.s][qp.a] + r) / (Qcount[qp.s][qp.a]+1);
+    Qcount[qp.s][qp.a] ++;
 
     //travel and reward random: if randNum > epsilon, argmax Q; else random action
     int randNum = rand() % N;
@@ -190,6 +193,25 @@ vector<vector<StreamPath*>> Reinforcement_Learning::Monte_Carlo_update(vector<in
     //choose a random action
     else{
         getRandomAction();
+        double averageW = fognetworks->getAverageW();
+        double averageThroughput = fognetworks->getAverageExecutionSpeed();
+        map<int, map<int, double>> distable = fognetworks->Floyd();
+        map<int,int> eventTable;
+        map<int, FogNode*>::iterator fit = fognodes->begin();
+        while(fit != fognodes->end()){
+            eventTable[fit->first] = 0;
+            fit ++;
+        }
+
+        double avg_predicted_response_time = 0;
+        for(int i = 0; i < ogModels->size(); ++ i){
+            avg_predicted_response_time -= (*ogModels)[i]->calResponseTime(averageW, averageThroughput, distable, eventTable);
+        }
+        avg_predicted_response_time /= ogModels->size();
+
+        reward.r[qp.s][action] = (reward.r[qp.s][action] * reward.count[qp.s][action] + avg_predicted_response_time)
+                /(reward.count[qp.s][action] +1);
+        reward.r[qp.s][action] ++;
     }
 
     return transformAction(action);

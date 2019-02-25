@@ -1872,7 +1872,7 @@ void OperatorPlacementManager::updateFogNode(NodeMessage nodeMessage){
 }
 
 void OperatorPlacementManager::Monte_Carlo_update_parameter(){
-    rlearner.setParameter(&ogModel, fognetworks->getEdgeNodes());
+    rlearner.setParameter(&ogModel, fognetworks->getEdgeNodes(), fognetworks);
 }
 
 void OperatorPlacementManager::updateCapacity(int fognodeID, int capacity){

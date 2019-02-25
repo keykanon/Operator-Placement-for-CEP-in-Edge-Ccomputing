@@ -77,6 +77,9 @@ public:
 	//get average w
 	double getAverageW();
 
+	//get distable
+	map<int, map<int, double>> Floyd();
+
 	//judge whether the resource in fog node is empty
 	bool isEmpty();
 	//get average execution speed

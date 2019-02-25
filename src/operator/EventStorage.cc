@@ -613,7 +613,7 @@ void EventStorage::initialize()
     //open result file
         char filename[1024];
         memset(filename, 0 , 1024);
-        sprintf(filename, "result_c5_n3_og%d_r%d_%d_%d_dr%d_%d.txt",type[0], opm[7]->getOperatorGraph(0)->randSeed ,  strategy, algorithm, sendDelayType, poisson_lambda);
+        sprintf(filename, "result_c5_n3_og%d_r%d_%d_%d_dr%d_%d_%d_mt%d.txt",type[0], opm[7]->getOperatorGraph(0)->randSeed ,  strategy, algorithm, sendDelayType, poisson_lambda, TOTALSENDTIME, monte_carlo_type);
         out.open(filename, ios::out);
 
 
@@ -1243,8 +1243,10 @@ void EventStorage::printRecord( map<int,map<int, double>>& record){
     }
     for(int i = 0; i < 0+sim_time; i ++){
         if(record.count(i) > 0){
-
             map<int, double> child_record = record[i];
+            if(child_record.size() == 0){
+                continue;
+            }
             for(int j = 0; j < OGNUM; j ++){
                 if(child_record.count(j) > 0){
                      out <<  child_record[j] << "\t";

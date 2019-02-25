@@ -255,6 +255,88 @@ double FogNetworks::getAverageW(){
 	return averageW;
 }
 
+//get distable
+//use Floyd algorithm to calculate distance table
+map<int, map<int, double>> FogNetworks::Floyd(){
+    //Floyd algorithm
+    map<int, FogNode*>::iterator kit, iit, jit;
+    map<int, map<int, double>> distable = this->getDistanceTable();
+
+    kit = fognodes.begin();
+    iit = fognodes.begin();
+    jit = fognodes.begin();
+
+    while(iit != fognodes.end()){
+        jit = fognodes.begin();
+        while(jit != fognodes.end()){
+            if(!(distable.count(iit->first) > 0 &&
+                    distable[iit->first].count(jit->first) > 0)){
+                map<int, double> coli = distable[iit->first];
+                coli[jit->first] = 1e12;
+                distable[iit->first] = coli;
+
+                map<int, double> colj = distable[jit->first];
+                colj[iit->first] = 1e12;
+                distable[jit->first] = colj;
+
+            }
+
+            jit ++;
+        }
+
+        iit ++;
+    }
+
+    iit = fognodes.begin();
+    jit = fognodes.begin();
+
+    while(kit != fognodes.end())
+    {
+        iit = fognodes.begin();
+        while(iit != fognodes.end()){
+            jit = fognodes.begin();
+            while(jit != fognodes.end()){
+                //if(distable.count(iit->first) > 0 &&
+                 //       distable[iit->first].count(kit->first) > 0 &&
+                 //       distable.count(kit->first) > 0 &&
+                 //       distable[kit->first].count(jit->first) > 0){
+                    if(distable.count(iit->first) > 0 &&
+                            distable[iit->first].count(jit->first)>0){
+                        if(distable[iit->first][jit->first] > distable[iit->first][kit->first] + distable[kit->first][jit->first]){
+                            map<int, double> coli = distable[iit->first];
+                            coli[jit->first] = distable[iit->first][kit->first] + distable[kit->first][jit->first];
+                            distable[iit->first] = coli;
+
+                            map<int, double> colj = distable[jit->first];
+                            colj[iit->first] = distable[iit->first][kit->first] + distable[kit->first][jit->first];;
+                            distable[jit->first] = colj;
+                            //distable[iit->first][jit->first] = distable[iit->first][kit->first] + distable[kit->first][jit->first];
+                        }
+                    }
+                    else{
+                        map<int, double> coli = distable[iit->first];
+                        coli[jit->first] = distable[iit->first][kit->first] + distable[kit->first][jit->first];
+                        distable[iit->first] = coli;
+
+                        map<int, double> colj = distable[jit->first];
+                        colj[iit->first] = distable[iit->first][kit->first] + distable[kit->first][jit->first];;
+                        distable[jit->first] = colj;
+                        //distable[iit->first][jit->first] = distable[iit->first][kit->first] + distable[kit->first][jit->first];
+                        //distable[jit->first][iit->first]= distable[iit->first][kit->first] + distable[kit->first][jit->first];
+                    }
+                //}
+
+                jit ++;
+            }
+            iit ++;
+        }
+        //it->first;
+        //it->second;
+        kit ++;
+    }
+    return distable;
+}
+
 //judge whether the resource in fog node is empty
 bool FogNetworks::isEmpty(){
     map<int, FogNode*>::iterator it;

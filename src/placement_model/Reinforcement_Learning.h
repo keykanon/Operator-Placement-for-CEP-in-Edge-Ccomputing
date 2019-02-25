@@ -107,6 +107,7 @@ protected:
     //edge node and operator graph information
     vector<OperatorGraphModel*>* ogModels;
     map<int, FogNode*>*  fognodes;
+    FogNetworks* fognetworks;
     vector<int> randNumToFogID;
 
     //RL
@@ -145,7 +146,7 @@ public:
     ~Reinforcement_Learning();
 
     void increase_round_time();
-    void setParameter(vector<OperatorGraphModel*>* ogModels, map<int, FogNode*>* fognodes);
+    void setParameter(vector<OperatorGraphModel*>* ogModels, map<int, FogNode*>* fognodes, FogNetworks* fognetworks);
     void RL(vector<int>& capacity, vector<int>& inputs, vector<double>& response_time);
     vector<vector<StreamPath*>> Monte_Carlo_update(vector<int>& capacity, vector<double>& inputs, vector<double>& response_time);
     void Monte_Carlo_input(string name);
