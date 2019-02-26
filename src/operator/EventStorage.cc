@@ -146,10 +146,10 @@ void EventStorage::finish(){
 
    out.flush();
 
-   if(strategy == 0 && algorithm == 2){
+   if(strategy == 0 && algorithm >= 2){
        char mc_filename[1024];
        sprintf(mc_filename, "t%d", TOTALSENDTIME);
-       opm[intensiveNodeID]->Monte_carlo_output(mc_filename);
+       opm[intensiveNodeID]->RL_output(mc_filename);
    }
 
 }
@@ -442,8 +442,8 @@ void EventStorage::processMessage(cMessage* msg){
                           break;
                       }
                   }
-                  if(strategy == 0 && algorithm == 2 && monte_carlo_type == 1){
-                      opm[intensiveNodeID]->Monte_Carlo_increase_round_time();
+                  if(strategy == 0 && algorithm >= 2 ){
+                      opm[intensiveNodeID]->RL_increase_round_time();
                   }
               }
 
@@ -613,7 +613,7 @@ void EventStorage::initialize()
     //open result file
         char filename[1024];
         memset(filename, 0 , 1024);
-        sprintf(filename, "result_c5_n3_og%d_r%d_%d_%d_dr%d_%d_%d_mt%d.txt",type[0], opm[7]->getOperatorGraph(0)->randSeed ,  strategy, algorithm, sendDelayType, poisson_lambda, TOTALSENDTIME, monte_carlo_type);
+        sprintf(filename, "result_c5_n3_og%d_r%d_%d_%d_dr%d_%d_%d_mt%d.txt",type[0], opm[7]->getOperatorGraph(0)->randSeed ,  strategy, algorithm, sendDelayType, poisson_lambda, TOTALSENDTIME, rl_type);
         out.open(filename, ios::out);
 
 
@@ -714,7 +714,7 @@ void EventStorage::handleMessage(cMessage *msg)
     if(tnow - monitorTime >= monitor_interval ){
         //***********send monitor message**************************
         if(first){
-            if(strategy == 0 && algorithm == 2 && monte_carlo_type == 0){
+            if(strategy == 0 && algorithm >= 2 && rl_type == 0){
                 monitor_interval = 1;
             }
             else{
@@ -809,7 +809,7 @@ void EventStorage::handleMessage(cMessage *msg)
                        placement[nodeIndex] = opm[nodeIndex]->getReSAOperatorGraphPlacement(0.99, 100);
                    }
                    else if(algorithm == 2){
-                       opm[nodeIndex]->Monte_Carlo_update_parameter();
+                       opm[nodeIndex]->RL_update_parameter();
 //                       if(first_monte_carlo_policy){
 //                           first_monte_carlo_policy = false;
 //                           char mc_filename[1024];
@@ -820,6 +820,13 @@ void EventStorage::handleMessage(cMessage *msg)
                        vector<double> input_rate = getLastRecord(eventNumber_record);
                        vector<double> response_time = getLastRecord(response_time_record);
                        placement[nodeIndex] = opm[nodeIndex]->Monte_Carlo(node_capacity, input_rate, response_time);
+                   }
+                   else if(algorithm == 3){
+                       opm[nodeIndex]->RL_update_parameter();
+                       vector<int> node_capacity = opm[nodeIndex]->getFogNodeCapacity();
+                       vector<double> input_rate = getLastRecord(eventNumber_record);
+                       vector<double> response_time = getLastRecord(response_time_record);
+                       placement[nodeIndex] = opm[nodeIndex]->Sarsa_TD(node_capacity, input_rate, response_time);
                    }
                break;
                case 1:
@@ -970,13 +977,20 @@ void EventStorage::handleMessage(cMessage *msg)
                     placement[nodeIndex] = opm[nodeIndex]->getReSAOperatorGraphPlacement(0.99, 100);
                 }
                 else if(algorithm == 2){
-                    opm[nodeIndex]->Monte_Carlo_update_parameter();
+                    opm[nodeIndex]->RL_update_parameter();
 
                    vector<int> node_capacity = opm[nodeIndex]->getFogNodeCapacity();
                    vector<double> input_rate = getLastRecord(eventNumber_record);
                    vector<double> response_time = getLastRecord(response_time_record);
                    placement[nodeIndex] = opm[nodeIndex]->Monte_Carlo(node_capacity, input_rate, response_time);
                }
+                else if(algorithm == 3){
+                    opm[nodeIndex]->RL_update_parameter();
+                     vector<int> node_capacity = opm[nodeIndex]->getFogNodeCapacity();
+                     vector<double> input_rate = getLastRecord(eventNumber_record);
+                     vector<double> response_time = getLastRecord(response_time_record);
+                     placement[nodeIndex] = opm[nodeIndex]->Sarsa_TD(node_capacity, input_rate, response_time);
+                }
             break;
             case 1:
                 if(algorithm == 0){

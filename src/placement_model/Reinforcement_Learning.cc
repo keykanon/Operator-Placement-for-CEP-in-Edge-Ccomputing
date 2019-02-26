@@ -100,7 +100,7 @@ void Reinforcement_Learning::initial_policy(){
 
        char mc_filename[1024];
        sprintf(mc_filename, "t%d", N);
-       Monte_Carlo_input(mc_filename);
+       RL_input(mc_filename);
        if(type == 2){
            epsilon = 0;
        }
@@ -143,7 +143,7 @@ void Reinforcement_Learning::travel_state(State& s, int ogIndex){
 
 
 int Reinforcement_Learning::transformInputRate(double i){
-    double step_length = (highest_input_rate - lowest_input_rate)/5;
+    double step_length = (highest_input_rate - lowest_input_rate)/3;
     for(int i = low; i <= high; ++i){
         if(i < lowest_input_rate + step_length * i){
             return i;
@@ -154,86 +154,6 @@ int Reinforcement_Learning::transformInputRate(double i){
 
 void Reinforcement_Learning::RL(vector<int>& capacity, vector<int>& inputs, vector<double>& response_time){
 
-}
-
-
-vector<vector<StreamPath*>> Reinforcement_Learning::Monte_Carlo_update(vector<int>& capacity, vector<double>& inputs, vector<double>& response_time){
-
-    //transform state and action
-    Q_parameter qp;
-    qp.s.capacity = capacity;
-    if(inputs.size() < ogModels->size() ){
-        for(int i = 0; i < ogModels->size(); ++i){
-            qp.s.input_rate.push_back(low);
-        }
-    }
-    else{
-        for(int i = 0; i < ogModels->size(); ++i){
-            qp.s.input_rate.push_back(transformInputRate(inputs[i]));
-        }
-    }
-
-    qp.a = action;
-
-    //calculate the reward
-    double r = 0;
-    for(int i = 0; i < response_time.size(); ++ i){
-        r -= response_time[i];
-    }
-    r /= response_time.size();
-
-    //update reward
-    reward.r[state][qp.a] = (reward.r[state][qp.a] * reward.count[state][qp.a] + r) / (1+reward.count[state][qp.a]);
-    ++reward.count[state][qp.a];
-
-    //update Q
-    Q[state][qp.a] = (Q[state][qp.a] * Qcount[state][qp.a] + reward.r[state][qp.a]) / (Qcount[state][qp.a]+1);
-    Qcount[state][qp.a] ++;
-
-    //travel and reward random: if randNum > epsilon, argmax Q; else random action
-    int randNum = rand() % N;
-
-    //choose the argmax a' Q(x, a')
-    if(randNum > epsilon * N){
-        double maxValue = DBL_MIN;
-        map<Action, double>::iterator it = Q[qp.s].begin();
-        while(it != Q[qp.s].end()){
-            if(it->second > maxValue){
-                maxValue = it->second;
-                action = it->first;
-            }
-            ++ it;
-        }
-    }
-    //choose a random action
-    else{
-        getRandomAction();
-        apply_action();
-        double averageW = fognetworks->getAverageW();
-        double averageThroughput = fognetworks->getAverageExecutionSpeed();
-        map<int, map<int, double>> distable = fognetworks->Floyd();
-        map<int,int> eventTable;
-        map<int, FogNode*>::iterator fit = fognodes->begin();
-        while(fit != fognodes->end()){
-            eventTable[fit->first] = 0;
-            fit ++;
-        }
-
-        double avg_predicted_response_time = 0;
-        for(int i = 0; i < ogModels->size(); ++ i){
-            avg_predicted_response_time -= (*ogModels)[i]->calResponseTime(averageW, averageThroughput, distable, eventTable);
-        }
-        avg_predicted_response_time /= ogModels->size();
-
-        reward.r[qp.s][action] = (reward.r[qp.s][action] * reward.count[qp.s][action] + avg_predicted_response_time)
-                /(reward.count[qp.s][action] +1);
-        reward.r[qp.s][action] ++;
-
-    }
-
-    state = qp.s;
-
-    return transformAction(action);
 }
 
 vector<vector<StreamPath*>> Reinforcement_Learning::transformAction(Action& a){
@@ -253,12 +173,93 @@ vector<vector<StreamPath*>> Reinforcement_Learning::transformAction(Action& a){
     return ret;
 }
 
-void Reinforcement_Learning::Monte_Carlo_input(string name){
+//reinforcement learning update policy
+vector<vector<StreamPath*>> Reinforcement_Learning::reinforcement_learning_update(
+        vector<int>& capacity, vector<double>& inputs, vector<double>& response_time, int type){
+    //transform state and action
+        Q_parameter qp;
+        qp.s = state;
+
+        state.capacity = capacity;
+        if(inputs.size() < ogModels->size() ){
+            for(int i = 0; i < ogModels->size(); ++i){
+                state.input_rate[i] = middle;
+            }
+        }
+        else{
+            for(int i = 0; i < ogModels->size(); ++i){
+                state.input_rate[i] = transformInputRate(inputs[i]);
+            }
+        }
+
+        qp.a = action;
+
+        //travel and reward random: if randNum > epsilon, argmax Q; else random action
+        int randNum = rand() % N;
+
+        //choose the argmax a' Q(x, a')
+        if(randNum > epsilon * N){
+            double maxValue = DBL_MIN;
+            map<Action, double>::iterator it = Q[qp.s].begin();
+            while(it != Q[qp.s].end()){
+                if(it->second > maxValue){
+                    maxValue = it->second;
+                    action = it->first;
+                }
+                ++ it;
+            }
+        }
+        //choose a random action
+        else{
+            getRandomAction();
+    //        apply_action();
+    //        double averageW = fognetworks->getAverageW();
+    //        double averageThroughput = fognetworks->getAverageExecutionSpeed();
+    //        map<int, map<int, double>> distable = fognetworks->Floyd();
+    //        map<int,int> eventTable;
+    //        map<int, FogNode*>::iterator fit = fognodes->begin();
+    //        while(fit != fognodes->end()){
+    //            eventTable[fit->first] = 0;
+    //            fit ++;
+    //        }
+    //
+    //        double avg_predicted_response_time = 0;
+    //        for(int i = 0; i < ogModels->size(); ++ i){
+    //            avg_predicted_response_time -= (*ogModels)[i]->calResponseTime(averageW, averageThroughput, distable, eventTable);
+    //        }
+    //        avg_predicted_response_time /= ogModels->size();
+    //
+    //        reward.r[qp.s][action] = (reward.r[qp.s][action] * reward.count[qp.s][action] + avg_predicted_response_time)
+    //                /(reward.count[qp.s][action] +1);
+    //        reward.r[qp.s][action] ++;
+
+        }
+
+        //calculate the reward
+        switch(type){
+        case 0:
+            Monte_Carlo_value_update(qp, response_time);
+            break;
+        case 1:
+            Sarsa_Temporal_Difference_update(qp, response_time);
+        default:
+            break;
+        }
+
+        state = qp.s;
+
+        return transformAction(action);
+}
+
+/*--------------------------policy input and output-----------------------------
+ *
+ */
+void Reinforcement_Learning::RL_input(string name){
     ifstream in;
 
     char filename[1024];
     memset(filename, 0 , 1024);
-    sprintf(filename, "Monte_Carlo_output_%s.txt", name.c_str());
+    sprintf(filename, "RL_%s.txt", name.c_str());
     in.open(filename, ios::in);
 
 //------------policy--------------------
@@ -309,14 +310,14 @@ void Reinforcement_Learning::Monte_Carlo_input(string name){
 
 }
 
-void Reinforcement_Learning::Monte_Carlo_output(string type){
+void Reinforcement_Learning::RL_output(string type){
     if(this->type == 2){
         return;
     }
     ofstream out;
     char filename[1024];
     memset(filename, 0 , 1024);
-    sprintf(filename, "Monte_Carlo_output_%s.txt", type.c_str());
+    sprintf(filename, "RL_%s.txt", type.c_str());
     out.open(filename, ios::out);
 
 //------------policy--------------------
@@ -352,3 +353,46 @@ void Reinforcement_Learning::Monte_Carlo_output(string type){
     out.close();
 
 }
+
+/*-------------------------Monte Carlo Learning Part-----------------------
+ *
+ */
+
+void Reinforcement_Learning::Monte_Carlo_value_update(Q_parameter& qp, vector<double>& response_time){
+
+    //calculate the reward
+    double r = 0;
+    for(int i = 0; i < response_time.size(); ++ i){
+        r -= response_time[i];
+    }
+    r /= response_time.size();
+
+
+    //update Q
+    Q[qp.s][qp.a] = (Q[qp.s][qp.a] * Qcount[qp.s][qp.a] + r) / (Qcount[qp.s][qp.a]+1);
+    Qcount[qp.s][qp.a] ++;
+}
+
+
+
+
+
+/*-------------------------Temporal Difference Learning Part------------------------
+ *
+ */
+void Reinforcement_Learning::Sarsa_Temporal_Difference_update(Q_parameter& qp, vector<double>& response_time){
+    //calculate the reward
+    double r = 0;
+    for(int i = 0; i < response_time.size(); ++ i){
+        r -= response_time[i];
+    }
+    r /= response_time.size();
+
+
+    //update Q
+    Q[qp.s][qp.a] = Q[qp.s][qp.a] + step_size * (r + gamma * Q[state][action] - Q[qp.s][qp.a]);
+
+}
+
+
+

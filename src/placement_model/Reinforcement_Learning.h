@@ -119,8 +119,9 @@ protected:
     Probability probability;
     int roundTime = 0;
     double gamma = 0.8;        //折算因子
+    double step_size = 0.5;     //步长
 
-    int type = 1; // 0 for train, 1 for test, 2 apply policy once
+    int type = 0; // 0 for train, 1 for test, 2 apply policy once
     double epsilon = 1.0;
     bool first_init = true;
     //result policy
@@ -145,10 +146,27 @@ public:
     Reinforcement_Learning( double lowest, double highest);
     ~Reinforcement_Learning();
 
-    void increase_round_time();
     void setParameter(vector<OperatorGraphModel*>* ogModels, map<int, FogNode*>* fognodes, FogNetworks* fognetworks);
+
+    void increase_round_time();
+
+
     void RL(vector<int>& capacity, vector<int>& inputs, vector<double>& response_time);
-    vector<vector<StreamPath*>> Monte_Carlo_update(vector<int>& capacity, vector<double>& inputs, vector<double>& response_time);
-    void Monte_Carlo_input(string name);
-    void Monte_Carlo_output(string type);
+    void RL_input(string name);
+    void RL_output(string type);
+
+
+    //update policy
+    vector<vector<StreamPath*>> reinforcement_learning_update(vector<int>& capacity, vector<double>& inputs, vector<double>& response_time, int type);
+
+
+
+    //monte carlo method
+    void Monte_Carlo_value_update(Q_parameter& qp, vector<double>& response_time);
+
+
+
+    //Temporal-Difference Learning
+    void Sarsa_Temporal_Difference_update(Q_parameter& qp, vector<double>& response_time);
+
 };

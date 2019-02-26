@@ -79,26 +79,29 @@ public:
 	//vector<vector<StreamPath*>> getGraphLoadBalance(double theta, double epsilon, double delta);
 
 	vector<vector<StreamPath*>> Monte_Carlo(vector<int>& capacity, vector<double>& inputs, vector<double>& response_time){
-	    return rlearner.Monte_Carlo_update(capacity, inputs, response_time);
+	    return rlearner.reinforcement_learning_update(capacity, inputs, response_time, 0);
 	}
 
+	vector<vector<StreamPath*>> Sarsa_TD(vector<int>& capacity, vector<double>& inputs, vector<double>& response_time){
+	    return rlearner.reinforcement_learning_update(capacity, inputs, response_time, 1);
+	}
 
 	// ----------Monte Carlo method-----------------
 	//输出训练模型
-	void Monte_carlo_output(string type){
-	    rlearner.Monte_Carlo_output(type);
+	void RL_output(string type){
+	    rlearner.RL_output(type);
 	}
 
 	//得到之前运行的训练模型
-	void Monte_carlo_input(string name){
-	    rlearner.Monte_Carlo_input(name);
+	void RL_input(string name){
+	    rlearner.RL_input(name);
 	}
 
 	//设置基本参数
-	void Monte_Carlo_update_parameter();
+	void RL_update_parameter();
 
 	//增加训练循环计数
-	void Monte_Carlo_increase_round_time(){
+	void RL_increase_round_time(){
 	    rlearner.increase_round_time();
 	}
 

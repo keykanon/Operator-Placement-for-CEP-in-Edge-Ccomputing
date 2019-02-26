@@ -1,0 +1,23 @@
+file 11062 1551169230                                           
+version 2
+run Net10-0-20190226-16:09:18-3164
+attr configname Net10
+attr datetime 20190226-16:09:18
+attr experiment Net10
+attr inifile omnetpp.ini
+attr iterationvars ""
+attr iterationvarsf ""
+attr measurement ""
+attr network mogp.networks.Net10
+attr processid 3164
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 0
+param **.eventStorage.packetLength "1024 byte"
+param **.node[*].operator[*].packetLength "1024 byte"
+
+vector 0 Net10.eventStorage "End-to-End Delay" ETV
+0	530 10530 98 3320916 5 81.632072551384 252 0 5.401453310982 223.32752906599 894.17431252799
+
