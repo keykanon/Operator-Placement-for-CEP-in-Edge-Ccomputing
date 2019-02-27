@@ -10,11 +10,11 @@
 #include <float.h>
 #include <limits.h>
 #include <fstream>
-#include "../message/EventPacket_m.h"
+
 
 using namespace std;
 
-enum InputRate{low=1, middle, high};
+enum InputRate{lowest=1, low, slow, middle, shigh, high, highest};
 
 struct State_detail{
     //capacity

@@ -115,7 +115,7 @@ void Reinforcement_Learning::initial_policy(){
     }
 
     for(int i = 0; i < ogModels->size(); ++ i){
-        s.input_rate.push_back(low);
+        s.input_rate.push_back(lowest);
     }
 
     travel_state(s, 0);
@@ -135,7 +135,7 @@ void Reinforcement_Learning::travel_state(State& s, int ogIndex){
         policy[s] = getRandomAction();
         return;
     }
-    for(int sInput = 1; sInput <= 3; ++ sInput){
+    for(int sInput = lowest; sInput <= highest; ++ sInput){
         s.input_rate[ogIndex] = sInput;
         travel_state(s, ogIndex+1);
     }
@@ -143,13 +143,13 @@ void Reinforcement_Learning::travel_state(State& s, int ogIndex){
 
 
 int Reinforcement_Learning::transformInputRate(double i){
-    double step_length = (highest_input_rate - lowest_input_rate)/3;
-    for(int i = low; i <= high; ++i){
+    double step_length = (highest_input_rate - lowest_input_rate)/(highest - lowest);
+    for(int i = lowest; i <= highest; ++i){
         if(i < lowest_input_rate + step_length * i){
             return i;
         }
     }
-    return high;
+    return highest;
 }
 
 void Reinforcement_Learning::RL(vector<int>& capacity, vector<int>& inputs, vector<double>& response_time){
