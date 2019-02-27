@@ -68,7 +68,7 @@ class EventStorage : public cSimpleModule
 
     int sendDelayType = 0;
     int poisson_lambda = 30;
-    int rl_type = 0; // 0 for test, 1 for run
+    int rl_type = 1; // 0 for train, 1 for test
     //bool first_monte_carlo_policy = true;
 
     const int TOTALSENDTIME = 3;

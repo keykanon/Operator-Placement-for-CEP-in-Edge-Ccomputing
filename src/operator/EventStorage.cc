@@ -1272,10 +1272,14 @@ void EventStorage::printRecord( map<int,map<int, double>>& record){
             out << endl;
         }
     }
-    avg = avg/record.size()/OGNUM;
+
+    int totalNum = 0;
     for(int i = 0; i < OGNUM; i ++){
         out << "app " << i << " avg time = " << avg_time[i]/record_num[i] << endl;
+        totalNum += record_num[i];
     }
+    avg = avg/totalNum/OGNUM;
+
     out << "avg = " << avg << endl;
 }
 

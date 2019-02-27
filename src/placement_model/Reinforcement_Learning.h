@@ -99,7 +99,7 @@ struct Probability{
     map<State*, map< Action*, map<State*, int>>> p;
 };
 
-#define N 50
+#define N 3
 
 class Reinforcement_Learning
 {
@@ -121,7 +121,7 @@ protected:
     double gamma = 0.8;        //折算因子
     double step_size = 0.5;     //步长
 
-    int type = 0; // 0 for train, 1 for test, 2 apply policy once
+    int type = 2; // 0 for train, 1 for test, 2 apply policy once
     double epsilon = 1.0;
     bool first_init = true;
     //result policy
