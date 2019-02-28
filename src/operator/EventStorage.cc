@@ -654,6 +654,9 @@ void EventStorage::handleMessage(cMessage *msg)
         for(int i = 0; i < OGNUM; i ++){
             EV_INFO  << "app " << i << " sent " << numSent[i] << "events." << endl;
 
+            //update the event number record
+            updateRecord(eventNumber_record, sim_time, i,  numSent[i]);
+
             record[i] = numSent[i];
             numSent[i] = 0;
             simtime = tnow;
@@ -1119,8 +1122,7 @@ void EventStorage::handleMessage(cMessage *msg)
                 //update transmission time record
                 updateRecord(transmission_time_record, tid, appIndex, monitor_message->getTransmissionTime());
 
-                //update the event number record
-                updateRecord(eventNumber_record, tid, appIndex,  og->getEventNumber());
+
 
                 opm[nodeIndex]->calOperatorGraphResponseTime();
                 updateRecord(predicted_response_time_record, tid, appIndex, og->getPredictedResponseTime());
@@ -1278,7 +1280,7 @@ void EventStorage::printRecord( map<int,map<int, double>>& record){
         out << "app " << i << " avg time = " << avg_time[i]/record_num[i] << endl;
         totalNum += record_num[i];
     }
-    avg = avg/totalNum/OGNUM;
+    avg = avg/(double)totalNum;
 
     out << "avg = " << avg << endl;
 }

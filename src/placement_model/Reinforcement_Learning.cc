@@ -3,6 +3,7 @@
 
 Reinforcement_Learning::Reinforcement_Learning(
         double lowest, double highest):lowest_input_rate(lowest), highest_input_rate(highest){
+
 }
 
 Reinforcement_Learning::~Reinforcement_Learning(){
@@ -12,6 +13,7 @@ Reinforcement_Learning::~Reinforcement_Learning(){
 void Reinforcement_Learning::increase_round_time(){
     roundTime++;
     epsilon -= 1.0/N;
+    state_epsilon[state] -= 1.0 / N;
 }
 
 void Reinforcement_Learning::setParameter( vector<OperatorGraphModel*>* ogModels, map<int, FogNode*>* fognodes, FogNetworks* fognetworks){
@@ -133,6 +135,7 @@ void Reinforcement_Learning::apply_action(){
 void Reinforcement_Learning::travel_state(State& s, int ogIndex){
     if(ogIndex ==  ogModels->size()){
         policy[s] = getRandomAction();
+        state_epsilon[s] = 0.9;
         return;
     }
     for(int sInput = lowest; sInput <= highest; ++ sInput){
@@ -198,10 +201,11 @@ vector<vector<StreamPath*>> Reinforcement_Learning::reinforcement_learning_updat
         int randNum = rand() % N;
 
         //choose the argmax a' Q(x, a')
+#if EPSILON_TYPE == 0
         if(randNum > epsilon * N){
             double maxValue = DBL_MIN;
-            map<Action, double>::iterator it = Q[qp.s].begin();
-            while(it != Q[qp.s].end()){
+            map<Action, double>::iterator it = Q[state].begin();
+            while(it != Q[state].end()){
                 if(it->second > maxValue){
                     maxValue = it->second;
                     action = it->first;
@@ -234,6 +238,28 @@ vector<vector<StreamPath*>> Reinforcement_Learning::reinforcement_learning_updat
     //        reward.r[qp.s][action] ++;
 
         }
+
+#else //EPSILON TYPE == 1
+        if(randNum > state_epsilon[state] * N){
+            double maxValue = DBL_MIN;
+            map<Action, double>::iterator it = Q[state].begin();
+            while(it != Q[state].end()){
+                if(it->second > maxValue){
+                    maxValue = it->second;
+                    action = it->first;
+                }
+                ++ it;
+            }
+        }
+        //choose a random action
+        else{
+            getRandomAction();
+        }
+#endif
+
+
+
+
 
         //calculate the reward
         switch(type){
@@ -304,6 +330,7 @@ void Reinforcement_Learning::RL_input(string name){
 
         //set policy
         policy[s] = a;
+        state_epsilon[s] = 0.9;
     }
 
     in.close();

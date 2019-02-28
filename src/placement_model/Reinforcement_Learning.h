@@ -100,6 +100,7 @@ struct Probability{
 };
 
 #define N 3
+#define EPSILON_TYPE 1
 
 class Reinforcement_Learning
 {
@@ -113,6 +114,7 @@ protected:
     //RL
     map<State, map<Action, double>> Q;
     map<State, map<Action, int>> Qcount;
+    map<State, double> state_epsilon;
     State state;
     Action action;
     Reward reward;
