@@ -10,17 +10,21 @@ Reinforcement_Learning::~Reinforcement_Learning(){
 
 }
 
+//一次训练完成
+//在0.01之前，每次减少0.01，之后为 1/训练次数。保障每次都有一定概率随机，搜索新的空间
+//对每一个状态都设置了epsilon，避免数据不均衡导致部分状态没有探索过程，部分探索过度。
 void Reinforcement_Learning::increase_round_time(){
     roundTime++;
     epsilon -= 1.0/N;
     if(state_epsilon[state] < 0.01){
-        state_epsilon[state] = 1.0 / (1.0 / state_epsilon + 1);
+        state_epsilon[state] = 1.0 / (1.0 / state_epsilon[state] + 1);
     }
     else{
         state_epsilon[state] -= 1.0 / 100;
     }
 }
 
+//初始化设置参数
 void Reinforcement_Learning::setParameter( vector<OperatorGraphModel*>* ogModels, map<int, FogNode*>* fognodes, FogNetworks* fognetworks){
     this->ogModels = ogModels;
     this->fognodes = fognodes;
@@ -55,6 +59,7 @@ void Reinforcement_Learning::setParameter( vector<OperatorGraphModel*>* ogModels
     }
 }
 
+//得到一个随机的放置
 Action Reinforcement_Learning::getRandomAction(){
     Action action;
     int modNum = fognodes->size();
@@ -102,6 +107,7 @@ Action Reinforcement_Learning::getRandomAction(){
     return action;
 }
 
+//初始化策略
 void Reinforcement_Learning::initial_policy(){
     if(type > 0){
 
@@ -128,7 +134,7 @@ void Reinforcement_Learning::initial_policy(){
     travel_state(s, 0);
 }
 
-
+//在模型中设置放置指针
 void Reinforcement_Learning::apply_action(){
     map<OperatorModel*, FogNode*>::iterator mit = action.act.begin();
     while(mit != action.act.end()){
@@ -137,9 +143,14 @@ void Reinforcement_Learning::apply_action(){
     }
 }
 
+//递归遍历所有的状态
 void Reinforcement_Learning::travel_state(State& s, int ogIndex){
     if(ogIndex ==  ogModels->size()){
         policy[s] = getRandomAction();
+
+        double avg_predicted_response_time = predict_response_time();
+        reward_threshold[s] = {1,avg_predicted_response_time};
+
         state_epsilon[s] = 0.9;
         return;
     }
@@ -149,7 +160,7 @@ void Reinforcement_Learning::travel_state(State& s, int ogIndex){
     }
 }
 
-
+//把输入速率从double值转换为对应的输入速率区间
 int Reinforcement_Learning::transformInputRate(double i){
     double step_length = (highest_input_rate - lowest_input_rate)/(highest - lowest);
     for(int i = lowest; i <= highest; ++i){
@@ -164,6 +175,7 @@ void Reinforcement_Learning::RL(vector<int>& capacity, vector<int>& inputs, vect
 
 }
 
+//返回给operator placement model对应的放置方案
 vector<vector<StreamPath*>> Reinforcement_Learning::transformAction(Action& a){
     //set operator on fognode
     map<OperatorModel*, FogNode*>::iterator it = a.act.begin();
@@ -258,7 +270,20 @@ vector<vector<StreamPath*>> Reinforcement_Learning::reinforcement_learning_updat
         }
         //choose a random action
         else{
-            getRandomAction();
+            double avg_predicted_response_time = 0, rt_threshold = 0;
+            do{
+                getRandomAction();
+                avg_predicted_response_time = predict_response_time();
+
+                //更新reward_threshold
+                reward_threshold[state].second = (reward_threshold[state].first * reward_threshold[state].second + avg_predicted_response_time)
+                        / (double)(reward_threshold[state].first+1.0);
+                reward_threshold[state].first ++;
+
+                rt_threshold = reward_threshold[state].second;
+
+            }while(avg_predicted_response_time >= rt_threshold);
+
         }
 #endif
 
@@ -335,6 +360,11 @@ void Reinforcement_Learning::RL_input(string name){
 
         //set policy
         policy[s] = a;
+        action = a;
+
+        double avg_predicted_response_time = predict_response_time();
+        reward_threshold[s] = {1,avg_predicted_response_time};
+
         state_epsilon[s] = 0.9;
     }
 

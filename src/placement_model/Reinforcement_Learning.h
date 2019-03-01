@@ -114,6 +114,11 @@ protected:
     //RL
     map<State, map<Action, double>> Q;
     map<State, map<Action, int>> Qcount;
+
+    //响应时间的阈值，不同状态不同。该阈值用于避免随机放置得到过于差的结果，使得效果不佳
+    //pair中第一个是数量，第二个是测试过程中的平均响应时间
+    map<State, pair<int, double>> reward_threshold;
+
     map<State, double> state_epsilon;
     State state;
     Action action;
@@ -138,6 +143,29 @@ protected:
     void travel_state(State& s, int ogIndex);
     //place operator on the edge node
     void apply_action();
+
+    double predict_response_time(){
+        apply_action();
+
+        double avg_predicted_response_time = 0;
+
+        double averageW = fognetworks->getAverageW();
+        double averageThroughput = fognetworks->getAverageExecutionSpeed();
+        map<int, map<int, double>> distable = fognetworks->Floyd();
+        map<int,int> eventTable;
+        map<int, FogNode*>::iterator fit = fognodes->begin();
+        while(fit != fognodes->end()){
+            eventTable[fit->first] = 0;
+            fit ++;
+        }
+
+
+        for(int i = 0; i < ogModels->size(); ++ i){
+            avg_predicted_response_time += (*ogModels)[i]->calResponseTime(averageW, averageThroughput, distable, eventTable);
+        }
+        avg_predicted_response_time /= ogModels->size();
+        return avg_predicted_response_time;
+    }
     //get a random action
     Action getRandomAction();
     //transform double input rate to InputRate
