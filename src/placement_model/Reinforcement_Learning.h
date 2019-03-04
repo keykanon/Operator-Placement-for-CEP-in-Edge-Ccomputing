@@ -106,9 +106,9 @@ class Reinforcement_Learning
 {
 protected:
     //edge node and operator graph information
-    vector<OperatorGraphModel*>* ogModels;
-    map<int, FogNode*>*  fognodes;
-    FogNetworks* fognetworks;
+    vector<OperatorGraphModel*>* ogModels = NULL;
+    map<int, FogNode*>*  fognodes = NULL;
+    FogNetworks* fognetworks = NULL;
     vector<int> randNumToFogID;
 
     //RL
@@ -189,7 +189,8 @@ public:
     //update policy
     vector<vector<StreamPath*>> reinforcement_learning_update(vector<int>& capacity, vector<double>& inputs, vector<double>& response_time, int type);
 
-
+    //update input rate
+    void update_state(vector<int>& capacity, vector<double>& inputs, vector<double>& response_time, int type);
 
     //monte carlo method
     void Monte_Carlo_value_update(Q_parameter& qp, vector<double>& response_time);

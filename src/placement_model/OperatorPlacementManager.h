@@ -86,6 +86,10 @@ public:
 	    return rlearner.reinforcement_learning_update(capacity, inputs, response_time, 1);
 	}
 
+	void reinforcement_learning_update_state(vector<int>& capacity, vector<double>& inputs, vector<double>& response_time, int type){
+	    rlearner.update_state(capacity, inputs, response_time, type);
+	}
+
 	// ----------Monte Carlo method-----------------
 	//Êä³öÑµÁ·Ä£ĞÍ
 	void RL_output(string type){

@@ -193,6 +193,40 @@ vector<vector<StreamPath*>> Reinforcement_Learning::transformAction(Action& a){
     return ret;
 }
 
+//update state
+void Reinforcement_Learning::update_state(vector<int>& capacity, vector<double>& inputs, vector<double>& response_time, int type){
+    if(ogModels == NULL){
+        return;
+    }
+
+    Q_parameter qp;
+    qp.s = state;
+
+    state.capacity = capacity;
+    if(inputs.size() < ogModels->size() ){
+        for(int i = 0; i < ogModels->size(); ++i){
+            state.input_rate[i] = middle;
+        }
+    }
+    else{
+        for(int i = 0; i < ogModels->size(); ++i){
+            state.input_rate[i] = transformInputRate(inputs[i]);
+        }
+    }
+    qp.a = action;
+
+    //calculate the reward
+    switch(type){
+    case 2:
+        Monte_Carlo_value_update(qp, response_time);
+        break;
+    case 3:
+        Sarsa_Temporal_Difference_update(qp, response_time);
+    default:
+        break;
+    }
+}
+
 //reinforcement learning update policy
 vector<vector<StreamPath*>> Reinforcement_Learning::reinforcement_learning_update(
         vector<int>& capacity, vector<double>& inputs, vector<double>& response_time, int type){

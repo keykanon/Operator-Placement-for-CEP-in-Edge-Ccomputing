@@ -718,6 +718,10 @@ void EventStorage::handleMessage(cMessage *msg)
         }
         //
         eventsRecord.push_back(record);
+        vector<int> node_capacity = opm[intensiveNodeID]->getFogNodeCapacity();
+        vector<double> input_rate = getLastRecord(eventNumber_record);
+        vector<double> response_time = getLastRecord(response_time_record);
+        opm[intensiveNodeID]->reinforcement_learning_update_state(node_capacity, input_rate, response_time, algorithm);
         sim_time ++;
 
     }
@@ -1121,9 +1125,9 @@ void EventStorage::handleMessage(cMessage *msg)
                 og->setResponseTime(response_time);
                 //record response time
                 updateRecord(response_time_record,tid, appIndex, response_time);
-                if(response_time > RT_MAX_CONSTRAINTS[appIndex]){
-                    queue.clear();
-                }
+//                if(response_time > RT_MAX_CONSTRAINTS[appIndex]){
+//                    queue.clear();
+//                }
 
                 //update process_time record
                 updateRecord(process_time_record, tid, appIndex, monitor_message->getProcessTime());

@@ -183,16 +183,13 @@ class EventStorage : public cSimpleModule
 
     vector<double> getLastRecord(map<int, map<int,double>>& record){
         vector<double> ret;
-        if(record.size() < 2){
-            return ret;
+        if(record.count(sim_time-1) > 0){
+            map<int, double> rt = record[sim_time-1];
+            for(int i = 0; i < OGNUM; ++ i){
+                ret.push_back(rt[i]);
+            }
         }
-        map<int, map<int, double>>::iterator rit = record.end();
-        rit --;
-        rit --;
-        map<int, double> rt = rit->second;
-        for(int i = 0; i < OGNUM; ++ i){
-            ret.push_back(rt[i]);
-        }
+
         return ret;
     }
 
