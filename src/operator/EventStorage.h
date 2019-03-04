@@ -57,6 +57,7 @@ class EventStorage : public cSimpleModule
     vector<int> intensiveAddr;
     int intensiveAddrNum = 1;
     vector<double> RT_CONSTRAINTS = {1,1,1};//,1,1,1,1,1,1};
+    vector<double> RT_MAX_CONSTRAINTS = {10,10,10};
     vector<int> type = {5,5,5};//,4,5,3,4,5};
     const int OGNUM = 3;
     map<int, vector<int>> edgeCepMap;
@@ -120,6 +121,7 @@ class EventStorage : public cSimpleModule
 
     //basic
     cQueue queue;
+    cQueue markerQueue;
     int myAddress;
     std::vector<int> destAddresses;
     std::vector<int> destAddress;
@@ -199,6 +201,10 @@ class EventStorage : public cSimpleModule
      virtual void initialize() override;
      virtual void handleMessage(cMessage *msg) override;
      virtual void finish() override;
+
+     void clear_queue(){
+
+     }
   public:
      //get the destination addresses
      std::string getDestAddrs(int app_num, int pathIndex, bool&);

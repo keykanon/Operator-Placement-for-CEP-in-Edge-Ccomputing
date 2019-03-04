@@ -275,14 +275,15 @@ vector<vector<StreamPath*>> Reinforcement_Learning::reinforcement_learning_updat
                 getRandomAction();
                 avg_predicted_response_time = predict_response_time();
 
-                //更新reward_threshold
-                reward_threshold[state].second = (reward_threshold[state].first * reward_threshold[state].second + avg_predicted_response_time)
-                        / (double)(reward_threshold[state].first+1.0);
-                reward_threshold[state].first ++;
+
 
                 rt_threshold = reward_threshold[state].second;
 
             }while(avg_predicted_response_time >= rt_threshold);
+            //更新reward_threshold
+           reward_threshold[state].second = (reward_threshold[state].first * reward_threshold[state].second + avg_predicted_response_time)
+                   / (double)(reward_threshold[state].first+1.0);
+           reward_threshold[state].first ++;
 
         }
 #endif
