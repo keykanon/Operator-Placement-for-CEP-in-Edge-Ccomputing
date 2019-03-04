@@ -16,11 +16,11 @@ Reinforcement_Learning::~Reinforcement_Learning(){
 void Reinforcement_Learning::increase_round_time(){
     roundTime++;
     epsilon -= 1.0/N;
-    if(state_epsilon[state] < 0.01){
+    if(state_epsilon[state] < (1.0 / (double)N)){
         state_epsilon[state] = 1.0 / (1.0 / state_epsilon[state] + 1);
     }
     else{
-        state_epsilon[state] -= 1.0 / 100;
+        state_epsilon[state] -= 1.0 / N;
     }
 }
 
