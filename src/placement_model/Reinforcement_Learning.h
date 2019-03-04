@@ -172,6 +172,8 @@ protected:
     int transformInputRate(double input_rate);
     //transform action to placement form
     vector<vector<StreamPath*>> transformAction(Action& a);
+    //¸üÐÂ²ßÂÔ
+    void update_policy();
 public:
     Reinforcement_Learning( double lowest, double highest);
     ~Reinforcement_Learning();

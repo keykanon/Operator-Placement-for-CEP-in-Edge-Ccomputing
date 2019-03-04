@@ -72,7 +72,7 @@ class EventStorage : public cSimpleModule
     int rl_type = 1; // 0 for train, 1 for test
     //bool first_monte_carlo_policy = true;
 
-    const int TOTALSENDTIME = 3;
+    const int TOTALSENDTIME = 2;
     vector<int> sendTime = {1,1,1};
     double sendDelay =  1200 * intensiveAddrNum;
     double delayChange = 50 * OGNUM * intensiveAddrNum;

@@ -10,18 +10,33 @@ Reinforcement_Learning::~Reinforcement_Learning(){
 
 }
 
+//更新策略
+void Reinforcement_Learning::update_policy(){
+    double maxValue = DBL_MIN;
+    map<State, map<Action, double>>::iterator qit = Q.begin();
+    while(qit != Q.end()){
+        maxValue = DBL_MIN;
+        map<Action, double>::iterator it = qit->second.begin();
+        while(it != qit->second.end()){
+            if(it->second > maxValue){
+                maxValue = it->second;
+                policy[qit->first] = it->first;
+            }
+            ++ it;
+        }
+        qit ++;
+    }
+}
+
 //一次训练完成
-//在0.01之前，每次减少0.01，之后为 1/训练次数。保障每次都有一定概率随机，搜索新的空间
+//在1/N之前，每次减少1/N，之后为 1/训练次数。保障每次都有一定概率随机，搜索新的空间
 //对每一个状态都设置了epsilon，避免数据不均衡导致部分状态没有探索过程，部分探索过度。
 void Reinforcement_Learning::increase_round_time(){
     roundTime++;
     epsilon -= 1.0/N;
-    if(state_epsilon[state] < (1.0 / (double)N)){
-        state_epsilon[state] = 1.0 / (1.0 / state_epsilon[state] + 1);
-    }
-    else{
-        state_epsilon[state] -= 1.0 / N;
-    }
+
+
+    update_policy();
 }
 
 //初始化设置参数
@@ -146,12 +161,19 @@ void Reinforcement_Learning::apply_action(){
 //递归遍历所有的状态
 void Reinforcement_Learning::travel_state(State& s, int ogIndex){
     if(ogIndex ==  ogModels->size()){
-        policy[s] = getRandomAction();
+        //set action
+        Action a = getRandomAction();
+        policy[s] = a;
 
+        //update reward threshold
         double avg_predicted_response_time = predict_response_time();
         reward_threshold[s] = {1,avg_predicted_response_time};
 
         state_epsilon[s] = 0.9;
+
+        //update Q
+        Q[s][a] = -avg_predicted_response_time;
+
         return;
     }
     for(int sInput = lowest; sInput <= highest; ++ sInput){
@@ -224,6 +246,13 @@ void Reinforcement_Learning::update_state(vector<int>& capacity, vector<double>&
         Sarsa_Temporal_Difference_update(qp, response_time);
     default:
         break;
+    }
+
+    if(state_epsilon[state] < (1.0 / (double)N)){
+       state_epsilon[state] = 1.0 / (1.0 / state_epsilon[state] + 1);
+    }
+    else{
+        state_epsilon[state] -= 1.0 / N;
     }
 }
 
@@ -400,7 +429,9 @@ void Reinforcement_Learning::RL_input(string name){
         double avg_predicted_response_time = predict_response_time();
         reward_threshold[s] = {1,avg_predicted_response_time};
 
-        state_epsilon[s] = 0.9;
+        state_epsilon[s] = 0.1;
+
+        Q[s][a] = -avg_predicted_response_time;
     }
 
     in.close();

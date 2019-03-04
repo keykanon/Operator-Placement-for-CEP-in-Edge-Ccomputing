@@ -1,14 +1,14 @@
 version 2
-run Net10-0-20190304-14:20:11-12216
+run Net10-0-20190304-21:20:29-6972
 attr configname Net10
-attr datetime 20190304-14:20:11
+attr datetime 20190304-21:20:29
 attr experiment Net10
 attr inifile omnetpp.ini
 attr iterationvars ""
 attr iterationvarsf ""
 attr measurement ""
 attr network mogp.networks.Net10
-attr processid 12216
+attr processid 6972
 attr repetition 0
 attr replication #0
 attr resultdir results
@@ -518,11 +518,11 @@ attr interpolationmode none
 attr title "dropped packet byte length, sum"
 attr unit bytes
 statistic Net10.eventStorage "End-to-End Delay"
-field count 1020
-field mean 0.039114360285409
-field stddev 0.018974679886408
+field count 660
+field mean 1.4548597703459
+field stddev 2.24361245443
 field min 0
-field max 0.137723288752
-field sum 39.896647491118
-field sqrsum 1.9274110519982
+field max 8.09938494193
+field sum 960.20744842832
+field sqrsum 4714.2393092035
 
