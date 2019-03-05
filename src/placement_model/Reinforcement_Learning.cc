@@ -127,7 +127,7 @@ void Reinforcement_Learning::initial_policy(){
     if(type > 0){
 
        char mc_filename[1024];
-       sprintf(mc_filename, "t%d", N);
+       sprintf(mc_filename, "t%d", input_N);
        RL_input(mc_filename);
        if(type == 2){
            epsilon = 0;
@@ -244,6 +244,9 @@ void Reinforcement_Learning::update_state(vector<int>& capacity, vector<double>&
         break;
     case 3:
         Sarsa_Temporal_Difference_update(qp, response_time);
+        break;
+    case 4:
+        QLearning_update(qp, response_time);
     default:
         break;
     }
@@ -338,8 +341,6 @@ vector<vector<StreamPath*>> Reinforcement_Learning::reinforcement_learning_updat
                 getRandomAction();
                 avg_predicted_response_time = predict_response_time();
 
-
-
                 rt_threshold = reward_threshold[state].second;
 
             }while(avg_predicted_response_time >= rt_threshold);
@@ -362,6 +363,9 @@ vector<vector<StreamPath*>> Reinforcement_Learning::reinforcement_learning_updat
             break;
         case 1:
             Sarsa_Temporal_Difference_update(qp, response_time);
+            break;
+        case 2:
+            QLearning_update(qp,response_time);
         default:
             break;
         }
@@ -429,7 +433,13 @@ void Reinforcement_Learning::RL_input(string name){
         double avg_predicted_response_time = predict_response_time();
         reward_threshold[s] = {1,avg_predicted_response_time};
 
-        state_epsilon[s] = 0.1;
+        if(this->type == 2){
+            state_epsilon[s] = 0;
+        }
+        else{
+            state_epsilon[s] = 0.1;
+        }
+
 
         Q[s][a] = -avg_predicted_response_time;
     }
@@ -522,5 +532,20 @@ void Reinforcement_Learning::Sarsa_Temporal_Difference_update(Q_parameter& qp, v
 
 }
 
+
+/*----------------------------------Q Learning Part---------------------------------
+ *
+ */
+void Reinforcement_Learning::QLearning_update(Q_parameter& qp, vector<double>& response_time){
+    //calculate the reward
+    double r = 0;
+    for(int i = 0; i < response_time.size(); ++ i){
+        r -= response_time[i];
+    }
+    r /= response_time.size();
+
+    //update Q
+    Q[qp.s][qp.a] = (1-step_size) * Q[qp.s][qp.a] + step_size * (r + gamma * Q[state][action]);
+}
 
 

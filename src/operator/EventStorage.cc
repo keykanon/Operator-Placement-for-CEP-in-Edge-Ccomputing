@@ -118,12 +118,17 @@ void EventStorage::finish(){
    printRecord(response_time_record);
 
    out << "---------round avg response time----------" << endl;
+   avgRecordCal(response_time_record, avg_response_time_record);
    for(int i = 0; i < avg_response_time_record.size(); ++ i){
        out << avg_response_time_record[i] << endl;
    }
 
-   out << "---------predicted response time----------" << endl;
-   printRecord(predicted_response_time_record);
+   out << "-----------round end sim time-------------" << endl;
+   for(int i = 0; i < roundTimeRecord.size(); ++ i){
+       out << roundTimeRecord[i] << endl;
+   }
+   //out << "---------predicted response time----------" << endl;
+   //printRecord(predicted_response_time_record);
 
    out << "---------process_time_record---------------" << endl;
    printRecord(process_time_record);
@@ -430,7 +435,7 @@ void EventStorage::processMessage(cMessage* msg){
               if(timestamp >= sumoEnd){
                   //calculate average resposne time in this time period
                   roundTimeRecord.push_back(sim_time);
-                  avgRecordCal(response_time_record, avg_response_time_record);
+
 
                   if(TOTALSENDTIME > 1){
                       queue.clear();
@@ -844,6 +849,13 @@ void EventStorage::handleMessage(cMessage *msg)
                        vector<double> response_time = getLastRecord(response_time_record);
                        placement[nodeIndex] = opm[nodeIndex]->Sarsa_TD(node_capacity, input_rate, response_time);
                    }
+                   else if(algorithm == 4){
+                       opm[nodeIndex]->RL_update_parameter();
+                       vector<int> node_capacity = opm[nodeIndex]->getFogNodeCapacity();
+                       vector<double> input_rate = getLastRecord(eventNumber_record);
+                       vector<double> response_time = getLastRecord(response_time_record);
+                       placement[nodeIndex] = opm[nodeIndex]->QLearning(node_capacity, input_rate, response_time);
+                   }
                break;
                case 1:
                    if(algorithm == 0){
@@ -1006,6 +1018,13 @@ void EventStorage::handleMessage(cMessage *msg)
                      vector<double> input_rate = getLastRecord(eventNumber_record);
                      vector<double> response_time = getLastRecord(response_time_record);
                      placement[nodeIndex] = opm[nodeIndex]->Sarsa_TD(node_capacity, input_rate, response_time);
+                }
+                else if(algorithm == 4){
+                    opm[nodeIndex]->RL_update_parameter();
+                    vector<int> node_capacity = opm[nodeIndex]->getFogNodeCapacity();
+                    vector<double> input_rate = getLastRecord(eventNumber_record);
+                    vector<double> response_time = getLastRecord(response_time_record);
+                    placement[nodeIndex] = opm[nodeIndex]->QLearning(node_capacity, input_rate, response_time);
                 }
             break;
             case 1:
@@ -1244,24 +1263,32 @@ void EventStorage::avgRecordCal(map<int, map<int, double>>& record, vector<doubl
         return;
     }
     //get the first time and end time
-    timeEnd = roundTimeRecord[roundTimeRecordSize-1];
-    if(roundTimeRecordSize > 1){
-        timeBegin = roundTimeRecord[roundTimeRecordSize-2];
-    }
-
-    //plus total record
-    for(int i = timeBegin; i < timeEnd; ++ i){
-        map<int, double>::iterator mit = record[i].begin();
-        while(mit != record[i].end()){
-            avg += mit->second;
-            ++ count;
-            mit ++;
+    timeEnd = roundTimeRecord[0];
+    for(int time = 0; time < roundTimeRecordSize; ++ time){
+        avg = 0;
+        count = 0;
+        if(time != 0){
+            timeBegin = roundTimeRecord[time-1];
         }
+        timeEnd = roundTimeRecord[time];
+        //plus total record
+        for(int i = timeBegin; i < timeEnd; ++ i){
+            map<int, double>::iterator mit = record[i].begin();
+            while(mit != record[i].end()){
+                avg += mit->second;
+                ++ count;
+                mit ++;
+            }
+
+        }
+        //calculate average record
+       avg /= (double) count;
+       avgRecord.push_back(avg);
 
     }
-    //calculate average record
-    avg /= (double) count;
-    avgRecord.push_back(avg);
+
+
+
 }
 
 //print record

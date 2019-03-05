@@ -99,6 +99,7 @@ struct Probability{
     map<State*, map< Action*, map<State*, int>>> p;
 };
 
+#define input_N 5000
 #define N 3
 #define EPSILON_TYPE 1
 
@@ -128,7 +129,7 @@ protected:
     double gamma = 0.8;        //折算因子
     double step_size = 0.5;     //步长
 
-    int type = 2; // 0 for train, 1 for test, 2 apply policy once
+    int type = 0; // 0 for train, 1 for test, 2 apply policy once
     double epsilon = 1.0;
     bool first_init = true;
     //result policy
@@ -202,4 +203,7 @@ public:
     //Temporal-Difference Learning
     void Sarsa_Temporal_Difference_update(Q_parameter& qp, vector<double>& response_time);
 
+
+    //Q Learning
+    void QLearning_update(Q_parameter& qp, vector<double>& response_time);
 };
