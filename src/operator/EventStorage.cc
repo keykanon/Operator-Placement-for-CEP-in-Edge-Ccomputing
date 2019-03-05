@@ -153,7 +153,7 @@ void EventStorage::finish(){
 
    if(strategy == 0 && algorithm >= 2){
        char mc_filename[1024];
-       sprintf(mc_filename, "t%d", TOTALSENDTIME);
+       sprintf(mc_filename, "%d_t%d", algorithm, TOTALSENDTIME);
        opm[intensiveNodeID]->RL_output(mc_filename);
    }
 
