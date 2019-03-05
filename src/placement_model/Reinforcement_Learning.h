@@ -99,6 +99,7 @@ struct Probability{
     map<State*, map< Action*, map<State*, int>>> p;
 };
 
+#define ALG_TYPE 4
 #define input_N 5000
 #define N 3
 #define EPSILON_TYPE 1

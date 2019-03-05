@@ -127,7 +127,7 @@ void Reinforcement_Learning::initial_policy(){
     if(type > 0){
 
        char mc_filename[1024];
-       sprintf(mc_filename, "t%d", input_N);
+       sprintf(mc_filename, "%d_t%d",ALG_TYPE, input_N);
        RL_input(mc_filename);
        if(type == 2){
            epsilon = 0;
