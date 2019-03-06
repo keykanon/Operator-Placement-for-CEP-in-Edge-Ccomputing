@@ -65,11 +65,11 @@ class EventStorage : public cSimpleModule
 
     //strategy
     int strategy = 0;
-    int algorithm =  4;
+    int algorithm =  3;
 
     int sendDelayType = 0;
     int poisson_lambda = 30;
-    int rl_type = 0; // 0 for train, 1 for test
+    int rl_type = 1; // 0 for train, 1 for test
     //bool first_monte_carlo_policy = true;
 
     const int TOTALSENDTIME = 2;
@@ -183,13 +183,27 @@ class EventStorage : public cSimpleModule
 
     vector<double> getLastRecord(map<int, map<int,double>>& record){
         vector<double> ret;
-        if(record.count(sim_time-1) > 0){
-            map<int, double> rt = record[sim_time-1];
-            for(int i = 0; i < OGNUM; ++ i){
-                ret.push_back(rt[i]);
-            }
+
+        //此处得到的数据是当前时间往前推10-5秒的结果，所以至少大10秒
+        //此时若没有得到数据，说明响应时间较高，按最大响应时间计算
+        if(sim_time < 10){
+            return ret;
         }
 
+        for(int time = sim_time - 10; time < sim_time-5; ++ time){
+            if(record.count(time) <= 0){
+                for(int i = 0; i < OGNUM; ++ i){
+                    ret.push_back(sim_time - time);
+                }
+            }
+            else{
+                map<int, double> rt = record[time];
+                for(int i = 0; i < OGNUM; ++ i){
+                    ret.push_back(rt[i]);
+                }
+            }
+
+        }
         return ret;
     }
 

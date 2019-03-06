@@ -693,8 +693,6 @@ void EventStorage::handleMessage(cMessage *msg)
             EventPacket* pkr = setEventMarker(destAddrs, 1, sim_time, used);
             queue.insert(pkr);
                  */
-
-
         }
         switch(sendDelayType){
         case 0:{
@@ -723,17 +721,19 @@ void EventStorage::handleMessage(cMessage *msg)
         }
         //
         eventsRecord.push_back(record);
-        vector<int> node_capacity = opm[intensiveNodeID]->getFogNodeCapacity();
-        vector<double> input_rate = getLastRecord(eventNumber_record);
-        vector<double> response_time = getLastRecord(response_time_record);
-        opm[intensiveNodeID]->reinforcement_learning_update_state(node_capacity, input_rate, response_time, algorithm);
+
+//        for(int appIndex = 0; appIndex < appNum; ++ appIndex){
+//            opm[intensiveNodeID]->updateEventNumber(app_num, operatorType, time, eventNum)
+//        }
+
+
         sim_time ++;
 
     }
 
 
     if(tnow - monitorTime >= monitor_interval ){
-        //***********send monitor message**************************
+        //set monitor interval
         if(first){
             if(strategy == 0 && algorithm >= 2 && rl_type == 0){
                 monitor_interval = 1;
@@ -744,7 +744,7 @@ void EventStorage::handleMessage(cMessage *msg)
         }
         //timeMarker[app_num] = time[app_num] + 5;
 
-
+        //***********send monitor message**************************
         map<int, OperatorPlacementManager*>::iterator opmIt = opm.begin();
         while(opmIt != opm.end()){
             EventPacket* monitorFlag = new EventPacket();
@@ -767,7 +767,89 @@ void EventStorage::handleMessage(cMessage *msg)
             //else{
              //   sendDelayed(monitorFlag, endTransmission, outGate);
             //}
-            queue.insert(monitorFlag);
+
+            //queue.insert(monitorFlag);
+
+           //--------------------Ëã·¨---------------------
+                           //-----greedy multiple operator graph placement---------------
+            int nodeIndex = intensiveNodeID;
+            sendPlacementPacket(-1,nodeIndex,opm[nodeIndex]);
+            clock_t begin = clock();
+
+
+            vector<int> node_capacity;
+            vector<double> input_rate;
+            vector<double> response_time;
+            if(strategy == 0 && algorithm >= 2){
+                opm[nodeIndex]->RL_update_parameter();
+                node_capacity = opm[nodeIndex]->getFogNodeCapacity();
+                input_rate = getLastRecord(eventNumber_record);
+                response_time = getLastRecord(response_time_record);
+            }
+
+
+            switch(strategy){
+            case 0:
+                if(algorithm == 0){
+                    placement[nodeIndex] = opm[nodeIndex]->getReMultiOperatorGraphPlacement(replace);
+                    //newPlacement = opm->getReMultiOperatorGraphPlacement();
+                }
+                else if(algorithm == 1){
+                    placement[nodeIndex] = opm[nodeIndex]->getReSAOperatorGraphPlacement(0.99, 100);
+                }
+                else if(algorithm == 2){
+
+                    placement[nodeIndex] = opm[nodeIndex]->Monte_Carlo(node_capacity, input_rate, response_time);
+                }
+                else if(algorithm == 3){
+
+                    placement[nodeIndex] = opm[nodeIndex]->Sarsa_TD(node_capacity, input_rate, response_time);
+                }
+                else if(algorithm == 4){
+
+                    placement[nodeIndex] = opm[nodeIndex]->QLearning(node_capacity, input_rate, response_time);
+                }
+            break;
+            case 1:
+                if(algorithm == 0){
+                    //------simple greedy(nearest) operator graph placement-------------
+                    placement[nodeIndex] = opm[nodeIndex]->getSimpleGreedyPlacement(replace);
+                    //newPlacement = opm->getSimpleGreedyPlacement();
+                }
+                else if(algorithm == 1){
+                    //-------selfish operator graph placement-----------
+                    placement[nodeIndex] = opm[nodeIndex]->getSelfishMultiOperatorPlacement();  //newPlacement = opm->getSelfishMultiOperatorPlacement();
+                }
+                else if(algorithm == 2){
+                    placement[nodeIndex] = opm[nodeIndex]->getSelfishSAOperatorGraphPlacement(0.99,100);
+                }
+                else if(algorithm == 3){
+                    placement[nodeIndex] = opm[nodeIndex]->getSelfResourceAwarePlacement();
+                }
+                else if(algorithm == 4){
+                    placement[nodeIndex] = opm[nodeIndex]->getLoadBalance(1, 0.05, opm[nodeIndex]->getFogNodeNum(), replace);
+                }
+                else if(algorithm == 5){
+                    placement[nodeIndex] = opm[nodeIndex]->getOveralGraphPlacement(replace);
+                }
+                else if(algorithm == 6){
+                    placement[nodeIndex] = opm[nodeIndex]->getResponseTimeGreedyPlacement(replace);
+                }
+                break;
+            case 2:
+                break;
+
+            }
+
+            OperatorPlacementManager* opm_i = opm[nodeIndex];
+
+            sendPlacementPacket(nodeIndex,nodeIndex, opm_i);
+
+            clock_t end = clock();
+            algorithm_time.push_back((double)(end - begin));
+
+            opm[nodeIndex]->printPlacement(out);
+
 
             opmIt ++;
         }
@@ -782,12 +864,12 @@ void EventStorage::handleMessage(cMessage *msg)
 
         bool process = false;
         for(int i = 0; i < OGNUM; i ++){
-          if(timestamp == time[i] && time[i] < timeEnd[i]){
-              app_active[i] = true;
-          }
-          else{
-              app_active[i] = false;
-          }
+              if(timestamp == time[i] && time[i] < timeEnd[i]){
+                  app_active[i] = true;
+              }
+              else{
+                  app_active[i] = false;
+              }
         }
         for(int i = 0; i < OGNUM; i ++){
             if(app_active[i]){
@@ -815,109 +897,7 @@ void EventStorage::handleMessage(cMessage *msg)
                 totalNumSent[ogIndex] = totalNumSent[ogIndex] + 1;
             }
 
-            if(pk->getMonitorFlag() && pk->getMonitorH() != -1){
-                //--------------------------------------------------
-                            //-----greedy multiple operator graph placement---------------
-               sendPlacementPacket(-1,nodeIndex,opm[nodeIndex]);
-               clock_t begin = clock();
-               switch(strategy){
-               case 0:
-                   if(algorithm == 0){
-                       placement[nodeIndex] = opm[nodeIndex]->getReMultiOperatorGraphPlacement(replace);
-                       //newPlacement = opm->getReMultiOperatorGraphPlacement();
-                   }
-                   else if(algorithm == 1){
-                       placement[nodeIndex] = opm[nodeIndex]->getReSAOperatorGraphPlacement(0.99, 100);
-                   }
-                   else if(algorithm == 2){
-                       opm[nodeIndex]->RL_update_parameter();
-//                       if(first_monte_carlo_policy){
-//                           first_monte_carlo_policy = false;
-//                           char mc_filename[1024];
-//                           sprintf(mc_filename, "t%d", TOTALSENDTIME);
-//                           opm[nodeIndex]->Monte_carlo_input(mc_filename);
-//                       }
-                       vector<int> node_capacity = opm[nodeIndex]->getFogNodeCapacity();
-                       vector<double> input_rate = getLastRecord(eventNumber_record);
-                       vector<double> response_time = getLastRecord(response_time_record);
-                       placement[nodeIndex] = opm[nodeIndex]->Monte_Carlo(node_capacity, input_rate, response_time);
-                   }
-                   else if(algorithm == 3){
-                       opm[nodeIndex]->RL_update_parameter();
-                       vector<int> node_capacity = opm[nodeIndex]->getFogNodeCapacity();
-                       vector<double> input_rate = getLastRecord(eventNumber_record);
-                       vector<double> response_time = getLastRecord(response_time_record);
-                       placement[nodeIndex] = opm[nodeIndex]->Sarsa_TD(node_capacity, input_rate, response_time);
-                   }
-                   else if(algorithm == 4){
-                       opm[nodeIndex]->RL_update_parameter();
-                       vector<int> node_capacity = opm[nodeIndex]->getFogNodeCapacity();
-                       vector<double> input_rate = getLastRecord(eventNumber_record);
-                       vector<double> response_time = getLastRecord(response_time_record);
-                       placement[nodeIndex] = opm[nodeIndex]->QLearning(node_capacity, input_rate, response_time);
-                   }
-               break;
-               case 1:
-                   if(algorithm == 0){
-                       //------simple greedy(nearest) operator graph placement-------------
-                       placement[nodeIndex] = opm[nodeIndex]->getSimpleGreedyPlacement(replace);
-                       //newPlacement = opm->getSimpleGreedyPlacement();
-                   }
-                   else if(algorithm == 1){
-                       //-------selfish operator graph placement-----------
-                       placement[nodeIndex] = opm[nodeIndex]->getSelfishMultiOperatorPlacement();  //newPlacement = opm->getSelfishMultiOperatorPlacement();
-                   }
-                   else if(algorithm == 2){
-                       placement[nodeIndex] = opm[nodeIndex]->getSelfishSAOperatorGraphPlacement(0.99,100);
-                   }
-                   else if(algorithm == 3){
-                       placement[nodeIndex] = opm[nodeIndex]->getSelfResourceAwarePlacement();
-                   }
-                   else if(algorithm == 4){
-                       placement[nodeIndex] = opm[nodeIndex]->getLoadBalance(1, 0.05, opm[nodeIndex]->getFogNodeNum(), replace);
-                   }
-                   else if(algorithm == 5){
-                       placement[nodeIndex] = opm[nodeIndex]->getOveralGraphPlacement(replace);
-                   }
-                   else if(algorithm == 6){
-                       placement[nodeIndex] = opm[nodeIndex]->getResponseTimeGreedyPlacement(replace);
-                   }
-                   break;
-               case 2:
-                   break;
 
-               }
-
-               OperatorPlacementManager* opm_i = opm[nodeIndex];
-
-
-               sendPlacementPacket(nodeIndex,nodeIndex, opm_i);
-
-               map<int, OperatorPlacementManager*>::iterator opmIt = opm.begin();
-
-//               while(opmIt != opm.end()){
-//
-//                   out << "edge node id = " << opmIt->first << endl;
-//
-//                   OperatorPlacementManager* opm_i = opmIt->second;
-//
-//                   vector<int> ogvec = edgeCepMap[opmIt->first];
-//                   for(int i = 0; i < ogvec.size(); i ++){
-//                       OperatorGraphModel* ogm = opm_i->getOperatorGraph(ogvec[i]);
-//
-//                       double prt = ogm->getPredictedResponseTime();
-//                       out << "ogindex = " << ogvec[i] << " -- prt: " << prt  << " -- rt: "<< ogm->getResponseTime() << endl;
-//                       //vector<OperatorModel*> ops =  ogm->getOperatorModel();
-//                   }
-//
-//                   opmIt ++;
-//               }
-
-               clock_t end = clock();
-               algorithm_time.push_back((double)(end - begin));
-
-               opm[nodeIndex]->printPlacement(out);
-            }
 
             process_end = clock();
             cGate* outGate = gateHalf("gate" , cGate::OUTPUT, nodeIndex);
@@ -952,18 +932,14 @@ void EventStorage::handleMessage(cMessage *msg)
            }
        }
 
-
-
        if(!end){
            scheduleAt(endTransmission + 1.0 / sendDelay, SENDMESSAGE);
            return;
        }
 
-
-
-
     }
-    else{
+    else
+    {
         //monitor message
         monitorMessageNum ++;
 
@@ -995,6 +971,18 @@ void EventStorage::handleMessage(cMessage *msg)
             int nodeIndex = monitor_message->getDestAddr();
             opm[monitor_message->getDestAddr()]->updateCapacity(monitor_message->getSrcAddr(),monitor_message->getPlacement().placementNum);
             clock_t begin = clock();
+
+            vector<int> node_capacity;
+              vector<double> input_rate;
+              vector<double> response_time;
+              if(strategy == 0 && algorithm >= 2){
+                  opm[nodeIndex]->RL_update_parameter();
+                  node_capacity = opm[nodeIndex]->getFogNodeCapacity();
+                  input_rate = getLastRecord(eventNumber_record);
+                  response_time = getLastRecord(response_time_record);
+              }
+
+
             switch(strategy){
             case 0:
                 if(algorithm == 0){
@@ -1005,25 +993,15 @@ void EventStorage::handleMessage(cMessage *msg)
                     placement[nodeIndex] = opm[nodeIndex]->getReSAOperatorGraphPlacement(0.99, 100);
                 }
                 else if(algorithm == 2){
-                    opm[nodeIndex]->RL_update_parameter();
 
-                   vector<int> node_capacity = opm[nodeIndex]->getFogNodeCapacity();
-                   vector<double> input_rate = getLastRecord(eventNumber_record);
-                   vector<double> response_time = getLastRecord(response_time_record);
                    placement[nodeIndex] = opm[nodeIndex]->Monte_Carlo(node_capacity, input_rate, response_time);
                }
                 else if(algorithm == 3){
-                    opm[nodeIndex]->RL_update_parameter();
-                     vector<int> node_capacity = opm[nodeIndex]->getFogNodeCapacity();
-                     vector<double> input_rate = getLastRecord(eventNumber_record);
-                     vector<double> response_time = getLastRecord(response_time_record);
+
                      placement[nodeIndex] = opm[nodeIndex]->Sarsa_TD(node_capacity, input_rate, response_time);
                 }
                 else if(algorithm == 4){
-                    opm[nodeIndex]->RL_update_parameter();
-                    vector<int> node_capacity = opm[nodeIndex]->getFogNodeCapacity();
-                    vector<double> input_rate = getLastRecord(eventNumber_record);
-                    vector<double> response_time = getLastRecord(response_time_record);
+
                     placement[nodeIndex] = opm[nodeIndex]->QLearning(node_capacity, input_rate, response_time);
                 }
             break;
@@ -1178,9 +1156,9 @@ void EventStorage::handleMessage(cMessage *msg)
 
 
     }
-
-
 }
+
+
 
 
 //get the destination addresses

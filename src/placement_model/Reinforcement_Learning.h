@@ -102,7 +102,7 @@ struct Probability{
 #define ALG_TYPE 4
 #define input_N 5000
 #define N 3
-#define EPSILON_TYPE 1
+#define EPSILON_TYPE 0
 
 class Reinforcement_Learning
 {
@@ -120,19 +120,24 @@ protected:
     //响应时间的阈值，不同状态不同。该阈值用于避免随机放置得到过于差的结果，使得效果不佳
     //pair中第一个是数量，第二个是测试过程中的平均响应时间
     map<State, pair<int, double>> reward_threshold;
+    double monitor_reward_threshold = 5.0;
 
     map<State, double> state_epsilon;
     State state;
     Action action;
     Reward reward;
     Probability probability;
+
+    vector<Q_parameter> qp_vec;
     int roundTime = 0;
     double gamma = 0.8;        //折算因子
     double step_size = 0.5;     //步长
 
     int type = 0; // 0 for train, 1 for test, 2 apply policy once
-    double epsilon = 1.0;
+    double epsilon = 0.1;
+
     bool first_init = true;
+
     //result policy
     map<State, Action> policy;
 
@@ -170,6 +175,10 @@ protected:
     }
     //get a random action
     Action getRandomAction();
+
+    //get response time aware action
+    Action getResponseTimeAwareAction();
+
     //transform double input rate to InputRate
     int transformInputRate(double input_rate);
     //transform action to placement form
@@ -202,9 +211,9 @@ public:
 
 
     //Temporal-Difference Learning
-    void Sarsa_Temporal_Difference_update(Q_parameter& qp, vector<double>& response_time);
+    void Sarsa_Temporal_Difference_update(Q_parameter& qp, Q_parameter& qp2,vector<double>& response_time);
 
 
     //Q Learning
-    void QLearning_update(Q_parameter& qp, vector<double>& response_time);
+    void QLearning_update(Q_parameter& qp,Q_parameter& qp2, vector<double>& response_time);
 };
