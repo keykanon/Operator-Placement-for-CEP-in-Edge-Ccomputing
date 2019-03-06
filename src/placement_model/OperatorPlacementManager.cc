@@ -1,8 +1,8 @@
 #include "OperatorPlacementManager.h"
 
 OperatorPlacementManager::OperatorPlacementManager(vector<double> rt_constraints, vector<int> type, vector<int> ogID)
-:rlearner(minimum_input_rate, maximum_input_rate)
 {
+    rlearner = new Reinforcement_Learning(minimum_input_rate,maximum_input_rate);
 	FogNode* es = new FogNode(0);
 	fognetworks = new FogNetworks(es);
 	//ogModel = new vector<OperatorGraphModel*>();
@@ -29,8 +29,9 @@ OperatorPlacementManager::OperatorPlacementManager(vector<double> rt_constraints
 	//Wt = 100;
 }
 OperatorPlacementManager::OperatorPlacementManager(FogNode* es,vector<double> rt_constraints, vector<int> type, vector<int> ogID)
-:rlearner(minimum_input_rate, maximum_input_rate)
+
 {
+    rlearner = new Reinforcement_Learning(minimum_input_rate,maximum_input_rate);
     //EV << "es:" << es->getNodeID() << " -c :" << es->getCapacity() << endl;
 	fognetworks = new FogNetworks(es);
 	//ogModel = new vector<OperatorGraphModel*>();
@@ -56,6 +57,9 @@ OperatorPlacementManager::OperatorPlacementManager(FogNode* es,vector<double> rt
 
 OperatorPlacementManager::~OperatorPlacementManager(void)
 {
+    if(rlearner != NULL){
+        delete rlearner;
+    }
 	if(fognetworks != NULL){
 		delete fognetworks;
 	}
@@ -1873,9 +1877,7 @@ void OperatorPlacementManager::updateFogNode(NodeMessage nodeMessage){
 
 
 
-void OperatorPlacementManager::RL_update_parameter(){
-    rlearner.setParameter(&ogModel, fognetworks->getEdgeNodes(), fognetworks);
-}
+
 
 void OperatorPlacementManager::updateCapacity(int fognodeID, int capacity){
     for(int ogIndex = 0; ogIndex < ogModel.size(); ogIndex ++){
@@ -2314,4 +2316,41 @@ bool OperatorPlacementManager::isMonitorIncrease() const {
 
 void OperatorPlacementManager::setMonitorIncrease(bool monitorIncrease) {
     this->monitorIncrease = monitorIncrease;
+}
+
+vector<vector<StreamPath*>> OperatorPlacementManager::Monte_Carlo(vector<int>& capacity, vector<double>& inputs, vector<double>& response_time){
+    return rlearner->reinforcement_learning_update(capacity, inputs, response_time, 0);
+}
+
+vector<vector<StreamPath*>> OperatorPlacementManager::Sarsa_TD(vector<int>& capacity, vector<double>& inputs, vector<double>& response_time){
+    return rlearner->reinforcement_learning_update(capacity, inputs, response_time, 1);
+}
+
+vector<vector<StreamPath*>> OperatorPlacementManager::QLearning(vector<int>& capacity, vector<double>& inputs, vector<double>& response_time){
+    return rlearner->reinforcement_learning_update(capacity, inputs, response_time, 2);
+}
+
+void OperatorPlacementManager::reinforcement_learning_update_state(vector<int>& capacity, vector<double>& inputs, vector<double>& response_time, int type){
+    rlearner->update_state(capacity, inputs, response_time, type);
+}
+
+//设置基本参数
+void OperatorPlacementManager::RL_update_parameter(){
+    rlearner->setParameter(&ogModel, fognetworks->getEdgeNodes(), fognetworks, this);
+}
+// ----------Monte Carlo method-----------------
+//输出训练模型
+void OperatorPlacementManager::RL_output(string type){
+    rlearner->RL_output(type);
+}
+
+//得到之前运行的训练模型
+void OperatorPlacementManager::RL_input(string name){
+    rlearner->RL_input(name);
+}
+
+
+//增加训练循环计数
+void OperatorPlacementManager::RL_increase_round_time(){
+    rlearner->increase_round_time();
 }

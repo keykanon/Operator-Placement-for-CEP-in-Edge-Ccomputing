@@ -181,6 +181,14 @@ class EventStorage : public cSimpleModule
         return ret;
     }
 
+    vector<double> getLastInputRate(){
+        vector<double> ret;
+        map<int, double> rt = eventNumber_record[sim_time-1];
+        for(int i = 0; i < OGNUM; ++ i){
+            ret.push_back(rt[i]);
+        }
+        return ret;
+    }
     vector<double> getLastRecord(map<int, map<int,double>>& record){
         vector<double> ret;
 

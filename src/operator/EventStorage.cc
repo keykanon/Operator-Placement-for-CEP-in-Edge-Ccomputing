@@ -783,7 +783,7 @@ void EventStorage::handleMessage(cMessage *msg)
             if(strategy == 0 && algorithm >= 2){
                 opm[nodeIndex]->RL_update_parameter();
                 node_capacity = opm[nodeIndex]->getFogNodeCapacity();
-                input_rate = getLastRecord(eventNumber_record);
+                input_rate = getLastInputRate();
                 response_time = getLastRecord(response_time_record);
             }
 
@@ -978,7 +978,7 @@ void EventStorage::handleMessage(cMessage *msg)
               if(strategy == 0 && algorithm >= 2){
                   opm[nodeIndex]->RL_update_parameter();
                   node_capacity = opm[nodeIndex]->getFogNodeCapacity();
-                  input_rate = getLastRecord(eventNumber_record);
+                  input_rate = getLastInputRate();
                   response_time = getLastRecord(response_time_record);
               }
 

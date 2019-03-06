@@ -15,7 +15,10 @@
 #include "../placement_model/Reinforcement_Learning.h"
 
 using namespace omnetpp;
+
+class Reinforcement_Learning;
 class Migration;
+
 class OperatorPlacementManager
 {
 private:
@@ -40,7 +43,7 @@ private:
 
 	const int INIT_BANDWIDTH_COST = 500;
 
-	Reinforcement_Learning rlearner;
+	Reinforcement_Learning* rlearner = NULL;
 
 	const int Wt = 100;
 public:
@@ -78,40 +81,24 @@ public:
 	vector<vector<StreamPath*>> getLoadBalance(double theta, double epsilon, double delta,vector<bool>& replace);
 	//vector<vector<StreamPath*>> getGraphLoadBalance(double theta, double epsilon, double delta);
 
-	vector<vector<StreamPath*>> Monte_Carlo(vector<int>& capacity, vector<double>& inputs, vector<double>& response_time){
-	    return rlearner.reinforcement_learning_update(capacity, inputs, response_time, 0);
-	}
+	vector<vector<StreamPath*>> Monte_Carlo(vector<int>& capacity, vector<double>& inputs, vector<double>& response_time);
 
-	vector<vector<StreamPath*>> Sarsa_TD(vector<int>& capacity, vector<double>& inputs, vector<double>& response_time){
-	    return rlearner.reinforcement_learning_update(capacity, inputs, response_time, 1);
-	}
+	vector<vector<StreamPath*>> Sarsa_TD(vector<int>& capacity, vector<double>& inputs, vector<double>& response_time);
 
-	vector<vector<StreamPath*>> QLearning(vector<int>& capacity, vector<double>& inputs, vector<double>& response_time){
-	    return rlearner.reinforcement_learning_update(capacity, inputs, response_time, 2);
-	}
+	vector<vector<StreamPath*>> QLearning(vector<int>& capacity, vector<double>& inputs, vector<double>& response_time);
 
-	void reinforcement_learning_update_state(vector<int>& capacity, vector<double>& inputs, vector<double>& response_time, int type){
-	    rlearner.update_state(capacity, inputs, response_time, type);
-	}
-
+	void reinforcement_learning_update_state(vector<int>& capacity, vector<double>& inputs, vector<double>& response_time, int type);
 	// ----------Monte Carlo method-----------------
 	//输出训练模型
-	void RL_output(string type){
-	    rlearner.RL_output(type);
-	}
-
+	void RL_output(string type);
 	//得到之前运行的训练模型
-	void RL_input(string name){
-	    rlearner.RL_input(name);
-	}
+	void RL_input(string name);
 
 	//设置基本参数
 	void RL_update_parameter();
 
 	//增加训练循环计数
-	void RL_increase_round_time(){
-	    rlearner.increase_round_time();
-	}
+	void RL_increase_round_time();
 
 	int** minLatencyFlow(double averageD, vector<int> Vs, vector<int> Vt, vector<int> Vs_phi, vector<int> Vt_phi, double epsilon );
 

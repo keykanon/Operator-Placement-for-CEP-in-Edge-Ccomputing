@@ -7,12 +7,15 @@
 #include "CEPModel/OperatorModel.h"
 #include "CEPModel/StreamModel.h"
 #include "CEPModel/OperatorGraphModel.h"
+#include "OperatorPlacementManager.h"
 #include <float.h>
 #include <limits.h>
 #include <fstream>
 
 
 using namespace std;
+
+class OperatorPlacementManager;
 
 enum InputRate{lowest=1, low, slow, middle, shigh, high, highest};
 
@@ -103,6 +106,7 @@ struct Probability{
 #define input_N 5000
 #define N 3
 #define EPSILON_TYPE 0
+#define INITIAL_ACTION 1
 
 class Reinforcement_Learning
 {
@@ -111,6 +115,7 @@ protected:
     vector<OperatorGraphModel*>* ogModels = NULL;
     map<int, FogNode*>*  fognodes = NULL;
     FogNetworks* fognetworks = NULL;
+    OperatorPlacementManager* opm = NULL;
     vector<int> randNumToFogID;
 
     //RL
@@ -189,7 +194,7 @@ public:
     Reinforcement_Learning( double lowest, double highest);
     ~Reinforcement_Learning();
 
-    void setParameter(vector<OperatorGraphModel*>* ogModels, map<int, FogNode*>* fognodes, FogNetworks* fognetworks);
+    void setParameter(vector<OperatorGraphModel*>* ogModels, map<int, FogNode*>* fognodes, FogNetworks* fognetworks, OperatorPlacementManager* opm);
 
     void increase_round_time();
 

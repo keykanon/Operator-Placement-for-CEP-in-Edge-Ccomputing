@@ -40,10 +40,11 @@ void Reinforcement_Learning::increase_round_time(){
 }
 
 //初始化设置参数
-void Reinforcement_Learning::setParameter( vector<OperatorGraphModel*>* ogModels, map<int, FogNode*>* fognodes, FogNetworks* fognetworks){
+void Reinforcement_Learning::setParameter( vector<OperatorGraphModel*>* ogModels, map<int, FogNode*>* fognodes, FogNetworks* fognetworks, OperatorPlacementManager* opm){
     this->ogModels = ogModels;
     this->fognodes = fognodes;
     this->fognetworks = fognetworks;
+    this->opm = opm;
 
     randNumToFogID.clear();
     map<int, FogNode*>::iterator nit = fognodes->begin();
@@ -170,7 +171,11 @@ void Reinforcement_Learning::apply_action(){
 void Reinforcement_Learning::travel_state(State& s, int ogIndex){
     if(ogIndex ==  ogModels->size()){
         //set action
+#if INITIAL_ACTION == 0
         Action a = getRandomAction();
+#else
+        Action a = getResponseTimeAwareAction();
+#endif
         policy[s] = a;
 
         //update reward threshold
@@ -201,8 +206,28 @@ int Reinforcement_Learning::transformInputRate(double i){
     return highest;
 }
 
+//得到响应时间感知放置
 Action Reinforcement_Learning::getResponseTimeAwareAction(){
+    //返回值
+    Action reta;
 
+    //进行响应时间感知放置方法
+    vector<bool> replace;
+    for(int appIndex = 0; appIndex < ogModels->size(); ++ appIndex){
+        replace.push_back(true);
+    }
+    opm->getReMultiOperatorGraphPlacement(replace);
+
+    //转换为Action
+    for(int appIndex = 0; appIndex < ogModels->size(); ++ appIndex){
+        vector<OperatorModel*> ogm = (*ogModels)[appIndex]->getOperatorModel();
+        for(int opIndex = 0; opIndex < ogm.size(); ++ opIndex){
+            OperatorModel* om = ogm[opIndex];
+            reta.act[om] = om->getFogNode();
+        }
+    }
+
+    return reta;
 }
 
 void Reinforcement_Learning::RL(vector<int>& capacity, vector<int>& inputs, vector<double>& response_time){
@@ -310,44 +335,47 @@ vector<vector<StreamPath*>> Reinforcement_Learning::reinforcement_learning_updat
             qp_vec.push_back(qp);
         }
 
-
-        //travel and reward random: if randNum > epsilon, argmax Q; else random action
-        int randNum = rand() % N;
-
-        //choose the argmax a' Q(x, a')
-#if EPSILON_TYPE == 0
-        if(randNum > epsilon * N){
-#else //EPSILON TYPE == 1
-        if(randNum > state_epsilon[state] * N){
-#endif
-            double maxValue = DBL_MIN;
-            map<Action, double>::iterator it = Q[state].begin();
-            while(it != Q[state].end()){
-                if(it->second > maxValue){
-                    maxValue = it->second;
-                    action = it->first;
-                }
-                ++ it;
-            }
+        if(response_time.size() == 0){
+            action = getResponseTimeAwareAction();
         }
-        //choose a random action
         else{
-            double avg_predicted_response_time = 0, rt_threshold = 0;
-            do{
-                getRandomAction();
-                avg_predicted_response_time = predict_response_time();
+            //travel and reward random: if randNum > epsilon, argmax Q; else random action
+            int randNum = rand() % N;
 
-                rt_threshold = reward_threshold[state].second;
+            //choose the argmax a' Q(x, a')
+    #if EPSILON_TYPE == 0
+            if(randNum > epsilon * N){
+    #else //EPSILON TYPE == 1
+            if(randNum > state_epsilon[state] * N){
+    #endif
+                double maxValue = DBL_MIN;
+                map<Action, double>::iterator it = Q[state].begin();
+                while(it != Q[state].end()){
+                    if(it->second > maxValue){
+                        maxValue = it->second;
+                        action = it->first;
+                    }
+                    ++ it;
+                }
+            }
+            //choose a random action
+            else{
+                double avg_predicted_response_time = 0, rt_threshold = 0;
+                do{
+                    getRandomAction();
+                    avg_predicted_response_time = predict_response_time();
 
-            }while(avg_predicted_response_time >= rt_threshold);
-            //更新reward_threshold
-           reward_threshold[state].second = (reward_threshold[state].first * reward_threshold[state].second + avg_predicted_response_time)
-                   / (double)(reward_threshold[state].first+1.0);
-           reward_threshold[state].first ++;
+                    rt_threshold = reward_threshold[state].second;
+
+                }while(avg_predicted_response_time >= rt_threshold);
+                //更新reward_threshold
+               reward_threshold[state].second = (reward_threshold[state].first * reward_threshold[state].second + avg_predicted_response_time)
+                       / (double)(reward_threshold[state].first+1.0);
+               reward_threshold[state].first ++;
+
+            }
 
         }
-
-
 
 
 
