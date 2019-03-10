@@ -3,8 +3,11 @@
 
 Reinforcement_Learning::Reinforcement_Learning(
         double lowest, double highest):lowest_input_rate(lowest), highest_input_rate(highest){
-
+    this->lowest_node_rate = lowest_input_rate;
+    this->highest_node_rate = highest_input_rate * APP_NUM;
+    this->highest_node_rate *= 0.5;
 }
+
 
 Reinforcement_Learning::~Reinforcement_Learning(){
 
@@ -54,6 +57,7 @@ void Reinforcement_Learning::setParameter( vector<OperatorGraphModel*>* ogModels
     }
     if(first_init){
         first_init = false;
+        srand(clock());
         initial_policy();
         action = policy.begin()->second;
         apply_action();
@@ -69,21 +73,31 @@ void Reinforcement_Learning::setParameter( vector<OperatorGraphModel*>* ogModels
             nit++;
         }
 
+#if STATE_ACTION_MODEL
         for(int i = 0; i < ogModels->size(); ++ i){
             state.input_rate.push_back( transformInputRate((*ogModels)[i]->getEventNumber()));
         }
+#else
+        for(int i = 0; i < fognodes->size(); ++i){
+            state.node_input.push_back( transformInputRate((*fognodes)[randNumToFogID[i]]->getNodeInput()));
+        }
+#endif
     }
 }
 
 //得到一个随机的放置
 Action Reinforcement_Learning::getRandomAction(){
-    Action action;
+
     int modNum = fognodes->size();
 
+
+#if STATE_ACTION_MODEL
+    //计算总共的operator数量
     int totalOperatorNum = 0;
     for(int i = 0; i < ogModels->size(); ++ i){
         totalOperatorNum += (*ogModels)[i]->getOperatorModel().size();
     }
+
 
     vector<int> randToID = randNumToFogID;
 
@@ -117,8 +131,40 @@ Action Reinforcement_Learning::getRandomAction(){
         }
 
     }
+#else
 
-    this->action = action;
+    //计算总共的operator数量
+    int totalOperatorNum = 0;
+    for(int i = 0; i < ogModels->size(); ++ i){
+        totalOperatorNum += (*ogModels)[i]->getOperatorModel().size()-1;
+    }
+    OperatorModel* op = NULL;
+    FogNode* edgenode = NULL;
+
+    //获得随机opeartor 以及 随机的edge node
+    int randOperatorNo = rand() % totalOperatorNum;
+    int randNodeID = rand() % (modNum);
+
+    //计算OperatorModel
+    for(int ogIndex = 0; ogIndex < ogModels->size(); ++ ogIndex){
+        if(randOperatorNo >= (*ogModels)[ogIndex]->getOperatorModel().size()-1){
+            randOperatorNo -= (*ogModels)[ogIndex]->getOperatorModel().size()-1;
+        }
+        else{
+            op = (*ogModels)[ogIndex]->getOperatorModel()[randOperatorNo+1];
+            break;
+        }
+    }
+
+    edgenode = (*fognodes)[randNumToFogID[randNodeID]];
+    while(edgenode->getCapacity() == 0){
+        edgenode = (*fognodes)[randNumToFogID[(randNodeID+1)%modNum]];
+    }
+
+    op->setFogNode(edgenode);
+
+    action.act[op] = edgenode;
+#endif
 
     return action;
 }
@@ -143,22 +189,28 @@ void Reinforcement_Learning::initial_policy(){
         ++ nit;
     }
 
+#if STATE_ACTION_STATE
     for(int i = 0; i < ogModels->size(); ++ i){
         s.input_rate.push_back(lowest);
     }
-
+#else
+    for(int i = 0; i < fognodes->size(); ++ i){
+        s.node_input.push_back(lowest);
+    }
+#endif
     travel_state(s, 0);
 }
 
 //在模型中设置放置指针
 void Reinforcement_Learning::apply_action(){
+#if STATE_ACTION_MODEL == 0
     //reset capacity
     map<int, FogNode*>::iterator fit = fognodes->begin();
     while(fit != fognodes->end()){
         fit->second->setCapacity(fit->second->getOriginCapacity());
         fit ++;
     }
-
+#endif
     //apply action
     map<OperatorModel*, FogNode*>::iterator mit = action.act.begin();
     while(mit != action.act.end()){
@@ -168,8 +220,16 @@ void Reinforcement_Learning::apply_action(){
 }
 
 //递归遍历所有的状态
+#if STATE_ACTION_MODEL
+
 void Reinforcement_Learning::travel_state(State& s, int ogIndex){
     if(ogIndex ==  ogModels->size()){
+#else
+
+void Reinforcement_Learning::travel_state(State& s, int nodeIndex){
+    if(nodeIndex == fognodes->size()){
+#endif
+
         //set action
 #if INITIAL_ACTION == 0
         Action a = getRandomAction();
@@ -185,13 +245,19 @@ void Reinforcement_Learning::travel_state(State& s, int ogIndex){
         state_epsilon[s] = epsilon;
 
         //update Q
-        Q[s][a] = 1/avg_predicted_response_time;
+        Q[s][a] = 1.0/avg_predicted_response_time;
 
         return;
     }
     for(int sInput = lowest; sInput <= highest; ++ sInput){
+#if STATE_ACITON_MODEL
         s.input_rate[ogIndex] = sInput;
         travel_state(s, ogIndex+1);
+#else
+        s.node_input[nodeIndex] = sInput;
+        travel_state(s, nodeIndex+1);
+#endif
+
     }
 }
 
@@ -269,6 +335,8 @@ void Reinforcement_Learning::update_state(vector<int>& capacity, vector<double>&
     qp.s = state;
 
     state.capacity = capacity;
+
+#if STATE_ACTION_MODEL
     if(inputs.size() < ogModels->size() ){
         for(int i = 0; i < ogModels->size(); ++i){
             state.input_rate[i] = middle;
@@ -279,6 +347,11 @@ void Reinforcement_Learning::update_state(vector<int>& capacity, vector<double>&
             state.input_rate[i] = transformInputRate(inputs[i]);
         }
     }
+#else
+    for(int i = 0; i < fognodes->size(); ++ i){
+        state.node_input[i] = transformInputRate((*fognodes)[randNumToFogID[i]]->getNodeInput());
+    }
+#endif
     qp.a = action;
 
     //calculate the reward
@@ -311,6 +384,8 @@ vector<vector<StreamPath*>> Reinforcement_Learning::reinforcement_learning_updat
         qp.s = state;
 
         state.capacity = capacity;
+
+#if STATE_ACTION_MODEL
         if(inputs.size() < ogModels->size() ){
             for(int i = 0; i < ogModels->size(); ++i){
                 state.input_rate[i] = middle;
@@ -321,7 +396,11 @@ vector<vector<StreamPath*>> Reinforcement_Learning::reinforcement_learning_updat
                 state.input_rate[i] = transformInputRate(inputs[i]);
             }
         }
-
+#else
+        for(int i = 0; i < fognodes->size(); ++ i){
+            state.node_input[i] = transformInputRate((*fognodes)[randNumToFogID[i]]->getNodeInput());
+        }
+#endif
         qp.a = action;
 
         if(qp_vec.size() == 2){
@@ -367,8 +446,9 @@ vector<vector<StreamPath*>> Reinforcement_Learning::reinforcement_learning_updat
 
                     rt_threshold = reward_threshold[state].second;
 
-                }while(avg_predicted_response_time >= rt_threshold);
+                }while(avg_predicted_response_time >= rt_threshold );
                 //更新reward_threshold
+
                reward_threshold[state].second = (reward_threshold[state].first * reward_threshold[state].second + avg_predicted_response_time)
                        / (double)(reward_threshold[state].first+1.0);
                reward_threshold[state].first ++;
@@ -429,6 +509,7 @@ void Reinforcement_Learning::RL_input(string name){
             s.capacity.push_back(capacity);
         }
 
+#if STATE_ACTION_MODEL
         //input input_rate
         int input_rate_size = 0;
         in >> input_rate_size;
@@ -437,7 +518,16 @@ void Reinforcement_Learning::RL_input(string name){
             in >> input_rate;
             s.input_rate.push_back(input_rate);
         }
-
+#else
+        //input node_input
+        int node_input_size = 0;
+        in >> node_input_size;
+        for(int nindex = 0; nindex < node_input_size; ++ nindex){
+            int node_input = 0;
+            in >> node_input;
+            s.node_input.push_back(node_input);
+        }
+#endif
         //----------------action------------------
         Action a;
         int action_size = 0;
@@ -493,10 +583,18 @@ void Reinforcement_Learning::RL_output(string type){
             out << pit->first.capacity[i] << " ";
         }
         out << endl;
+
+#if STATE_ACTION_MODEL
         out << pit->first.input_rate.size() << endl;
         for(int i = 0; i < pit->first.input_rate.size(); ++ i){
             out << pit->first.input_rate[i] << " ";
         }
+#else
+        out << pit->first.node_input.size() << endl;
+        for(int i = 0; i < pit->first.node_input.size(); ++ i){
+            out << pit->first.node_input[i] << " ";
+        }
+#endif
         out << endl;
 
         //----------Action---------------

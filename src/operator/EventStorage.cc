@@ -437,9 +437,9 @@ void EventStorage::processMessage(cMessage* msg){
                   roundTimeRecord.push_back(sim_time);
 
 
-                  if(TOTALSENDTIME > 1){
-                      queue.clear();
-                  }
+//                  if(TOTALSENDTIME > 1){
+//                      queue.clear();
+//                  }
                   for(int i = 0; i < sendTime.size(); ++ i){
                       if(sendTime[i] < TOTALSENDTIME){
                           timestamp = sumoStart;
@@ -480,7 +480,9 @@ void EventStorage::processMessage(cMessage* msg){
     string destAddrs;
 
    if(time[app_num] < timeEnd[app_num]){
-
+       if(queue.getLength() > 10000){
+           return;
+       }
        vehicleStatus* vehs = (*vehicles[app_num])[vehicles[app_num]->size()-1];
 
 

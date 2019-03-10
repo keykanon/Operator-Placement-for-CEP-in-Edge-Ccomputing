@@ -26,7 +26,13 @@ public:
 	FogNode(int nodeID, int capacity = 5,double throughput = 4000.0,double bandwidth = 2e4/8.0);
 	~FogNode(void);
 
-
+	double getNodeInput(){
+	    double nodeInput = 0;
+	    for(int opi = 0; opi < operators.size(); ++ opi){
+	        nodeInput += operators[opi]->getPredictEventNumber();
+	    }
+	    return nodeInput;
+	}
 
 	void addEdge(FogEdge* edge);
 	FogEdge* getFogEdge(int destNodeID);
