@@ -26,7 +26,7 @@ class OperatorPlacementManager;
 
 #define APP_NUM 3
 
-#define STATE_ACTION_MDOEL 0
+#define STATE_ACTION_MODEL 1
 
 #if STATE_ACTION_MODEL
 enum InputRate{lowest=1, low, slow, middle, shigh, high, highest};

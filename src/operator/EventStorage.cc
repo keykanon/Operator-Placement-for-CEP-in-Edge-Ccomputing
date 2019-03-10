@@ -620,7 +620,7 @@ void EventStorage::initialize()
     //open result file
         char filename[1024];
         memset(filename, 0 , 1024);
-        sprintf(filename, "result_c5_n3_og%d_r%d_%d_%d_dr%d_%d_%d_mt%d.txt",type[0], opm[7]->getOperatorGraph(0)->randSeed ,  strategy, algorithm, sendDelayType, poisson_lambda, TOTALSENDTIME, rl_type);
+        sprintf(filename, "result_c5_n3_og%d_r%d_%d_%d_dr%d_%d_%d_mt%d_e%d_sam%d.txt",type[0], opm[7]->getOperatorGraph(0)->randSeed ,  strategy, algorithm, sendDelayType, poisson_lambda, TOTALSENDTIME, rl_type,EPSILON_TYPE,STATE_ACTION_MODEL);
         out.open(filename, ios::out);
 
 

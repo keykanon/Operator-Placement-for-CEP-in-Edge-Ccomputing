@@ -189,7 +189,7 @@ void Reinforcement_Learning::initial_policy(){
         ++ nit;
     }
 
-#if STATE_ACTION_STATE
+#if STATE_ACTION_MODEL
     for(int i = 0; i < ogModels->size(); ++ i){
         s.input_rate.push_back(lowest);
     }
@@ -203,7 +203,7 @@ void Reinforcement_Learning::initial_policy(){
 
 //在模型中设置放置指针
 void Reinforcement_Learning::apply_action(){
-#if STATE_ACTION_MODEL == 0
+#if STATE_ACTION_MODEL
     //reset capacity
     map<int, FogNode*>::iterator fit = fognodes->begin();
     while(fit != fognodes->end()){
@@ -250,7 +250,7 @@ void Reinforcement_Learning::travel_state(State& s, int nodeIndex){
         return;
     }
     for(int sInput = lowest; sInput <= highest; ++ sInput){
-#if STATE_ACITON_MODEL
+#if STATE_ACTION_MODEL
         s.input_rate[ogIndex] = sInput;
         travel_state(s, ogIndex+1);
 #else
