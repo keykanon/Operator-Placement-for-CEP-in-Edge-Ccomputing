@@ -67,7 +67,7 @@ class EventStorage : public cSimpleModule
     int strategy = 0;
     int algorithm =  3;
 
-    int sendDelayType = 0;
+    int sendDelayType = 1;
     int poisson_lambda = 30;
     int rl_type = 1; // 0 for train, 1 for test
     //bool first_monte_carlo_policy = true;
@@ -75,7 +75,7 @@ class EventStorage : public cSimpleModule
     const int TOTALSENDTIME = 2;
     vector<int> sendTime = {1,1,1};
     double sendDelay =  1200 * intensiveAddrNum;
-    double delayChange = 50 * OGNUM * intensiveAddrNum;
+    double delayChange = 50 * intensiveAddrNum;
     int intensiveNodeID = 7;
 //record result
     cOutVector endToEndDelayVec;

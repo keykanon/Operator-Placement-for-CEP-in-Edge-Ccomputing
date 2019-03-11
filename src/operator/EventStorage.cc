@@ -711,10 +711,18 @@ void EventStorage::handleMessage(cMessage *msg)
             break;
         }
         case 1:{
+            if(sendDelay >  6000){
+                sendDelayType = 2;
+                break;
+            }
             sendDelay += delayChange;
             break;
         }
         case 2:{
+            if(sendDelay < 1000){
+                sendDelayType = 1;
+                break;
+            }
             sendDelay -= delayChange;
             break;
         }
