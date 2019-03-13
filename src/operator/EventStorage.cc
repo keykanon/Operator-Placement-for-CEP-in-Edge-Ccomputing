@@ -1358,6 +1358,11 @@ void EventStorage::outputRecord(){
     sprintf(filename, "result_c5_n3_og%d_r%d_%d_%d_dr%d_%d.txt",type[0], opm[intensiveNodeID]->getOperatorGraph(0)->randSeed ,  strategy, algorithm, sendDelayType, poisson_lambda);
     out.open(filename, ios::out);
 
+    int beginTime = 0;
+   if(roundTimeRecord.size() > 0){
+       beginTime = roundTimeRecord[roundTimeRecord.size()-1];
+   }
+
     //----------------result output---------------------
    //-----------event number record -----------------
     //vector<double> throughputs;
@@ -1369,7 +1374,7 @@ void EventStorage::outputRecord(){
 
    out << "-----------------input_rate-------------------" << endl;
    out << eventsRecord.size() << endl;
-   for(int i = 0; i < eventsRecord.size(); i ++){
+   for(int i = beginTime; i < eventsRecord.size(); i ++){
         map<int, int > record = eventsRecord[i];
         int num = 0;
         for(int j = 0; j < OGNUM; j ++){
@@ -1406,7 +1411,7 @@ void EventStorage::outputRecord(){
    out << "total network usage = " << totalNetworkUsage << endl;
    double netUseAvg = 0.0;
    double managerUse = 0.0;
-   for(int i = 0; i < 0 + sim_time; i ++){
+   for(int i = beginTime; i < 0 + sim_time; i ++){
        if(networkUsage.count(i) > 0){
            out  << networkUsage[i] ;
            netUseAvg += networkUsage[i];
@@ -1421,10 +1426,7 @@ void EventStorage::outputRecord(){
    out << "network usage average = " << netUseAvg << endl;
    out << "manager usage = " << managerUse << endl;
 
-   int beginTime = 0;
-   if(roundTimeRecord.size() > 0){
-       beginTime = roundTimeRecord[roundTimeRecord.size()-1];
-   }
+
 
    out << "------------event number record---------------" << endl;
    printRecord( beginTime , eventNumber_record, out);
@@ -1462,6 +1464,9 @@ void EventStorage::outputRecord(){
 
 void EventStorage::replacement_decision(){
     int nodeIndex = intensiveNodeID;
+
+    opm[nodeIndex]->resetCapacity();
+
    vector<int> node_capacity;
    vector<double> input_rate;
    vector<double> response_time;
