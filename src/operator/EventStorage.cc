@@ -112,10 +112,10 @@ void EventStorage::finish(){
 
 
    out << "------------event number record---------------" << endl;
-   printRecord(eventNumber_record);
+   printRecord(0, eventNumber_record , out);
    //---------response time record-------------------------
    out << "---------response time---------------" << endl;
-   printRecord(response_time_record);
+   printRecord(0, response_time_record, out);
 
    out << "---------round avg response time----------" << endl;
    avgRecordCal(response_time_record, avg_response_time_record);
@@ -131,13 +131,13 @@ void EventStorage::finish(){
    //printRecord(predicted_response_time_record);
 
    out << "---------process_time_record---------------" << endl;
-   printRecord(process_time_record);
+   printRecord(0, process_time_record, out);
 
    out << "---------transmission_time_record---------------" << endl;
-   printRecord(transmission_time_record);
+   printRecord(0, transmission_time_record, out);
 
    out << "---------queue_time_record---------------" << endl;
-   printRecord(queue_time_record);
+   printRecord(0, queue_time_record, out);
 
    out << "------------------END-----------------------" <<endl;
 
@@ -404,7 +404,7 @@ void EventStorage::init(){
 
       scheduleAt(sendTime+5, SENDMESSAGE);
 }
-
+//处理数据
 void EventStorage::processMessage(cMessage* msg){
     app_num = (app_num + 1)% OGNUM;
 
@@ -415,7 +415,7 @@ void EventStorage::processMessage(cMessage* msg){
 
 
 
-
+    //sumo数据集当前时间点还有数据，并且模拟时间在时间范围中
     while(vehicles[app_num]->empty() && time[app_num] < timeEnd[app_num]){
 
         //set UpdateStrategies
@@ -430,12 +430,45 @@ void EventStorage::processMessage(cMessage* msg){
                   timeIncrease = false;
               }
           }
+
+          //所有的operator graph的数据集时间都到达下一个时间点
           if(timeIncrease){
               timestamp ++;
+
+              //一轮数据集结束
               if(timestamp >= sumoEnd){
-                  //calculate average resposne time in this time period
+                  //输出本轮record
+                  outputRecord();
+                  vector<int> type = this->type;
+                  //根据测试模式，改变参数
+                  switch(test_type){
+                  case 0:
+                      //10组3个operator, 30组4个operator，60组5个operator
+
+                      if(sendTime[app_num] > 10){
+                          type = {4,4,4};
+
+                      }
+                      else if(sendTime[app_num] > 40){
+                          type = {5,5,5};
+                      }
+                      sendDelay = initial_send_delay;
+                      opm[intensiveNodeID]->resetOG(type);
+                      break;
+                  case 1:
+                      intensiveNodeID = (intensiveNodeID + 1) % 10;
+                      break;
+                  case 2:
+                      break;
+
+                  default:
+                      break;
+                  }
+
+                  //record the end time of this round
                   roundTimeRecord.push_back(sim_time);
 
+                  replacement_decision();
 
 //                  if(TOTALSENDTIME > 1){
 //                      queue.clear();
@@ -712,7 +745,7 @@ void EventStorage::handleMessage(cMessage *msg)
         }
         case 1:{
             if(sendDelay >  6000){
-                sendDelayType = 2;
+                //sendDelayType = 2;
                 break;
             }
             sendDelay += delayChange;
@@ -720,7 +753,7 @@ void EventStorage::handleMessage(cMessage *msg)
         }
         case 2:{
             if(sendDelay < 1000){
-                sendDelayType = 1;
+                //sendDelayType = 1;
                 break;
             }
             sendDelay -= delayChange;
@@ -1280,7 +1313,7 @@ void EventStorage::avgRecordCal(map<int, map<int, double>>& record, vector<doubl
 }
 
 //print record
-void EventStorage::printRecord( map<int,map<int, double>>& record){
+void EventStorage::printRecord( int begin_time, map<int,map<int, double>>& record, ofstream& out){
     double avg = 0.0;
     vector<double> avg_time;
     vector<int> record_num;
@@ -1288,7 +1321,7 @@ void EventStorage::printRecord( map<int,map<int, double>>& record){
         avg_time.push_back(0);
         record_num.push_back(0);
     }
-    for(int i = 0; i < 0+sim_time; i ++){
+    for(int i = begin_time; i < 0+sim_time; i ++){
         if(record.count(i) > 0){
             map<int, double> child_record = record[i];
             if(child_record.size() == 0){
@@ -1316,3 +1349,178 @@ void EventStorage::printRecord( map<int,map<int, double>>& record){
     out << "avg = " << avg << endl;
 }
 
+
+void EventStorage::outputRecord(){
+    ofstream out;
+    //open result file
+    char filename[1024];
+    memset(filename, 0 , 1024);
+    sprintf(filename, "result_c5_n3_og%d_r%d_%d_%d_dr%d_%d.txt",type[0], opm[intensiveNodeID]->getOperatorGraph(0)->randSeed ,  strategy, algorithm, sendDelayType, poisson_lambda);
+    out.open(filename, ios::out);
+
+    //----------------result output---------------------
+   //-----------event number record -----------------
+    //vector<double> throughputs;
+    vector<int> sendTime;
+    for(int i = 0; i < OGNUM; i ++){
+        //throughputs.push_back(0);
+        sendTime.push_back(0);
+    }
+
+   out << "-----------------input_rate-------------------" << endl;
+   out << eventsRecord.size() << endl;
+   for(int i = 0; i < eventsRecord.size(); i ++){
+        map<int, int > record = eventsRecord[i];
+        int num = 0;
+        for(int j = 0; j < OGNUM; j ++){
+            num += record[j];
+            out <<  record[j] << " "  ;
+            if(record[j] > 0){
+                sendTime[j] + 1;
+            }
+
+        }
+        out << num << endl;
+   }
+
+  double tnow = simTime().dbl();
+  //---------------total algorithm time---------------
+//  out << "------------------algorithm time----------------------" << endl;
+//  double avg_alg_time = 0;
+//  for(int i = 0; i < algorithm_time.size(); i ++){
+//      avg_alg_time += algorithm_time[i];
+//      out << "algorithm_time " << i << " = " << algorithm_time[i] << endl;
+//  }
+//  avg_alg_time /= algorithm_time.size();
+//  out << "avg algorithm time = " << avg_alg_time << endl;
+//  out << "-------------------------------------------------" << endl;
+
+   //---------------total process time --------------
+   out << "total time = " << tnow << endl;
+   for(int i = 0; i < OGNUM; i ++){
+       out  << "app " << i << " total events number " << totalNumSent[i] << ", throughput " << double(totalNumSent[i])/double(sendTime[i]) << endl;
+   }
+   out << "process time = " << processTime << " -- avg = " << processTime/tnow << endl;
+
+   //-------------network usage output-----------
+   out << "total network usage = " << totalNetworkUsage << endl;
+   double netUseAvg = 0.0;
+   double managerUse = 0.0;
+   for(int i = 0; i < 0 + sim_time; i ++){
+       if(networkUsage.count(i) > 0){
+           out  << networkUsage[i] ;
+           netUseAvg += networkUsage[i];
+       }
+       if(managerNetworkUsage.count(i) > 0){
+           managerUse += managerNetworkUsage[i];
+           //out << " manager net use -- " << managerNetworkUsage[i] ;
+       }
+       out << endl;
+   }
+   netUseAvg /= networkUsage.size();
+   out << "network usage average = " << netUseAvg << endl;
+   out << "manager usage = " << managerUse << endl;
+
+   int beginTime = 0;
+   if(roundTimeRecord.size() > 0){
+       beginTime = roundTimeRecord[roundTimeRecord.size()-1];
+   }
+
+   out << "------------event number record---------------" << endl;
+   printRecord( beginTime , eventNumber_record, out);
+   //---------response time record-------------------------
+   out << "---------response time---------------" << endl;
+   printRecord(beginTime, response_time_record, out);
+
+
+   //out << "---------predicted response time----------" << endl;
+   //printRecord(predicted_response_time_record);
+
+   out << "---------process_time_record---------------" << endl;
+   printRecord(beginTime, process_time_record, out);
+
+   out << "---------transmission_time_record---------------" << endl;
+   printRecord(beginTime, transmission_time_record, out);
+
+   out << "---------queue_time_record---------------" << endl;
+   printRecord(beginTime, queue_time_record, out);
+
+   out << "------------------END-----------------------" <<endl;
+
+   map<int, vector<int>>::iterator it = edgeCepMap.begin();
+   while(it != edgeCepMap.end()){
+       out << "H = " << opm[it->first]->getH() << endl;
+       it ++;
+   }
+
+   out << "sim_time = " << sim_time << endl;
+
+   out.flush();
+
+   out.close();
+}
+
+void EventStorage::replacement_decision(){
+    int nodeIndex = intensiveNodeID;
+   vector<int> node_capacity;
+   vector<double> input_rate;
+   vector<double> response_time;
+   if(strategy == 0 && algorithm >= 2){
+       opm[nodeIndex]->RL_update_parameter();
+       node_capacity = opm[nodeIndex]->getFogNodeCapacity();
+       input_rate = getLastInputRate();
+       response_time = getLastRecord(response_time_record);
+   }
+    switch(strategy){
+    case 0:
+        if(algorithm == 0){
+            placement[nodeIndex] = opm[nodeIndex]->getReMultiOperatorGraphPlacement(replace);
+            //newPlacement = opm->getReMultiOperatorGraphPlacement();
+        }
+        else if(algorithm == 1){
+            placement[nodeIndex] = opm[nodeIndex]->getReSAOperatorGraphPlacement(0.99, 100);
+        }
+        else if(algorithm == 2){
+
+           placement[nodeIndex] = opm[nodeIndex]->Monte_Carlo(node_capacity, input_rate, response_time);
+       }
+        else if(algorithm == 3){
+
+             placement[nodeIndex] = opm[nodeIndex]->Sarsa_TD(node_capacity, input_rate, response_time);
+        }
+        else if(algorithm == 4){
+
+            placement[nodeIndex] = opm[nodeIndex]->QLearning(node_capacity, input_rate, response_time);
+        }
+    break;
+    case 1:
+        if(algorithm == 0){
+            //------simple greedy(nearest) operator graph placement-------------
+            placement[nodeIndex] = opm[nodeIndex]->getSimpleGreedyPlacement(replace);
+            //newPlacement = opm->getSimpleGreedyPlacement();
+        }
+        else if(algorithm == 1){
+            //-------selfish operator graph placement-----------
+            placement[nodeIndex] = opm[nodeIndex]->getSelfishMultiOperatorPlacement();  //newPlacement = opm->getSelfishMultiOperatorPlacement();
+        }
+        else if(algorithm == 2){
+            placement[nodeIndex] = opm[nodeIndex]->getSelfishSAOperatorGraphPlacement(0.99,100);
+        }
+        else if(algorithm == 3){
+            placement[nodeIndex] = opm[nodeIndex]->getSelfResourceAwarePlacement();
+        }
+        else if(algorithm == 4){
+            placement[nodeIndex] = opm[nodeIndex]->getLoadBalance(1, 0.05, opm[nodeIndex]->getFogNodeNum(), replace);
+        }
+        else if(algorithm == 5){
+            placement[nodeIndex] = opm[nodeIndex]->getOveralGraphPlacement(replace);
+        }
+        else if(algorithm == 6){
+            placement[nodeIndex] = opm[nodeIndex]->getResponseTimeGreedyPlacement(replace);
+        }
+        break;
+    case 2:
+        break;
+
+    }
+}

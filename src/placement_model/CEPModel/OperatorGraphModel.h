@@ -30,6 +30,7 @@ private:
 	void randomOG(int ogNum);
 public:
 	int randSeed = 0;
+
 	OperatorGraphModel(double rt_constraint,int type, int ogID);
 	~OperatorGraphModel(void);
 
@@ -37,6 +38,39 @@ public:
 	void calStreamPath(OperatorModel* comsumer);
 
 	int getEventNumber();
+
+	//全部数据还原更新
+	void reset(int type){
+	    //清空Operators
+	    for(int i = 0; i < operators.size(); ++ i){
+	        delete operators[i];
+	        operators[i] = NULL;
+	    }
+	    operators.clear();
+
+	    //清空source
+	    source.clear();
+
+	    //清空streams
+	    while(!streams.empty()){
+	        //delete streams.back();
+	        streams.pop();
+	    }
+
+
+	    //清空stream_path
+        for(int i = 0; i < stream_paths.size(); ++ i){
+            delete stream_paths[i];
+            stream_paths[i] = NULL;
+        }
+        stream_paths.clear();
+
+        response_time = 0;
+        predicted_response_time = 0;
+
+        this->randSeed ++;
+        randomOG(type);
+	}
 
 	//calculate response time of the operator graph
 	int calResponseTime(double averageW, double averageThroughput, map<int, map<int, double>>& distable, map<int,int>& eventTable);

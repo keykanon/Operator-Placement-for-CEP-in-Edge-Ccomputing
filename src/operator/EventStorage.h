@@ -49,6 +49,9 @@ using namespace omnetpp;
 class EventStorage : public cSimpleModule
 {
   private:
+    //≤‚ ‘ƒ£ Ω
+    int test_type = 0;
+
     //operator graph numbers
     int networkSize ;
 
@@ -58,24 +61,25 @@ class EventStorage : public cSimpleModule
     int intensiveAddrNum = 1;
     vector<double> RT_CONSTRAINTS = {1,1,1};//,1,1,1,1,1,1};
     vector<double> RT_MAX_CONSTRAINTS = {10,10,10};
-    vector<int> type = {5,5,5};//,4,5,3,4,5};
+    vector<int> type = {3,3,3};//,4,5,3,4,5};
     const int OGNUM = 3;
     map<int, vector<int>> edgeCepMap;
     ofstream out;
 
     //strategy
     int strategy = 0;
-    int algorithm =  3;
+    int algorithm =  0;
 
-    int sendDelayType = 1;
+    int sendDelayType = 2;
     int poisson_lambda = 30;
     int rl_type = 1; // 0 for train, 1 for test
     //bool first_monte_carlo_policy = true;
 
     const int TOTALSENDTIME = 2;
     vector<int> sendTime = {1,1,1};
-    double sendDelay =  1200 * intensiveAddrNum;
-    double delayChange = 50 * intensiveAddrNum;
+    double initial_send_delay = 7000 * intensiveAddrNum;
+    double sendDelay =  7000 * intensiveAddrNum;
+    double delayChange = 50 * OGNUM * intensiveAddrNum;
     int intensiveNodeID = 7;
 //record result
     cOutVector endToEndDelayVec;
@@ -171,7 +175,7 @@ class EventStorage : public cSimpleModule
     void avgRecordCal(map<int, map<int, double>>& record, vector<double>& avgRecord);
     //update record
     void updateRecord(map<int,map<int, double>>& record, int tid, int appIndex, double time);
-    void printRecord( map<int,map<int, double>>& record);
+    void printRecord(int begin_time, map<int,map<int, double>>& record, ofstream& out);
   protected:
     double fac(int k){
         double ret = 1;
@@ -215,7 +219,7 @@ class EventStorage : public cSimpleModule
         return ret;
     }
 
-
+    void outputRecord();
 
      virtual void initialize() override;
      virtual void handleMessage(cMessage *msg) override;
@@ -224,6 +228,9 @@ class EventStorage : public cSimpleModule
      void clear_queue(){
 
      }
+
+     void replacement_decision();
+
   public:
      //get the destination addresses
      std::string getDestAddrs(int app_num, int pathIndex, bool&);

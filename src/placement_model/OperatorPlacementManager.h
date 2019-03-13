@@ -206,5 +206,18 @@ public:
     }
 
     void updateCapacity(int fogNodeID, int capacity);
+
+    //÷ÿ÷√operator graph
+    void resetOG(vector<int> type){
+        FogNode* es = this->fognetworks->getES();
+        for(int i = 0; i < ogModel.size(); ++ i){
+            ogModel[i]->reset(type[i]);
+            vector<OperatorModel*> source = ogModel[i]->getSource();
+            for(int i = 0; i < source.size(); i ++){
+                source[i]->setFogNode(es);
+            }
+        }
+
+    }
 };
 

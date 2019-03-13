@@ -237,6 +237,28 @@ void OperatorGraphModel::randomOG(int opNum){
 
 OperatorGraphModel::~OperatorGraphModel(void)
 {
+    //清空Operators
+    for(int i = 0; i < operators.size(); ++ i){
+        delete operators[i];
+        operators[i] = NULL;
+    }
+    operators.clear();
+
+    //清空source
+    source.clear();
+
+    //清空streams
+   while(!streams.empty()){
+       //delete streams.back();
+       streams.pop();
+   }
+
+    //清空stream_path
+    for(int i = 0; i < stream_paths.size(); ++ i){
+        delete stream_paths[i];
+        stream_paths[i] = NULL;
+    }
+    stream_paths.clear();
 }
 
 //get StreamPath through operators and streams
