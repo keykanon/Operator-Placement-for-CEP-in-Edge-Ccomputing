@@ -235,6 +235,7 @@ const int FogNode::getCapacity() const
 
 void FogNode::resetCapacity(){
     this->capacity = this->origin_capacity;
+    this->setOpNum(1);
     map<int,FogEdge*>::iterator it = edges.begin();
     while(it != edges.end()){
         it->second->clearEventNum();

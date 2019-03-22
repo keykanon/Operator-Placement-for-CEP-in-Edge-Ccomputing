@@ -21,7 +21,7 @@ OperatorPlacementManager::OperatorPlacementManager(vector<double> rt_constraints
 
 	int size = 0;
     for(int ogIndex = 0; ogIndex < ogModel.size(); ogIndex ++){
-        size += ogModel[ogIndex]->getOperatorModel().size();
+        size += ogModel[ogIndex]->getOperatorModel().size()-1;
     }
     es->setOpNum(size);
 
@@ -933,10 +933,10 @@ int** OperatorPlacementManager::minLatencyFlow(double averageD, vector<int> Vs, 
 
 //Cloudlet Load Balance Algorithm
 vector<vector<StreamPath*>> OperatorPlacementManager::getLoadBalance(double theta, double epsilon, double delta, vector<bool>& replace){
-    resetCapacity();
+    //resetCapacity();
     bool reset = false;
     for(int i = 0; i < ogModel.size(); i ++){
-        if(!ogModel[i]->isAllPlaced() ){
+        if(!ogModel[i]->isAllPlaced() && !ogModel[i]->isNeedReplaced()){
             reset = true;
             break;
         }
@@ -951,7 +951,7 @@ vector<vector<StreamPath*>> OperatorPlacementManager::getLoadBalance(double thet
         }
         return ans;
     }
-
+    //resetCapacity();
 
 
 
@@ -976,7 +976,7 @@ vector<vector<StreamPath*>> OperatorPlacementManager::getLoadBalance(double thet
     for(int ogIndex = 0; ogIndex < ogModel.size(); ogIndex ++){
         size += ogModel[ogIndex]->getOperatorModel().size();
     }
-    //es->setOpNum(size);
+    //es->setOpNum(size-ogModel.size());
     //es->setBandwidth(es->getOriBandwidth() - INIT_BANDWIDTH_COST * size);
 
     double maxT = -1, minT = 1e12;
@@ -1306,7 +1306,7 @@ vector<vector<StreamPath*>> OperatorPlacementManager::getLoadBalance(double thet
 
 double OperatorPlacementManager::AverageResponseTimeOfTasks(FogNode* node){
     int n = node->getOriginCapacity();
-    double lambda = node->getOpNum()+0.328;//(node->getOriBandwidth()-node->getBandwidth());
+    double lambda = node->getOpNum()*INIT_BANDWIDTH_COST;//node->getOpNum()+0.328;//(node->getOriBandwidth()-node->getBandwidth());
 
     double throughput = node->getOriBandwidth() / INIT_BANDWIDTH_COST;
     double ans = ErlangC(n, lambda/throughput);
@@ -2210,6 +2210,7 @@ void OperatorPlacementManager::resetCapacity(){
         it ++;
     }
 
+
     //reset cep operators' placement
     for(int i = 0; i < ogModel.size(); i ++){
         vector<OperatorModel*> ops = ogModel[i]->getOperatorModel();
@@ -2217,6 +2218,7 @@ void OperatorPlacementManager::resetCapacity(){
             ops[j]->setFogNode(NULL);
         }
     }
+
 
 
 }

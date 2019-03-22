@@ -67,15 +67,15 @@ class EventStorage : public cSimpleModule
     ofstream out;
 
     //strategy
-    int strategy = 0;
-    int algorithm =  0;
+    int strategy = 1;
+    int algorithm =  4;
 
-    int sendDelayType = 2;
+    int sendDelayType = 0;
     int poisson_lambda = 30;
     int rl_type = 1; // 0 for train, 1 for test
     //bool first_monte_carlo_policy = true;
 
-    const int TOTALSENDTIME = 2;
+    const int TOTALSENDTIME = 10;
     vector<int> sendTime = {1,1,1};
     double initial_send_delay = 7000 * intensiveAddrNum;
     double sendDelay =  7000 * intensiveAddrNum;

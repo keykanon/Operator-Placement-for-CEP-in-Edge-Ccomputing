@@ -217,7 +217,11 @@ public:
                 source[i]->setFogNode(es);
             }
         }
-
+        int size = 0;
+        for(int ogIndex = 0; ogIndex < ogModel.size(); ogIndex ++){
+            size += ogModel[ogIndex]->getOperatorModel().size()-1;
+        }
+        es->setOpNum(size);
     }
 };
 
