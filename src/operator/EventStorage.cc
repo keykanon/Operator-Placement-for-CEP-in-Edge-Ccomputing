@@ -1015,7 +1015,7 @@ void EventStorage::handleMessage(cMessage *msg)
             opm[monitor_message->getDestAddr()]->updateCapacity(monitor_message->getSrcAddr(),monitor_message->getPlacement().placementNum);
             clock_t begin = clock();
 
-            vector<int> node_capacity;
+             vector<int> node_capacity;
               vector<double> input_rate;
               vector<double> response_time;
               if(strategy == 0 && algorithm >= 2){
@@ -1464,6 +1464,7 @@ void EventStorage::outputRecord(){
 
 void EventStorage::replacement_decision(){
     int nodeIndex = intensiveNodeID;
+    sendPlacementPacket(-1,nodeIndex,opm[nodeIndex]);
 
     opm[nodeIndex]->resetCapacity();
 
@@ -1528,4 +1529,8 @@ void EventStorage::replacement_decision(){
         break;
 
     }
+
+    OperatorPlacementManager* opm_i = opm[nodeIndex];
+
+    sendPlacementPacket(nodeIndex,nodeIndex, opm_i);
 }

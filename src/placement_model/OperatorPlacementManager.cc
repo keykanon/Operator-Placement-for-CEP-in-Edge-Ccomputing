@@ -933,7 +933,7 @@ int** OperatorPlacementManager::minLatencyFlow(double averageD, vector<int> Vs, 
 
 //Cloudlet Load Balance Algorithm
 vector<vector<StreamPath*>> OperatorPlacementManager::getLoadBalance(double theta, double epsilon, double delta, vector<bool>& replace){
-    //resetCapacity();
+    resetCapacity();
     bool reset = false;
     for(int i = 0; i < ogModel.size(); i ++){
         if(!ogModel[i]->isAllPlaced() ){
