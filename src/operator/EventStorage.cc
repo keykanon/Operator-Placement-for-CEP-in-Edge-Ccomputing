@@ -954,16 +954,14 @@ void EventStorage::handleMessage(cMessage *msg)
                 pk->setTransmissionBeginTime(simTime().dbl());
                 send(pk, outGate);
 
-                endTransmission = simTime();
+
                 //endTransmission = outGate->getTransmissionChannel()->getTransmissionFinishTime();
                 //if(endTransmission < simTime()){
                 //    endTransmission = simTime();
                 //}
             }
         }
-        else{
-            endTransmission = simTime();
-        }
+        endTransmission = simTime();
 
         //end send events
 
