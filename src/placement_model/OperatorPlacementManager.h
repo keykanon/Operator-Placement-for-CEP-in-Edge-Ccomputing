@@ -58,6 +58,9 @@ public:
 	//multi operator graph placement using reschedule
 	vector<vector<StreamPath*>> getReMultiOperatorGraphPlacement(vector<bool>& replace);
 
+	//multi operator graph placement using reschedule
+    vector<vector<StreamPath*>> getIterationOperatorGraphPlacement(vector<bool>& replace);
+
 	//multi operator graph placement by schedule policy selfish
 	vector<vector<StreamPath*>> getSelfishMultiOperatorPlacement();
 
@@ -119,6 +122,7 @@ public:
 	vector<StreamPath*> getRandomPlacement(int index);
 	vector<StreamPath*> getSimpleGreedyPlacement(int index,vector<bool>& replace);
 	vector<StreamPath*> getResponseTimeGreedyPlacement(int index,vector<bool>& replace);
+	//vector<StreamPath*> getLBResponseTimeGreedyPlacement(int index, vector<bool>& replace)
 
 	//predict response time of path
 	double predictResponseTime(StreamPath* stream_path);

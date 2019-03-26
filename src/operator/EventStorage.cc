@@ -929,33 +929,37 @@ void EventStorage::handleMessage(cMessage *msg)
         int size = queue.getLength();
         if(!queue.isEmpty()){
 
+            if(roundTimeRecord.size() > 0 && tnow - roundTimeRecord[roundTimeRecord.size()-1] < 5){
 
-            EventPacket* pk = (EventPacket*)queue.pop();
-            //int ogIndex = pk->getAppNum();
-            int nodeIndex = pk->getSrcAddr();
-            if(!pk->getMonitorFlag()){
-                int ogIndex = pk->getAppNum();
-
-                numSent[ogIndex] = numSent[ogIndex] + 1;
-                totalNumSent[ogIndex] = totalNumSent[ogIndex] + 1;
             }
+            else{
+                EventPacket* pk = (EventPacket*)queue.pop();
+                //int ogIndex = pk->getAppNum();
+                int nodeIndex = pk->getSrcAddr();
+                if(!pk->getMonitorFlag()){
+                    int ogIndex = pk->getAppNum();
+
+                    numSent[ogIndex] = numSent[ogIndex] + 1;
+                    totalNumSent[ogIndex] = totalNumSent[ogIndex] + 1;
+                }
 
 
 
-            process_end = clock();
-            cGate* outGate = gateHalf("gate" , cGate::OUTPUT, nodeIndex);
-            pk->setSendTime(simTime().dbl());
-            msg_processTime = (double)(process_end-process_begin);
-            processTime += msg_processTime;
-            pk->setProcessTime(msg_processTime);
-            pk->setTransmissionBeginTime(simTime().dbl());
-            send(pk, outGate);
+                process_end = clock();
+                cGate* outGate = gateHalf("gate" , cGate::OUTPUT, nodeIndex);
+                pk->setSendTime(simTime().dbl());
+                msg_processTime = (double)(process_end-process_begin);
+                processTime += msg_processTime;
+                pk->setProcessTime(msg_processTime);
+                pk->setTransmissionBeginTime(simTime().dbl());
+                send(pk, outGate);
 
-            endTransmission = simTime();
-            //endTransmission = outGate->getTransmissionChannel()->getTransmissionFinishTime();
-            //if(endTransmission < simTime()){
-            //    endTransmission = simTime();
-            //}
+                endTransmission = simTime();
+                //endTransmission = outGate->getTransmissionChannel()->getTransmissionFinishTime();
+                //if(endTransmission < simTime()){
+                //    endTransmission = simTime();
+                //}
+            }
         }
         else{
             endTransmission = simTime();
