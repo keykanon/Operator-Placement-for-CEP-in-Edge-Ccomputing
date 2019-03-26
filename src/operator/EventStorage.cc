@@ -745,13 +745,19 @@ void EventStorage::handleMessage(cMessage *msg)
         }
         case 1:{
             if(sendDelay <  6000){
-                sendDelay += delayChange;
+                if(roundTimeRecord.size() == 0 ||
+                        (roundTimeRecord.size() > 0 && tnow - roundTimeRecord[roundTimeRecord.size()-1] > 0)){
+                    sendDelay += delayChange;
+                }
             }
             break;
         }
         case 2:{
             if(sendDelay > 1000){
-                sendDelay -= delayChange;
+                if(roundTimeRecord.size() == 0 ||
+                        (roundTimeRecord.size() > 0 && tnow - roundTimeRecord[roundTimeRecord.size()-1] > 0)){
+                    sendDelay -= delayChange;
+                }
             }
             break;
         }
@@ -925,7 +931,7 @@ void EventStorage::handleMessage(cMessage *msg)
         int size = queue.getLength();
         if(!queue.isEmpty()){
 
-            if(roundTimeRecord.size() > 0 && tnow - roundTimeRecord[roundTimeRecord.size()-1] < 5){
+            if(roundTimeRecord.size() > 0 && tnow - roundTimeRecord[roundTimeRecord.size()-1] < 0){
 
             }
             else{
