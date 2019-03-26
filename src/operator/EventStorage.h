@@ -122,6 +122,7 @@ class EventStorage : public cSimpleModule
 
     bool first = true;
     int monitor_interval = 5;
+    int round_interval = 50;
 
     //basic
     cQueue queue;

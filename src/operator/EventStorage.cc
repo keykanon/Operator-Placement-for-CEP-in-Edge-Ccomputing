@@ -466,7 +466,7 @@ void EventStorage::processMessage(cMessage* msg){
                   }
 
                   //record the end time of this round
-                  roundTimeRecord.push_back(sim_time);
+                  roundTimeRecord.push_back(sim_time + round_interval);
 
                   replacement_decision();
 
@@ -744,19 +744,15 @@ void EventStorage::handleMessage(cMessage *msg)
             break;
         }
         case 1:{
-            if(sendDelay >  6000){
-                //sendDelayType = 2;
-                break;
+            if(sendDelay <  6000){
+                sendDelay += delayChange;
             }
-            sendDelay += delayChange;
             break;
         }
         case 2:{
-            if(sendDelay < 1000){
-                //sendDelayType = 1;
-                break;
+            if(sendDelay > 1000){
+                sendDelay -= delayChange;
             }
-            sendDelay -= delayChange;
             break;
         }
         default:
