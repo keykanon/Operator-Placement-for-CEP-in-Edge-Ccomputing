@@ -258,7 +258,8 @@ vector<vector<StreamPath*>> OperatorPlacementManager::getReMultiOperatorGraphPla
                 transmission_time =  distable[inFog->getNodeID()][fit->second->getNodeID()];
 
                double bandwidth = 1.0 / distable[inFog->getNodeID()][fit->second->getNodeID()];
-               double p = ErlangC(fit->second->getOriginCapacity(), (eventTable[fit->second->getNodeID()]+eventNum)/bandwidth);
+               //double p = ErlangC(fit->second->getOriginCapacity(), (eventTable[fit->second->getNodeID()]+eventNum)/bandwidth);
+               double p = ErlangC(1, (eventTable[fit->second->getNodeID()]+eventNum)/bandwidth);
                if(p > 1 || p < 0 || (eventTable[fit->second->getNodeID()]+eventNum) > bandwidth){
                    p = 1;
                    transmission_time += (((double)(eventTable[fit->second->getNodeID()]+ eventNum) ) * distable[inFog->getNodeID()][fit->second->getNodeID()]);
@@ -305,10 +306,7 @@ vector<vector<StreamPath*>> OperatorPlacementManager::getReMultiOperatorGraphPla
     }
     vector<vector<StreamPath*>> ans;
     for(int index = 0; index < ogModel.size(); index ++){
-
         ans.push_back((ogModel[index]->getStreamPath()));
-
-
     }
 
     for(int index = 0; index < ogModel.size(); index ++){
@@ -439,7 +437,7 @@ vector<vector<StreamPath*>> OperatorPlacementManager::getIterationOperatorGraphP
                 transmission_time =  distable[inFog->getNodeID()][fit->second->getNodeID()];
 
                double bandwidth = 1.0 / distable[inFog->getNodeID()][fit->second->getNodeID()];
-               double p = ErlangC(fit->second->getOriginCapacity(), (eventTable[fit->second->getNodeID()]+eventNum)/bandwidth);
+               double p = ErlangC(1, (eventTable[fit->second->getNodeID()]+eventNum)/bandwidth);
                if(p > 1 || p < 0 || (eventTable[fit->second->getNodeID()]+eventNum) > bandwidth){
                    p = 1;
                    transmission_time += (((double)(eventTable[fit->second->getNodeID()]+ eventNum) ) * distable[inFog->getNodeID()][fit->second->getNodeID()]);
@@ -449,7 +447,7 @@ vector<vector<StreamPath*>> OperatorPlacementManager::getIterationOperatorGraphP
 
                }
 
-               time =transmission_time + 1.0 / fit->second->getThroughput();
+               time = transmission_time + 1.0 / fit->second->getThroughput();
 
                if(time < minTime){
                    minTime = time;
@@ -480,7 +478,149 @@ vector<vector<StreamPath*>> OperatorPlacementManager::getIterationOperatorGraphP
         }
     }
 
+    int try_cnt = 0;
+    bool end_condition = false;
+    while(try_cnt < MAX_ITERATION && !end_condition){
+        maxRTR = -1;
+        maxRTR_index = 0;
+        for(int i = 0; i < ogModel.size(); i ++){
+            //calculate max response time
+            if(maxPathIndex.size() > i){
+                maxPathIndex[i] = ogModel[i]->getFirstServicedStreamPathIndex(averageW, averageThroughput, distable,eventTable);
+            }
+            else{
+                maxPathIndex.push_back(ogModel[i]->getFirstServicedStreamPathIndex(averageW, averageThroughput, distable,eventTable));
+            }
 
+            //get the max response time ratio
+            if(ogModel[i]->getRTR() > maxRTR && (!ogModel[i]->isAllPlaced()) && maxPathIndex[i] >= 0){
+                maxRTR = ogModel[i]->getRTR();
+                maxRTR_index = i;
+            }
+        }
+
+        //calculate the max stream path index
+        int maxIndex = 0;
+        for(int i = 0; i < maxRTR_index; i ++){
+            maxIndex += ogModel[i]->getStreamPath().size();
+        }
+        maxIndex += maxPathIndex[maxRTR_index];
+
+        //if the operator has been placed
+        OperatorModel* op = stream_paths[maxIndex].back();
+        if(op->getFogNode() != NULL){
+            OperatorModel* opModel = stream_paths[maxIndex].back();
+            double predicted_rt = stream_paths[maxIndex].getPredictedResponseTime();
+            FogNode* inFog = in[maxRTR_index][maxPathIndex[maxRTR_index]]->getFogNode();
+
+            double minTime = 1e12;
+            FogNode* destFog = NULL;
+            fit = fognodes.begin();
+
+            //find the best edge node with minimum response time
+            while(fit != fognodes.end()){
+                if(fit->second->getCapacity() <= 0){
+                    fit ++;
+                    continue;
+                }
+
+                if(fit->second ==inFog){
+                    destFog = inFog;
+                    break;
+                }
+
+                double time = 0, transmission_time = 0;
+                double eventNum = in[maxRTR_index][maxPathIndex[maxRTR_index]]->getPredictEventNumber();
+
+                transmission_time =  distable[inFog->getNodeID()][fit->second->getNodeID()];
+
+               double bandwidth = 1.0 / distable[inFog->getNodeID()][fit->second->getNodeID()];
+               double p = ErlangC(1, (eventTable[fit->second->getNodeID()]+eventNum)/bandwidth);
+               if(p > 1 || p < 0 || (eventTable[fit->second->getNodeID()]+eventNum) > bandwidth){
+                   p = 1;
+                   transmission_time += (((double)(eventTable[fit->second->getNodeID()]+ eventNum) ) * distable[inFog->getNodeID()][fit->second->getNodeID()]);
+               }
+               else {
+                   transmission_time += p * (double)(eventTable[fit->second->getNodeID()]+ eventNum) * distable[inFog->getNodeID()][fit->second->getNodeID()];
+               }
+
+               time =transmission_time + 1.0 / fit->second->getThroughput();
+
+               if(time < minTime){
+                   minTime = time;
+                   destFog = fit->second;
+               }
+
+               fit ++;
+
+            }
+            stream_paths[maxIndex].pop();
+        }
+        else{//find a fog node to place the operator
+            FogNode* inFog = in[maxRTR_index][maxPathIndex[maxRTR_index]]->getFogNode();
+
+            double minTime = 1e12;
+            FogNode* destFog = NULL;
+            fit = fognodes.begin();
+
+            //find the best edge node with minimum response time
+            while(fit != fognodes.end()){
+                if(fit->second->getCapacity() <= 0){
+                    fit ++;
+                    continue;
+                }
+
+                if(fit->second ==inFog){
+                    destFog = inFog;
+                    break;
+                }
+
+                double time = 0, transmission_time = 0;
+                double eventNum = in[maxRTR_index][maxPathIndex[maxRTR_index]]->getPredictEventNumber();
+
+                transmission_time =  distable[inFog->getNodeID()][fit->second->getNodeID()];
+
+               double bandwidth = 1.0 / distable[inFog->getNodeID()][fit->second->getNodeID()];
+               double p = ErlangC(fit->second->getOriginCapacity(), (eventTable[fit->second->getNodeID()]+eventNum)/bandwidth);
+               if(p > 1 || p < 0 || (eventTable[fit->second->getNodeID()]+eventNum) > bandwidth){
+                   p = 1;
+                   transmission_time += (((double)(eventTable[fit->second->getNodeID()]+ eventNum) ) * distable[inFog->getNodeID()][fit->second->getNodeID()]);
+               }
+               else {
+                   transmission_time += p * (double)(eventTable[fit->second->getNodeID()]+ eventNum) * distable[inFog->getNodeID()][fit->second->getNodeID()];
+               }
+
+               time = transmission_time + 1.0 / fit->second->getThroughput();
+
+               if(time < minTime){
+                   minTime = time;
+                   destFog = fit->second;
+               }
+
+               fit ++;
+            }
+
+            //放置
+            //FogNode* destFog = inFog->getSpecialFogNode(maxRTR_index,in[maxRTR_index][maxPathIndex[maxRTR_index]]->getPredictEventNumber(),getEndToEndDelay);
+            if(destFog != NULL && destFog->getCapacity() > 0){
+                stream_paths[maxIndex].back()->setFogNode(destFog);
+                eventTable[destFog->getNodeID()] += in[maxRTR_index][maxPathIndex[maxRTR_index]]->getPredictEventNumber();
+                in[maxRTR_index][maxPathIndex[maxRTR_index]] = stream_paths[maxIndex].back();
+                destFog->setCapacity(destFog->getCapacity()-1);
+
+            }
+            else{
+                if(this->fognetworks->getFogNodes().size() > fognetworks->getH() && monitorIncrease){
+                    this->fognetworks->increaseHops();
+                    monitorIncrease = false;
+                    //   return ogModel->getStreamPath();
+                }
+                break;
+            }
+        }
+
+        ++ try_cnt;
+    }
 
     //返回结果
     vector<vector<StreamPath*>> ans;

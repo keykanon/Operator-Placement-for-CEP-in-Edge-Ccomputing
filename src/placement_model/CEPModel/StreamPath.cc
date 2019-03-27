@@ -199,7 +199,7 @@ double StreamPath::predictResponseTime(double averageW, double averageThroughput
             transmission_time += 0.01;
             //EV << "dis[" << fs->getNodeID() << "][" << fd->getNodeID() << "] = " <<  distable[fs->getNodeID()][fd->getNodeID()] << endl;
             double bandwidth = 1.0 / distable[fs->getNodeID()][fd->getNodeID()];
-            double p = ErlangC(fd->getOriginCapacity(), eventTable[fd->getNodeID()]/bandwidth);
+            double p = ErlangC(1, eventTable[fd->getNodeID()]/bandwidth);
             if(p > 1 || p < 0 || eventTable[fd->getNodeID()] > bandwidth){
                 p = 1;
                 transmission_time += (((double)eventTable[fd->getNodeID()] ) * distable[fs->getNodeID()][fd->getNodeID()]);

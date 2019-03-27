@@ -38,6 +38,7 @@ private:
     double minimum_input_rate = 100;
     double maximum_input_rate = 2500;
 
+    const int MAX_ITERATION = 100;
 
 	bool init = true;
 
