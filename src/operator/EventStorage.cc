@@ -818,77 +818,11 @@ void EventStorage::handleMessage(cMessage *msg)
            //--------------------Ëã·¨---------------------
                            //-----greedy multiple operator graph placement---------------
             int nodeIndex = intensiveNodeID;
-            sendPlacementPacket(-1,nodeIndex,opm[nodeIndex]);
+
             clock_t begin = clock();
 
 
-            vector<int> node_capacity;
-            vector<double> input_rate;
-            vector<double> response_time;
-            if(strategy == 0 && algorithm >= 2){
-                opm[nodeIndex]->RL_update_parameter();
-                node_capacity = opm[nodeIndex]->getFogNodeCapacity();
-                input_rate = getLastInputRate();
-                response_time = getLastRecord(response_time_record);
-            }
-
-
-            switch(strategy){
-            case 0:
-                if(algorithm == 0){
-                    placement[nodeIndex] = opm[nodeIndex]->getReMultiOperatorGraphPlacement(replace);
-                    //newPlacement = opm->getReMultiOperatorGraphPlacement();
-                }
-                else if(algorithm == 1){
-                    placement[nodeIndex] = opm[nodeIndex]->getReSAOperatorGraphPlacement(0.99, 100);
-                }
-                else if(algorithm == 2){
-
-                    placement[nodeIndex] = opm[nodeIndex]->Monte_Carlo(node_capacity, input_rate, response_time);
-                }
-                else if(algorithm == 3){
-
-                    placement[nodeIndex] = opm[nodeIndex]->Sarsa_TD(node_capacity, input_rate, response_time);
-                }
-                else if(algorithm == 4){
-
-                    placement[nodeIndex] = opm[nodeIndex]->QLearning(node_capacity, input_rate, response_time);
-                }
-            break;
-            case 1:
-                if(algorithm == 0){
-                    //------simple greedy(nearest) operator graph placement-------------
-                    placement[nodeIndex] = opm[nodeIndex]->getSimpleGreedyPlacement(replace);
-                    //newPlacement = opm->getSimpleGreedyPlacement();
-                }
-                else if(algorithm == 1){
-                    //-------selfish operator graph placement-----------
-                    placement[nodeIndex] = opm[nodeIndex]->getSelfishMultiOperatorPlacement();  //newPlacement = opm->getSelfishMultiOperatorPlacement();
-                }
-                else if(algorithm == 2){
-                    placement[nodeIndex] = opm[nodeIndex]->getSelfishSAOperatorGraphPlacement(0.99,100);
-                }
-                else if(algorithm == 3){
-                    placement[nodeIndex] = opm[nodeIndex]->getSelfResourceAwarePlacement();
-                }
-                else if(algorithm == 4){
-                    placement[nodeIndex] = opm[nodeIndex]->getLoadBalance(1, 0.05, opm[nodeIndex]->getFogNodeNum(), replace);
-                }
-                else if(algorithm == 5){
-                    placement[nodeIndex] = opm[nodeIndex]->getOveralGraphPlacement(replace);
-                }
-                else if(algorithm == 6){
-                    placement[nodeIndex] = opm[nodeIndex]->getResponseTimeGreedyPlacement(replace);
-                }
-                break;
-            case 2:
-                break;
-
-            }
-
-            OperatorPlacementManager* opm_i = opm[nodeIndex];
-
-            sendPlacementPacket(nodeIndex,nodeIndex, opm_i);
+            replacement_decision();
 
             clock_t end = clock();
             algorithm_time.push_back((double)(end - begin));
@@ -1019,72 +953,7 @@ void EventStorage::handleMessage(cMessage *msg)
             opm[monitor_message->getDestAddr()]->updateCapacity(monitor_message->getSrcAddr(),monitor_message->getPlacement().placementNum);
             clock_t begin = clock();
 
-             vector<int> node_capacity;
-              vector<double> input_rate;
-              vector<double> response_time;
-              if(strategy == 0 && algorithm >= 2){
-                  opm[nodeIndex]->RL_update_parameter();
-                  node_capacity = opm[nodeIndex]->getFogNodeCapacity();
-                  input_rate = getLastInputRate();
-                  response_time = getLastRecord(response_time_record);
-              }
-
-
-            switch(strategy){
-            case 0:
-                if(algorithm == 0){
-                    placement[nodeIndex] = opm[nodeIndex]->getReMultiOperatorGraphPlacement(replace);
-                    //newPlacement = opm->getReMultiOperatorGraphPlacement();
-                }
-                else if(algorithm == 1){
-                    placement[nodeIndex] = opm[nodeIndex]->getReSAOperatorGraphPlacement(0.99, 100);
-                }
-                else if(algorithm == 2){
-
-                   placement[nodeIndex] = opm[nodeIndex]->Monte_Carlo(node_capacity, input_rate, response_time);
-               }
-                else if(algorithm == 3){
-
-                     placement[nodeIndex] = opm[nodeIndex]->Sarsa_TD(node_capacity, input_rate, response_time);
-                }
-                else if(algorithm == 4){
-
-                    placement[nodeIndex] = opm[nodeIndex]->QLearning(node_capacity, input_rate, response_time);
-                }
-            break;
-            case 1:
-                if(algorithm == 0){
-                    //------simple greedy(nearest) operator graph placement-------------
-                    placement[nodeIndex] = opm[nodeIndex]->getSimpleGreedyPlacement(replace);
-                    //newPlacement = opm->getSimpleGreedyPlacement();
-                }
-                else if(algorithm == 1){
-                    //-------selfish operator graph placement-----------
-                    placement[nodeIndex] = opm[nodeIndex]->getSelfishMultiOperatorPlacement();  //newPlacement = opm->getSelfishMultiOperatorPlacement();
-                }
-                else if(algorithm == 2){
-                    placement[nodeIndex] = opm[nodeIndex]->getSelfishSAOperatorGraphPlacement(0.99,100);
-                }
-                else if(algorithm == 3){
-                    placement[nodeIndex] = opm[nodeIndex]->getSelfResourceAwarePlacement();
-                }
-                else if(algorithm == 4){
-                    placement[nodeIndex] = opm[nodeIndex]->getLoadBalance(1, 0.05, opm[nodeIndex]->getFogNodeNum(), replace);
-                }
-                else if(algorithm == 5){
-                    placement[nodeIndex] = opm[nodeIndex]->getOveralGraphPlacement(replace);
-                }
-                else if(algorithm == 6){
-                    placement[nodeIndex] = opm[nodeIndex]->getResponseTimeGreedyPlacement(replace);
-                }
-                break;
-            case 2:
-                break;
-
-            }
-
-            OperatorPlacementManager* opm_i = opm[nodeIndex];
-            sendPlacementPacket(nodeIndex,nodeIndex, opm_i);
+            replacement_decision();
 
             map<int, OperatorPlacementManager*>::iterator opmIt = opm.begin();
 
@@ -1534,6 +1403,9 @@ void EventStorage::replacement_decision(){
         }
         else if(algorithm == 6){
             placement[nodeIndex] = opm[nodeIndex]->getResponseTimeGreedyPlacement(replace);
+        }
+        else if(algorithm == 7){
+            placement[nodeIndex] = opm[nodeIndex]->getIterationOperatorGraphPlacement(replace);
         }
         break;
     case 2:

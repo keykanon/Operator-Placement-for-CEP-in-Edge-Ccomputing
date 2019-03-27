@@ -374,6 +374,28 @@ int OperatorGraphModel::calResponseTime(double averageW, double averageThroughpu
     return maxPathIndex;
 }
 
+
+//replacement use this method to get the first stream path index
+int OperatorGraphModel::getReFirstServicedStreamPathIndex(double averageW, double averageThroughput, map<int, map<int, double>>& distable, map<int,int>& eventTable){
+    double maxResponseTime = -1;
+    this->predicted_response_time = 0;
+    int maxPathIndex = -1;
+    for(int i = 0; i < stream_paths.size(); i ++){
+        double predicted_rt = stream_paths[i]->predictResponseTime(averageW, averageThroughput, distable,eventTable);
+
+        //find the max response time stream path index
+        if(predicted_rt > maxResponseTime ){
+            maxResponseTime = predicted_rt;
+            maxPathIndex = i;
+        }
+        if(predicted_rt > this->predicted_response_time){
+            this->predicted_response_time = predicted_rt;
+        }
+    }
+
+    return maxPathIndex;
+}
+
 //calculate response time of the operator graph
 int OperatorGraphModel::getFirstServicedStreamPathIndex(double averageW, double averageThroughput, map<int, map<int, double>>& distable, map<int,int>& eventTable){
     double maxResponseTime = -1;

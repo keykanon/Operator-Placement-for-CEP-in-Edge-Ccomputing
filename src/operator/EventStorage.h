@@ -68,7 +68,7 @@ class EventStorage : public cSimpleModule
 
     //strategy
     int strategy = 1;
-    int algorithm =  4;
+    int algorithm =  7;
 
     int sendDelayType = 0;
     int poisson_lambda = 30;

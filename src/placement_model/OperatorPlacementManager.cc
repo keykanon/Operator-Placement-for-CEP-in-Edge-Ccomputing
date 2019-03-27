@@ -480,16 +480,22 @@ vector<vector<StreamPath*>> OperatorPlacementManager::getIterationOperatorGraphP
 
     int try_cnt = 0;
     bool end_condition = false;
+    stream_paths.clear();
+    for(int index = 0; index < ogModel.size(); index ++){
+        for(int i = 0; i < ogModel[index]->getStreamPathSize(); i ++){
+            stream_paths.push_back(*(ogModel[index]->getStreamPath()[i]));
+        }
+    }
     while(try_cnt < MAX_ITERATION && !end_condition){
         maxRTR = -1;
         maxRTR_index = 0;
         for(int i = 0; i < ogModel.size(); i ++){
             //calculate max response time
             if(maxPathIndex.size() > i){
-                maxPathIndex[i] = ogModel[i]->getFirstServicedStreamPathIndex(averageW, averageThroughput, distable,eventTable);
+                maxPathIndex[i] = ogModel[i]->getReFirstServicedStreamPathIndex(averageW, averageThroughput, distable,eventTable);
             }
             else{
-                maxPathIndex.push_back(ogModel[i]->getFirstServicedStreamPathIndex(averageW, averageThroughput, distable,eventTable));
+                maxPathIndex.push_back(ogModel[i]->getReFirstServicedStreamPathIndex(averageW, averageThroughput, distable,eventTable));
             }
 
             //get the max response time ratio
@@ -505,6 +511,10 @@ vector<vector<StreamPath*>> OperatorPlacementManager::getIterationOperatorGraphP
             maxIndex += ogModel[i]->getStreamPath().size();
         }
         maxIndex += maxPathIndex[maxRTR_index];
+
+        if(stream_paths[maxIndex].size() == 0){
+            break;
+        }
 
         //if the operator has been placed
         OperatorModel* op = stream_paths[maxIndex].back();
@@ -544,7 +554,7 @@ vector<vector<StreamPath*>> OperatorPlacementManager::getIterationOperatorGraphP
                    transmission_time += p * (double)(eventTable[fit->second->getNodeID()]+ eventNum) * distable[inFog->getNodeID()][fit->second->getNodeID()];
                }
 
-               time =transmission_time + 1.0 / fit->second->getThroughput();
+               time = transmission_time + 1.0 / fit->second->getThroughput();
 
                if(time < minTime){
                    minTime = time;
@@ -554,7 +564,26 @@ vector<vector<StreamPath*>> OperatorPlacementManager::getIterationOperatorGraphP
                fit ++;
 
             }
-            stream_paths[maxIndex].pop();
+
+            if(destFog == opModel->getFogNode()){
+                stream_paths[maxIndex].pop();
+
+            }
+            else if(destFog != NULL && destFog->getCapacity() > 0){
+                //reset
+                eventTable[opModel->getFogNode()->getNodeID()] -= opModel->getPredictEventNumber();
+                opModel->getFogNode()->setCapacity(opModel->getFogNode()->getCapacity()+1);
+
+                //replace
+                stream_paths[maxIndex].back()->setFogNode(destFog);
+                eventTable[destFog->getNodeID()] += in[maxRTR_index][maxPathIndex[maxRTR_index]]->getPredictEventNumber();
+                in[maxRTR_index][maxPathIndex[maxRTR_index]] = stream_paths[maxIndex].back();
+                destFog->setCapacity(destFog->getCapacity()-1);
+            }
+            else{
+                stream_paths[maxIndex].pop();
+
+            }
         }
         else{//find a fog node to place the operator
             FogNode* inFog = in[maxRTR_index][maxPathIndex[maxRTR_index]]->getFogNode();
@@ -607,7 +636,6 @@ vector<vector<StreamPath*>> OperatorPlacementManager::getIterationOperatorGraphP
                 eventTable[destFog->getNodeID()] += in[maxRTR_index][maxPathIndex[maxRTR_index]]->getPredictEventNumber();
                 in[maxRTR_index][maxPathIndex[maxRTR_index]] = stream_paths[maxIndex].back();
                 destFog->setCapacity(destFog->getCapacity()-1);
-
             }
             else{
                 if(this->fognetworks->getFogNodes().size() > fognetworks->getH() && monitorIncrease){
@@ -619,6 +647,13 @@ vector<vector<StreamPath*>> OperatorPlacementManager::getIterationOperatorGraphP
             }
         }
 
+        end_condition = true;
+        for(int i = 0; i < stream_paths.size(); ++ i){
+            if(stream_paths[i].size() > 0){
+                end_condition = false;
+                break;
+            }
+        }
         ++ try_cnt;
     }
 
@@ -1269,7 +1304,8 @@ vector<vector<StreamPath*>> OperatorPlacementManager::getLoadBalance(double thet
         }
         return ans;
     }
-    //resetCapacity();
+
+    resetCapacity();
 
 
 
@@ -2248,6 +2284,7 @@ int OperatorPlacementManager::getFogNodeNum(){
 }
 
 void OperatorPlacementManager::printPlacement(ofstream& out){
+    out << "--------------------------------------------" << endl;
     for(int index = 0; index < ogModel.size(); index ++){
         vector<StreamPath*> sp = ogModel[index]->getStreamPath();
         for(int i = 0; i < sp.size(); i ++){
@@ -2255,6 +2292,7 @@ void OperatorPlacementManager::printPlacement(ofstream& out){
         }
         out << "--------------------------------------------" << endl;
     }
+    out << "--------------------------------------------" << endl;
 }
 
 //calculate the difference between two placements
@@ -2529,16 +2567,16 @@ void OperatorPlacementManager::resetCapacity(){
     }
 
 
+    int opNum = 0;
     //reset cep operators' placement
     for(int i = 0; i < ogModel.size(); i ++){
         vector<OperatorModel*> ops = ogModel[i]->getOperatorModel();
         for(int j = 1; j < ops.size(); j ++){
             ops[j]->setFogNode(NULL);
+            opNum ++;
         }
     }
-
-
-
+    fognetworks->getES()->setOpNum(opNum);
 }
 
 //use Floyd algorithm to calculate distance table

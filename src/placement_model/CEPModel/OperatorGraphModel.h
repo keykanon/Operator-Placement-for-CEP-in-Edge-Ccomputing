@@ -75,6 +75,8 @@ public:
 	//calculate response time of the operator graph
 	int calResponseTime(double averageW, double averageThroughput, map<int, map<int, double>>& distable, map<int,int>& eventTable);
 
+	//in replacement, get the path index with highest delay
+	int getReFirstServicedStreamPathIndex(double averageW, double averageThroughput, map<int, map<int, double>>& distable, map<int,int>& eventTable);
 	//calculate response time of the operator graph
 	int getFirstServicedStreamPathIndex(double averageW, double averageThroughput, map<int, map<int, double>>& distable,map<int,int>& eventTable);
 	void setResponseTime(double);
