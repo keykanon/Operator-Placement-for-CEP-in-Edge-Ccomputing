@@ -581,7 +581,7 @@ vector<vector<StreamPath*>> OperatorPlacementManager::getIterationOperatorGraphP
                 transmission_time =  distable[inFog->getNodeID()][fit->second->getNodeID()];
 
                double bandwidth = 1.0 / distable[inFog->getNodeID()][fit->second->getNodeID()];
-               double p = ErlangC(fit->second->getOriginCapacity(), (eventTable[fit->second->getNodeID()]+eventNum)/bandwidth);
+               double p = ErlangC(1, (eventTable[fit->second->getNodeID()]+eventNum)/bandwidth);
                if(p > 1 || p < 0 || (eventTable[fit->second->getNodeID()]+eventNum) > bandwidth){
                    p = 1;
                    transmission_time += (((double)(eventTable[fit->second->getNodeID()]+ eventNum) ) * distable[inFog->getNodeID()][fit->second->getNodeID()]);

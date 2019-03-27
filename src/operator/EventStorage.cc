@@ -1299,10 +1299,17 @@ void EventStorage::avgRecordCal(map<int, map<int, double>>& record, vector<doubl
         //plus total record
         for(int i = timeBegin; i < timeEnd; ++ i){
             map<int, double>::iterator mit = record[i].begin();
+            bool zero = true;
             while(mit != record[i].end()){
+                if(mit->second != 0){
+                    zero = false;
+                }
                 avg += mit->second;
                 ++ count;
                 mit ++;
+            }
+            if(zero){
+                count -= record[i].size();
             }
 
         }
