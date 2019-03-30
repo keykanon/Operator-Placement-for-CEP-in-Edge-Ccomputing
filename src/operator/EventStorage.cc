@@ -13,9 +13,14 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
+
+
 #include "EventStorage.h"
 
 Define_Module(EventStorage);
+
+
+
 
 void EventStorage::finish(){
     eedStats.record();
@@ -459,9 +464,15 @@ void EventStorage::processMessage(cMessage* msg){
                       opm[intensiveNodeID]->resetOG(type);
                       break;
                   case 1:
+                      test_count ++;
+                      if(test_count == 10){
+                          test_count = 0;
+                          test_algorithm_type = (test_algorithm_type +1) % test_algorithm.size();
+                      }
                       intensiveNodeID = (intensiveNodeID + 1) % 10;
                       opm[intensiveNodeID] = opm[oriIntensiveNodeID];
                       opm[intensiveNodeID]->resetES(intensiveNodeID);
+
                       break;
                   case 2:
                       break;

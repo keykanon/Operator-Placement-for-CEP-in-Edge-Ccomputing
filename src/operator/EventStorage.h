@@ -52,6 +52,10 @@ class EventStorage : public cSimpleModule
     //²âÊÔÄ£Ê½
     int test_type = 1;
 
+    int test_count = 0;
+    int test_algorithm_type = 0;
+    vector<int> test_strategy = {0, 1, 1, 1};
+    vector<int> test_algorithm = {0, 4, 6, 7};
     //operator graph numbers
     int networkSize ;
 
