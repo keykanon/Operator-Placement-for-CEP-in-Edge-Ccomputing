@@ -475,6 +475,20 @@ void EventStorage::processMessage(cMessage* msg){
                       opm[intensiveNodeID] = opm[oriIntensiveNodeID];
                       opm[intensiveNodeID]->resetES(intensiveNodeID);
                       opm[intensiveNodeID]->resetCapacity();
+
+                      //reset destAddress
+                      for(int i = 0; i < OGNUM; i ++){
+
+                          destAddress[i] = intensiveNodeID;//destAddresses[intuniform(0, destAddresses.size()-1)];
+                          vector<int> ogmap;
+                          if(edgeCepMap.count(destAddress[i]) > 0){
+                              ogmap = edgeCepMap[destAddress[i]];
+                          }
+                          if(ogmap.size() <= i){
+                              ogmap.push_back(i);
+                          }
+                          edgeCepMap[destAddress[i]] = ogmap;
+                      }
                       break;
                   case 2:
                       break;
@@ -732,7 +746,7 @@ void EventStorage::handleMessage(cMessage *msg)
                 EventPacket* pkl = setEventMarker(destAddrs, pindex, sim_time, i, used, path->getOperators());
 
                 //queue.insert(pkl);
-                int nodeIndex = pkl->getSrcAddr();
+                int nodeIndex = intensiveNodeID;
                 cGate* outGate = gateHalf("gate" , cGate::OUTPUT, nodeIndex);
                 pkl->setSendTime(simTime().dbl());
                 double msg_processTime = (double)(process_end-process_begin);
@@ -889,7 +903,7 @@ void EventStorage::handleMessage(cMessage *msg)
             else{
                 EventPacket* pk = (EventPacket*)queue.pop();
                 //int ogIndex = pk->getAppNum();
-                int nodeIndex = pk->getSrcAddr();
+                int nodeIndex = intensiveNodeID;
                 if(!pk->getMonitorFlag()){
                     int ogIndex = pk->getAppNum();
 
