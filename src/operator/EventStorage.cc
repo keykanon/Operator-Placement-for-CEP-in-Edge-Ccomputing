@@ -474,7 +474,7 @@ void EventStorage::processMessage(cMessage* msg){
                       intensiveNodeID = (intensiveNodeID + 1) % 10;
                       opm[intensiveNodeID] = opm[oriIntensiveNodeID];
                       opm[intensiveNodeID]->resetES(intensiveNodeID);
-
+                      opm[intensiveNodeID]->resetCapacity();
                       break;
                   case 2:
                       break;
