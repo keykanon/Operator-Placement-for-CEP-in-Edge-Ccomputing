@@ -468,6 +468,8 @@ void EventStorage::processMessage(cMessage* msg){
                       if(test_count == 10){
                           test_count = 0;
                           test_algorithm_type = (test_algorithm_type +1) % test_algorithm.size();
+                          strategy = test_strategy[test_algorithm_type];
+                          algorithm = test_algorithm[test_algorithm_type];
                       }
                       intensiveNodeID = (intensiveNodeID + 1) % 10;
                       opm[intensiveNodeID] = opm[oriIntensiveNodeID];
