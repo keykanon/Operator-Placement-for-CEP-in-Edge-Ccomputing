@@ -50,7 +50,7 @@ class EventStorage : public cSimpleModule
 {
   private:
     //≤‚ ‘ƒ£ Ω
-    int test_type = 0;
+    int test_type = 1;
 
     //operator graph numbers
     int networkSize ;
@@ -67,8 +67,8 @@ class EventStorage : public cSimpleModule
     ofstream out;
 
     //strategy
-    int strategy = 1;
-    int algorithm =  7;
+    int strategy = 0;
+    int algorithm =  0;
 
     int sendDelayType = 0;
     int poisson_lambda = 30;

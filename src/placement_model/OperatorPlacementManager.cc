@@ -486,6 +486,8 @@ vector<vector<StreamPath*>> OperatorPlacementManager::getIterationOperatorGraphP
             stream_paths.push_back(*(ogModel[index]->getStreamPath()[i]));
         }
     }
+
+    //迭代过程
     while(try_cnt < MAX_ITERATION && !end_condition){
         maxRTR = -1;
         maxRTR_index = 0;
@@ -539,6 +541,7 @@ vector<vector<StreamPath*>> OperatorPlacementManager::getIterationOperatorGraphP
                     break;
                 }
 
+                //响应时间
                 double time = 0, transmission_time = 0;
                 double eventNum = in[maxRTR_index][maxPathIndex[maxRTR_index]]->getPredictEventNumber();
 
@@ -604,6 +607,7 @@ vector<vector<StreamPath*>> OperatorPlacementManager::getIterationOperatorGraphP
                     break;
                 }
 
+                //响应时间
                 double time = 0, transmission_time = 0;
                 double eventNum = in[maxRTR_index][maxPathIndex[maxRTR_index]]->getPredictEventNumber();
 

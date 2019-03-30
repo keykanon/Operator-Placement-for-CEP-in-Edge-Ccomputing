@@ -440,6 +440,9 @@ void EventStorage::processMessage(cMessage* msg){
                   //输出本轮record
                   outputRecord();
                   vector<int> type = this->type;
+
+                  int oriIntensiveNodeID = intensiveNodeID;
+
                   //根据测试模式，改变参数
                   switch(test_type){
                   case 0:
@@ -457,6 +460,8 @@ void EventStorage::processMessage(cMessage* msg){
                       break;
                   case 1:
                       intensiveNodeID = (intensiveNodeID + 1) % 10;
+                      opm[intensiveNodeID] = opm[oriIntensiveNodeID];
+                      opm[intensiveNodeID]->resetES(intensiveNodeID);
                       break;
                   case 2:
                       break;
@@ -1235,7 +1240,7 @@ void EventStorage::outputRecord(){
     //open result file
     char filename[1024];
     memset(filename, 0 , 1024);
-    sprintf(filename, "result_c5_n3_og%d_r%d_%d_%d_dr%d_%d.txt",type[0], opm[intensiveNodeID]->getOperatorGraph(0)->randSeed ,  strategy, algorithm, sendDelayType, poisson_lambda);
+    sprintf(filename, "result_c5_n3_en%d_r%d_%d_%d_dr%d_%d.txt",intensiveNodeID, opm[intensiveNodeID]->getOperatorGraph(0)->randSeed ,  strategy, algorithm, sendDelayType, poisson_lambda);
     out.open(filename, ios::out);
 
     int beginTime = 0;

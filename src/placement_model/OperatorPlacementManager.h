@@ -228,5 +228,27 @@ public:
         }
         es->setOpNum(size);
     }
+
+    void resetES(int fognodeID){
+        //update es
+        FogNode* es;
+        if(fognetworks->getFogNode(fognodeID) == NULL){
+            es = new FogNode(fognodeID);
+            fognetworks->updateES(es);
+            fognetworks->addFogNode(es);
+        }
+        else{
+            es = fognetworks->getFogNode(fognodeID);
+           fognetworks->updateES(es);
+        }
+        //update source to es map
+        for(int i = 0; i < this->ogModel.size(); ++ i){
+            for(int j = 0; j < this->ogModel[i]->getSource().size(); ++ j){
+                this->ogModel[i]->getSource()[j]->setFogNode(es);
+            }
+        }
+
+    }
+
 };
 
