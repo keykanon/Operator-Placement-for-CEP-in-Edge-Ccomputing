@@ -50,7 +50,7 @@ class EventStorage : public cSimpleModule
 {
   private:
     //²âÊÔÄ£Ê½
-    int test_type = 1;
+    int test_type = 0;
 
     int test_count = 0;
     int test_algorithm_type = 1;
