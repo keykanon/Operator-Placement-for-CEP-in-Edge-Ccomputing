@@ -1,14 +1,14 @@
 version 2
-run Net10_r-0-20180130-20:53:10-6616
-attr configname Net10_r
-attr datetime 20180130-20:53:10
-attr experiment Net10_r
+run Net10_4-0-20190331-20:54:49-12968
+attr configname Net10_4
+attr datetime 20190331-20:54:49
+attr experiment Net10_4
 attr inifile omnetpp.ini
 attr iterationvars ""
 attr iterationvarsf ""
 attr measurement ""
-attr network mogp.networks.Net10_r
-attr processid 6616
+attr network mogp.networks.Net10_4
+attr processid 12968
 attr repetition 0
 attr replication #0
 attr resultdir results
@@ -17,7 +17,7 @@ attr seedset 0
 param **.eventStorage.packetLength "1024 byte"
 param **.node[*].operator[*].packetLength "1024 byte"
 
-statistic Net10_r.node[0].routing outputIf:histogram
+statistic Net10_4.node[0].routing outputIf:histogram
 field count 0
 field mean nan
 field stddev nan
@@ -59,15 +59,15 @@ bin	0.4	0
 bin	0.43333333333333	0
 bin	0.46666666666667	0
 bin	0.5	0
-scalar Net10_r.node[0].routing drop:count 0
+scalar Net10_4.node[0].routing drop:count 0
 attr interpolationmode none
 attr title "dropped packet byte length, count"
 attr unit bytes
-scalar Net10_r.node[0].routing drop:sum 0
+scalar Net10_4.node[0].routing drop:sum 0
 attr interpolationmode none
 attr title "dropped packet byte length, sum"
 attr unit bytes
-statistic Net10_r.node[1].routing outputIf:histogram
+statistic Net10_4.node[1].routing outputIf:histogram
 field count 0
 field mean nan
 field stddev nan
@@ -109,15 +109,15 @@ bin	0.4	0
 bin	0.43333333333333	0
 bin	0.46666666666667	0
 bin	0.5	0
-scalar Net10_r.node[1].routing drop:count 0
+scalar Net10_4.node[1].routing drop:count 0
 attr interpolationmode none
 attr title "dropped packet byte length, count"
 attr unit bytes
-scalar Net10_r.node[1].routing drop:sum 0
+scalar Net10_4.node[1].routing drop:sum 0
 attr interpolationmode none
 attr title "dropped packet byte length, sum"
 attr unit bytes
-statistic Net10_r.node[2].routing outputIf:histogram
+statistic Net10_4.node[2].routing outputIf:histogram
 field count 0
 field mean nan
 field stddev nan
@@ -159,15 +159,15 @@ bin	0.4	0
 bin	0.43333333333333	0
 bin	0.46666666666667	0
 bin	0.5	0
-scalar Net10_r.node[2].routing drop:count 0
+scalar Net10_4.node[2].routing drop:count 0
 attr interpolationmode none
 attr title "dropped packet byte length, count"
 attr unit bytes
-scalar Net10_r.node[2].routing drop:sum 0
+scalar Net10_4.node[2].routing drop:sum 0
 attr interpolationmode none
 attr title "dropped packet byte length, sum"
 attr unit bytes
-statistic Net10_r.node[3].routing outputIf:histogram
+statistic Net10_4.node[3].routing outputIf:histogram
 field count 0
 field mean nan
 field stddev nan
@@ -209,15 +209,15 @@ bin	0.4	0
 bin	0.43333333333333	0
 bin	0.46666666666667	0
 bin	0.5	0
-scalar Net10_r.node[3].routing drop:count 0
+scalar Net10_4.node[3].routing drop:count 0
 attr interpolationmode none
 attr title "dropped packet byte length, count"
 attr unit bytes
-scalar Net10_r.node[3].routing drop:sum 0
+scalar Net10_4.node[3].routing drop:sum 0
 attr interpolationmode none
 attr title "dropped packet byte length, sum"
 attr unit bytes
-statistic Net10_r.node[4].routing outputIf:histogram
+statistic Net10_4.node[4].routing outputIf:histogram
 field count 0
 field mean nan
 field stddev nan
@@ -259,15 +259,15 @@ bin	0.4	0
 bin	0.43333333333333	0
 bin	0.46666666666667	0
 bin	0.5	0
-scalar Net10_r.node[4].routing drop:count 0
+scalar Net10_4.node[4].routing drop:count 0
 attr interpolationmode none
 attr title "dropped packet byte length, count"
 attr unit bytes
-scalar Net10_r.node[4].routing drop:sum 0
+scalar Net10_4.node[4].routing drop:sum 0
 attr interpolationmode none
 attr title "dropped packet byte length, sum"
 attr unit bytes
-statistic Net10_r.node[5].routing outputIf:histogram
+statistic Net10_4.node[5].routing outputIf:histogram
 field count 0
 field mean nan
 field stddev nan
@@ -309,15 +309,15 @@ bin	0.4	0
 bin	0.43333333333333	0
 bin	0.46666666666667	0
 bin	0.5	0
-scalar Net10_r.node[5].routing drop:count 0
+scalar Net10_4.node[5].routing drop:count 0
 attr interpolationmode none
 attr title "dropped packet byte length, count"
 attr unit bytes
-scalar Net10_r.node[5].routing drop:sum 0
+scalar Net10_4.node[5].routing drop:sum 0
 attr interpolationmode none
 attr title "dropped packet byte length, sum"
 attr unit bytes
-statistic Net10_r.node[6].routing outputIf:histogram
+statistic Net10_4.node[6].routing outputIf:histogram
 field count 0
 field mean nan
 field stddev nan
@@ -359,15 +359,15 @@ bin	0.4	0
 bin	0.43333333333333	0
 bin	0.46666666666667	0
 bin	0.5	0
-scalar Net10_r.node[6].routing drop:count 0
+scalar Net10_4.node[6].routing drop:count 0
 attr interpolationmode none
 attr title "dropped packet byte length, count"
 attr unit bytes
-scalar Net10_r.node[6].routing drop:sum 0
+scalar Net10_4.node[6].routing drop:sum 0
 attr interpolationmode none
 attr title "dropped packet byte length, sum"
 attr unit bytes
-statistic Net10_r.node[7].routing outputIf:histogram
+statistic Net10_4.node[7].routing outputIf:histogram
 field count 0
 field mean nan
 field stddev nan
@@ -409,15 +409,15 @@ bin	0.4	0
 bin	0.43333333333333	0
 bin	0.46666666666667	0
 bin	0.5	0
-scalar Net10_r.node[7].routing drop:count 0
+scalar Net10_4.node[7].routing drop:count 0
 attr interpolationmode none
 attr title "dropped packet byte length, count"
 attr unit bytes
-scalar Net10_r.node[7].routing drop:sum 0
+scalar Net10_4.node[7].routing drop:sum 0
 attr interpolationmode none
 attr title "dropped packet byte length, sum"
 attr unit bytes
-statistic Net10_r.node[8].routing outputIf:histogram
+statistic Net10_4.node[8].routing outputIf:histogram
 field count 0
 field mean nan
 field stddev nan
@@ -459,15 +459,15 @@ bin	0.4	0
 bin	0.43333333333333	0
 bin	0.46666666666667	0
 bin	0.5	0
-scalar Net10_r.node[8].routing drop:count 0
+scalar Net10_4.node[8].routing drop:count 0
 attr interpolationmode none
 attr title "dropped packet byte length, count"
 attr unit bytes
-scalar Net10_r.node[8].routing drop:sum 0
+scalar Net10_4.node[8].routing drop:sum 0
 attr interpolationmode none
 attr title "dropped packet byte length, sum"
 attr unit bytes
-statistic Net10_r.node[9].routing outputIf:histogram
+statistic Net10_4.node[9].routing outputIf:histogram
 field count 0
 field mean nan
 field stddev nan
@@ -509,20 +509,20 @@ bin	0.4	0
 bin	0.43333333333333	0
 bin	0.46666666666667	0
 bin	0.5	0
-scalar Net10_r.node[9].routing drop:count 0
+scalar Net10_4.node[9].routing drop:count 0
 attr interpolationmode none
 attr title "dropped packet byte length, count"
 attr unit bytes
-scalar Net10_r.node[9].routing drop:sum 0
+scalar Net10_4.node[9].routing drop:sum 0
 attr interpolationmode none
 attr title "dropped packet byte length, sum"
 attr unit bytes
-statistic Net10_r.eventStorage "End-to-End Delay"
-field count 360
-field mean 0.061440430090206
-field stddev 0.07824446252126
+statistic Net10_4.eventStorage "End-to-End Delay"
+field count 11770
+field mean 3.3977975095634
+field stddev 9.2742760902509
 field min 0
-field max 0.666282275228
-field sum 22.118554832474
-field sqrsum 3.5568418554525
+field max 60.987192350664
+field sum 39992.076687562
+field sqrsum 1148162.5250431
 

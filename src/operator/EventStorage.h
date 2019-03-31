@@ -53,7 +53,7 @@ class EventStorage : public cSimpleModule
     int test_type = 1;
 
     int test_count = 0;
-    int test_algorithm_type = 0;
+    int test_algorithm_type = 1;
     vector<int> test_strategy = {0, 1, 1, 1};
     vector<int> test_algorithm = {0, 4, 6, 7};
     //operator graph numbers
@@ -65,26 +65,26 @@ class EventStorage : public cSimpleModule
     int intensiveAddrNum = 1;
     vector<double> RT_CONSTRAINTS = {1,1,1};//,1,1,1,1,1,1};
     vector<double> RT_MAX_CONSTRAINTS = {10,10,10};
-    vector<int> type = {3,3,3};//,4,5,3,4,5};
+    vector<int> type = {3,4,5};//,4,5,3,4,5};
     const int OGNUM = 3;
     map<int, vector<int>> edgeCepMap;
     ofstream out;
 
     //strategy
-    int strategy = 0;
-    int algorithm =  0;
+    int strategy = 1;
+    int algorithm =  7;
 
-    int sendDelayType = 0;
+    int sendDelayType = 1;
     int poisson_lambda = 30;
     int rl_type = 1; // 0 for train, 1 for test
     //bool first_monte_carlo_policy = true;
 
     const int TOTALSENDTIME = 10;
     vector<int> sendTime = {1,1,1};
-    double initial_send_delay = 7000 * intensiveAddrNum;
-    double sendDelay =  7000 * intensiveAddrNum;
+    double initial_send_delay = 600 * intensiveAddrNum;
+    double sendDelay =  600 * intensiveAddrNum;
     double delayChange = 50 * OGNUM * intensiveAddrNum;
-    int intensiveNodeID = 7;
+    int intensiveNodeID = 0;
 //record result
     cOutVector endToEndDelayVec;
     cStdDev eedStats;

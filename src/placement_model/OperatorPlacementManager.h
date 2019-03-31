@@ -239,7 +239,7 @@ public:
         }
         else{
             es = fognetworks->getFogNode(fognodeID);
-           fognetworks->updateES(es);
+            fognetworks->updateES(es);
         }
         //update source to es map
         for(int i = 0; i < this->ogModel.size(); ++ i){

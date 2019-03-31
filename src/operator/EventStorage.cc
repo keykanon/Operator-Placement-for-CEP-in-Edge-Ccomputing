@@ -146,11 +146,9 @@ void EventStorage::finish(){
 
    out << "------------------END-----------------------" <<endl;
 
-   map<int, vector<int>>::iterator it = edgeCepMap.begin();
-   while(it != edgeCepMap.end()){
-       out << "H = " << opm[it->first]->getH() << endl;
-       it ++;
-   }
+
+       out << "H = " << opm[intensiveNodeID]->getH() << endl;
+
 
    out << "sim_time = " << sim_time << endl;
 
@@ -181,7 +179,7 @@ EventPacket* EventStorage::setEventPacket(vehicleStatus* vehs, string destAddrs,
     event->setAppNum(app_num);
 
     //set time record
-    event->setHopCount(1);
+    event->setHopCount(5);
     //set operator type array
     for(int i = operatorType.size()-1; i >= 0; i --){//for(int i = 0; i < operatorType.size(); i ++){
         const char* name = operatorType[i]->getOperatorID().c_str();
@@ -261,7 +259,7 @@ EventPacket* EventStorage::setEventMarker(string destAddrs, int port, int time, 
     event->setDestAddr(destAddresses[1]);
     event->setDestAddrs(destAddrs.c_str());
     event->setPort(port);
-    event->setHopCount(1);
+    event->setHopCount(5);
 
     return event;
 }
@@ -472,9 +470,14 @@ void EventStorage::processMessage(cMessage* msg){
                           algorithm = test_algorithm[test_algorithm_type];
                       }
                       intensiveNodeID = (intensiveNodeID + 1) % 10;
+                      if(intensiveNodeID == 4){
+                          EV << endl;
+                      }
                       opm[intensiveNodeID] = opm[oriIntensiveNodeID];
+                      opm[oriIntensiveNodeID] = NULL;
                       opm[intensiveNodeID]->resetES(intensiveNodeID);
                       opm[intensiveNodeID]->resetCapacity();
+
 
                       //reset destAddress
                       for(int i = 0; i < OGNUM; i ++){
@@ -489,6 +492,7 @@ void EventStorage::processMessage(cMessage* msg){
                           }
                           edgeCepMap[destAddress[i]] = ogmap;
                       }
+                      sendDelay = initial_send_delay;
                       break;
                   case 2:
                       break;
@@ -497,6 +501,16 @@ void EventStorage::processMessage(cMessage* msg){
                       break;
                   }
 
+                  EventPacket* monitorFlag = new EventPacket();
+                  monitorFlag->setMonitorFlag(true);
+                  monitorFlag->setMonitorH(opm[intensiveNodeID]->getH());
+                  monitorFlag->setSrcAddr(intensiveNodeID);
+                  monitorFlag->setDestAddr(intensiveNodeID);
+                  opm[intensiveNodeID]->setMonitorId(opm[intensiveNodeID]->getMonitorId()+1);
+                  opm[intensiveNodeID]->setMonitorIncrease(true);
+
+                  cGate* outGate = gateHalf("gate" , cGate::OUTPUT, opm[intensiveNodeID]->getES()->getNodeID());
+                  send(monitorFlag, outGate);
                   //record the end time of this round
                   roundTimeRecord.push_back(sim_time + round_interval);
 
@@ -610,8 +624,6 @@ void EventStorage::initialize()
     eedStats.setName("End-to-End Delay");
     endToEndDelayVec.setName("End-to-End Delay");
 
-
-
     numReceived = 0;
 
     timestamp = TIME_INIT;
@@ -639,7 +651,6 @@ void EventStorage::initialize()
         }
         ogmap.push_back(i);
         edgeCepMap[destAddress[i]] = ogmap;
-
     }
 
     map<int, vector<int>>::iterator it = edgeCepMap.begin();
@@ -685,7 +696,7 @@ void EventStorage::initialize()
     //open result file
         char filename[1024];
         memset(filename, 0 , 1024);
-        sprintf(filename, "result_c5_n3_og%d_r%d_%d_%d_dr%d_%d_%d_mt%d_e%d_sam%d.txt",type[0], opm[7]->getOperatorGraph(0)->randSeed ,  strategy, algorithm, sendDelayType, poisson_lambda, TOTALSENDTIME, rl_type,EPSILON_TYPE,STATE_ACTION_MODEL);
+        sprintf(filename, "result_c5_n3_og%d_r%d_%d_%d_dr%d_%d_%d_mt%d_e%d_sam%d.txt",type[0], opm[intensiveNodeID]->getOperatorGraph(0)->randSeed ,  strategy, algorithm, sendDelayType, poisson_lambda, TOTALSENDTIME, rl_type,EPSILON_TYPE,STATE_ACTION_MODEL);
         out.open(filename, ios::out);
 
 
@@ -824,6 +835,10 @@ void EventStorage::handleMessage(cMessage *msg)
         //***********send monitor message**************************
         map<int, OperatorPlacementManager*>::iterator opmIt = opm.begin();
         while(opmIt != opm.end()){
+            if(opmIt->second == NULL){
+                opmIt ++;
+                continue;
+            }
             EventPacket* monitorFlag = new EventPacket();
 
             monitorFlag->setSrcAddr(opmIt->first);
@@ -836,7 +851,7 @@ void EventStorage::handleMessage(cMessage *msg)
             opmIt->second->setMonitorId(opmIt->second->getMonitorId()+1);
             opmIt->second->setMonitorIncrease(true);
 
-            //cGate* outGate = gateHalf("gate" , cGate::OUTPUT, destAddress[0]);
+            cGate* outGate = gateHalf("gate" , cGate::OUTPUT, intensiveNodeID);
             //simtime_t endTransmission = outGate->getTransmissionChannel()->getTransmissionFinishTime();
             //if(endTransmission < tnow){
             //    send(monitorFlag, outGate);
@@ -981,7 +996,7 @@ void EventStorage::handleMessage(cMessage *msg)
             managerNetworkUsage[tid] = netuse;
         }*/
         if(monitor_message->getPlacementMessage()){
-            int nodeIndex = monitor_message->getDestAddr();
+            int nodeIndex = intensiveNodeID;
             opm[monitor_message->getDestAddr()]->updateCapacity(monitor_message->getSrcAddr(),monitor_message->getPlacement().placementNum);
             clock_t begin = clock();
 
@@ -1018,7 +1033,7 @@ void EventStorage::handleMessage(cMessage *msg)
             EV << "monitor message from " << monitor_message->getSrcAddr() << endl;
 
 
-            int nodeIndex = monitor_message->getDestAddr();
+            int nodeIndex = intensiveNodeID;
             NodeMessage nodeMessage = monitor_message->getFognode();
 
 
@@ -1030,7 +1045,7 @@ void EventStorage::handleMessage(cMessage *msg)
         else if(monitor_message->getReMarkerMessage()){
             int tid = monitor_message->getMarkerID();
             int ogIndex = monitor_message->getAppNum();
-            int nodeIndex = destAddress[ogIndex];
+            int nodeIndex = intensiveNodeID;
             opm[nodeIndex]->updateEventNumber(monitor_message->getAppNum(),
                     monitor_message->getOperatorType(monitor_message->getHopCount()-1),
                     tid, monitor_message->getEventNum());
@@ -1114,7 +1129,7 @@ std::string EventStorage::getDestAddrs(int app_num, int pathIndex, bool& used){
     string destAddrs;
     std::stringstream sstr2;
 
-    int nodeIndex = destAddress[app_num];
+    int nodeIndex = intensiveNodeID;//destAddress[app_num];
 
     int appIndex = -1;
     vector<int> ogvec = edgeCepMap[nodeIndex];
@@ -1361,11 +1376,9 @@ void EventStorage::outputRecord(){
 
    out << "------------------END-----------------------" <<endl;
 
-   map<int, vector<int>>::iterator it = edgeCepMap.begin();
-   while(it != edgeCepMap.end()){
-       out << "H = " << opm[it->first]->getH() << endl;
-       it ++;
-   }
+
+   out << "H = " << opm[intensiveNodeID]->getH() << endl;
+
 
    out << "sim_time = " << sim_time << endl;
 

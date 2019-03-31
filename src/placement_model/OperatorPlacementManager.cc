@@ -501,7 +501,7 @@ vector<vector<StreamPath*>> OperatorPlacementManager::getIterationOperatorGraphP
             }
 
             //get the max response time ratio
-            if(ogModel[i]->getRTR() > maxRTR && (!ogModel[i]->isAllPlaced()) && maxPathIndex[i] >= 0){
+            if(ogModel[i]->getRTR() > maxRTR && maxPathIndex[i] >= 0){
                 maxRTR = ogModel[i]->getRTR();
                 maxRTR_index = i;
             }
@@ -570,7 +570,7 @@ vector<vector<StreamPath*>> OperatorPlacementManager::getIterationOperatorGraphP
 
             if(destFog == opModel->getFogNode()){
                 stream_paths[maxIndex].pop();
-
+                in[maxRTR_index][maxPathIndex[maxRTR_index]] = opModel;
             }
             else if(destFog != NULL && destFog->getCapacity() > 0){
                 //reset
@@ -580,7 +580,6 @@ vector<vector<StreamPath*>> OperatorPlacementManager::getIterationOperatorGraphP
                 //replace
                 stream_paths[maxIndex].back()->setFogNode(destFog);
                 eventTable[destFog->getNodeID()] += in[maxRTR_index][maxPathIndex[maxRTR_index]]->getPredictEventNumber();
-                in[maxRTR_index][maxPathIndex[maxRTR_index]] = stream_paths[maxIndex].back();
                 destFog->setCapacity(destFog->getCapacity()-1);
             }
             else{

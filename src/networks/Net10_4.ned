@@ -32,7 +32,7 @@ network Net10_4
 
         node[10]: EdgeOperatorNode {
             Naddress = index;
-            capacity = 5;
+            capacity = 4;
             NdestAddress = "1 9";
         }
         eventStorage: EventStorage {

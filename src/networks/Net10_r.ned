@@ -31,7 +31,7 @@ network Net10_r
     submodules:
         node[n]: EdgeOperatorNode {
             Naddress = index;
-            capacity = 5;
+            capacity = 4;
             @display("p=,,ring,");
             NdestAddress = "1 9";
             gates: g[2];
