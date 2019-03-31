@@ -570,7 +570,7 @@ vector<vector<StreamPath*>> OperatorPlacementManager::getIterationOperatorGraphP
 
             if(destFog == opModel->getFogNode()){
                 stream_paths[maxIndex].pop();
-                in[maxRTR_index][maxPathIndex[maxRTR_index]] = opModel;
+
             }
             else if(destFog != NULL && destFog->getCapacity() > 0){
                 //reset
@@ -578,6 +578,7 @@ vector<vector<StreamPath*>> OperatorPlacementManager::getIterationOperatorGraphP
                 opModel->getFogNode()->setCapacity(opModel->getFogNode()->getCapacity()+1);
 
                 //replace
+                in[maxRTR_index][maxPathIndex[maxRTR_index]] = opModel;
                 stream_paths[maxIndex].back()->setFogNode(destFog);
                 eventTable[destFog->getNodeID()] += in[maxRTR_index][maxPathIndex[maxRTR_index]]->getPredictEventNumber();
                 destFog->setCapacity(destFog->getCapacity()-1);
