@@ -62,6 +62,8 @@ public:
 	//multi operator graph placement using reschedule
     vector<vector<StreamPath*>> getIterationOperatorGraphPlacement(vector<bool>& replace);
 
+    vector<vector<StreamPath*>> getIterationOptimization(vector<bool>& replace);
+
 	//multi operator graph placement by schedule policy selfish
 	vector<vector<StreamPath*>> getSelfishMultiOperatorPlacement();
 

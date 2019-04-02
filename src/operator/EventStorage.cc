@@ -20,8 +20,6 @@
 Define_Module(EventStorage);
 
 
-
-
 void EventStorage::finish(){
     eedStats.record();
 
@@ -460,6 +458,9 @@ void EventStorage::processMessage(cMessage* msg){
                       }
                       sendDelay = initial_send_delay;
                       opm[intensiveNodeID]->resetOG(type);
+
+                      //record the end time of this round
+                       roundTimeRecord.push_back(sim_time + round_interval);
                       break;
                   case 1:
                       test_count ++;
@@ -470,9 +471,7 @@ void EventStorage::processMessage(cMessage* msg){
                           algorithm = test_algorithm[test_algorithm_type];
                       }
                       intensiveNodeID = (intensiveNodeID + 1) % 10;
-                      if(intensiveNodeID == 4){
-                          EV << endl;
-                      }
+
                       opm[intensiveNodeID] = opm[oriIntensiveNodeID];
                       opm[oriIntensiveNodeID] = NULL;
                       opm[intensiveNodeID]->resetES(intensiveNodeID);
@@ -493,8 +492,13 @@ void EventStorage::processMessage(cMessage* msg){
                           edgeCepMap[destAddress[i]] = ogmap;
                       }
                       sendDelay = initial_send_delay;
+
+                      //record the end time of this round
+                     roundTimeRecord.push_back(sim_time + round_interval);
                       break;
                   case 2:
+                      //record the end time of this round
+                      roundTimeRecord.push_back(sim_time);
                       break;
 
                   default:
@@ -511,8 +515,7 @@ void EventStorage::processMessage(cMessage* msg){
 
                   cGate* outGate = gateHalf("gate" , cGate::OUTPUT, opm[intensiveNodeID]->getES()->getNodeID());
                   send(monitorFlag, outGate);
-                  //record the end time of this round
-                  roundTimeRecord.push_back(sim_time + round_interval);
+
 
                   replacement_decision();
 
@@ -826,8 +829,18 @@ void EventStorage::handleMessage(cMessage *msg)
             if(strategy == 0 && algorithm >= 2 && rl_type == 0){
                 monitor_interval = 1;
             }
-            else{
+            else if(test_type == 0 || monitor_type == 0){
                 monitor_interval = 5;
+            }
+            else{
+                switch(monitor_type){
+                case 1:
+                    monitor_interval = 10;
+                    break;
+                case 2:
+                    monitor_interval = 20;
+                    break;
+                }
             }
         }
         //timeMarker[app_num] = time[app_num] + 5;
@@ -868,8 +881,9 @@ void EventStorage::handleMessage(cMessage *msg)
 
             clock_t begin = clock();
 
-
-            replacement_decision();
+            if(monitor_type != -1){
+                replacement_decision();
+            }
 
             clock_t end = clock();
             algorithm_time.push_back((double)(end - begin));
@@ -1454,6 +1468,18 @@ void EventStorage::replacement_decision(){
         }
         break;
     case 2:
+        if(algorithm == 0){
+            opm[nodeIndex]->getResponseTimeGreedyPlacement(replace);
+            placement[nodeIndex] = opm[nodeIndex]->getIterationOptimization(replace);
+        }
+        else if(algorithm == 1){
+            opm[nodeIndex]->getLoadBalance(1, 0.05, opm[nodeIndex]->getFogNodeNum(), replace);
+            placement[nodeIndex] = opm[nodeIndex]->getIterationOptimization(replace);
+        }
+        else if(algorithm == 2){
+            opm[nodeIndex]->getReMultiOperatorGraphPlacement(replace);
+            placement[nodeIndex] = opm[nodeIndex]->getIterationOptimization(replace);
+        }
         break;
 
     }
