@@ -330,8 +330,6 @@ vector<vector<StreamPath*>> OperatorPlacementManager::getIterationOptimization(v
         for(int index = 0; index < ogModel.size(); index ++){
             ans.push_back((ogModel[index]->getStreamPath()));
         }
-
-
         return ans;
     }
 
@@ -2860,6 +2858,7 @@ void OperatorPlacementManager::resetCapacity(){
             ops[j]->setFogNode(NULL);
             opNum ++;
         }
+        opNum ++;
     }
     fognetworks->getES()->setOpNum(opNum);
 }
