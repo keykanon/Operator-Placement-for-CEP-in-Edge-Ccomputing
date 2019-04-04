@@ -143,8 +143,6 @@ vector<vector<StreamPath*>> OperatorPlacementManager::getReMultiOperatorGraphPla
         for(int index = 0; index < ogModel.size(); index ++){
             replace[ogModel[index]->getOperatorGraphId()] = false;
             ans.push_back((ogModel[index]->getStreamPath()));
-
-
         }
 
 
@@ -318,6 +316,29 @@ vector<vector<StreamPath*>> OperatorPlacementManager::getReMultiOperatorGraphPla
 }
 
 vector<vector<StreamPath*>> OperatorPlacementManager::getIterationOptimization(vector<bool>& replace){
+    bool reset = false;
+    for(int i = 0; i < ogModel.size(); i ++){
+        if(ogModel[i]->isNeedReplaced()){
+            reset = true;
+            break;
+        }
+    }
+
+    if(!reset){
+        //·µ»Ø½á¹û
+        vector<vector<StreamPath*>> ans;
+        for(int index = 0; index < ogModel.size(); index ++){
+            ans.push_back((ogModel[index]->getStreamPath()));
+        }
+
+        for(int index = 0; index < ogModel.size(); index ++){
+            ogModel[index]->calResponseTime(averageW, averageThroughput, distable,eventTable);
+        }
+
+
+        return ans;
+    }
+
     int try_cnt = 0;
     bool end_condition = false;
     vector<bool> ogEnd;
