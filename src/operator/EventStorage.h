@@ -50,7 +50,7 @@ class EventStorage : public cSimpleModule
 {
   private:
     //≤‚ ‘ƒ£ Ω
-    int test_type = 2;
+    int test_type = 1;
 
     int monitor_type = 0;
 
@@ -74,7 +74,7 @@ class EventStorage : public cSimpleModule
 
     //strategy
     int strategy = 2;
-    int algorithm =  1;
+    int algorithm =  2;
 
     int sendDelayType = 1;
     int poisson_lambda = 30;

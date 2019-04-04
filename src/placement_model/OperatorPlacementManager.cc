@@ -320,6 +320,10 @@ vector<vector<StreamPath*>> OperatorPlacementManager::getReMultiOperatorGraphPla
 vector<vector<StreamPath*>> OperatorPlacementManager::getIterationOptimization(vector<bool>& replace){
     int try_cnt = 0;
     bool end_condition = false;
+    vector<bool> ogEnd;
+    for(int ogIndex = 0; ogIndex < ogModel.size(); ++ ogIndex){
+        ogEnd.push_back(false);
+    }
 
     double averageW = fognetworks->getAverageW();
    double averageThroughput = fognetworks->getAverageExecutionSpeed();
@@ -364,6 +368,8 @@ vector<vector<StreamPath*>> OperatorPlacementManager::getIterationOptimization(v
         }
     }
     //µü´ú¹ý³Ì
+
+
     while(try_cnt < MAX_ITERATION && !end_condition){
         double maxRTR = -1;
         int maxRTR_index = 0;
@@ -377,7 +383,7 @@ vector<vector<StreamPath*>> OperatorPlacementManager::getIterationOptimization(v
             }
 
             //get the max response time ratio
-            if(ogModel[i]->getRTR() > maxRTR && maxPathIndex[i] >= 0){
+            if(ogModel[i]->getRTR() > maxRTR && !ogEnd[i]){
                 maxRTR = ogModel[i]->getRTR();
                 maxRTR_index = i;
             }
@@ -391,11 +397,16 @@ vector<vector<StreamPath*>> OperatorPlacementManager::getIterationOptimization(v
         maxIndex += maxPathIndex[maxRTR_index];
 
         if(stream_paths[maxIndex].size() == 0){
-            break;
+            ogEnd[maxRTR_index] = true;
+            continue;
         }
 
         //if the operator has been placed
         OperatorModel* op = stream_paths[maxIndex].back();
+        if(op->getOperatorID() == "es"){
+            stream_paths[maxIndex].pop();
+            continue;
+        }
         if(op->getFogNode() != NULL){
             OperatorModel* opModel = stream_paths[maxIndex].back();
             double predicted_rt = stream_paths[maxIndex].getPredictedResponseTime();
@@ -454,19 +465,19 @@ vector<vector<StreamPath*>> OperatorPlacementManager::getIterationOptimization(v
             else if(destFog != NULL && destFog->getCapacity() > 0){
                 //reset
                 eventTable[opModel->getFogNode()->getNodeID()] -= opModel->getPredictEventNumber();
-                opModel->getFogNode()->setCapacity(opModel->getFogNode()->getCapacity()+1);
+                opModel->getFogNode()->setCapacity(opModel->getFogNode()->getCapacity()+opModel->getResourceRequire());
 
                 //replace
                 stream_paths[maxIndex].back()->setFogNode(destFog);
                 eventTable[destFog->getNodeID()] += in[maxRTR_index][maxPathIndex[maxRTR_index]]->getPredictEventNumber();
-                destFog->setCapacity(destFog->getCapacity()-1);
+                destFog->setCapacity(destFog->getCapacity()-opModel->getResourceRequire());
             }
             else{
-                if( stream_paths[maxIndex].size() > 0){
-                    in[maxRTR_index][maxPathIndex[maxRTR_index]] = stream_paths[maxIndex].back();
-                }
-                stream_paths[maxIndex].pop();
-
+                break;
+//                if( stream_paths[maxIndex].size() > 0){
+//                    in[maxRTR_index][maxPathIndex[maxRTR_index]] = stream_paths[maxIndex].back();
+//                }
+//                stream_paths[maxIndex].pop();
             }
         }
         else{//find a fog node to place the operator
@@ -540,6 +551,13 @@ vector<vector<StreamPath*>> OperatorPlacementManager::getIterationOptimization(v
                 break;
             }
         }
+        for(int i = 0; i < ogEnd.size(); ++ i){
+            if(!ogEnd[i]){
+                end_condition = false;
+                break;
+            }
+        }
+
         ++ try_cnt;
     }
 
