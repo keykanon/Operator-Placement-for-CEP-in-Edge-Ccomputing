@@ -1878,6 +1878,22 @@ vector<vector<StreamPath*>> OperatorPlacementManager::getLoadBalance(double thet
                    }
 
                    if(tarIndex == -1){
+                       for(int j = 0; j < fognodes.size(); j ++){
+                             if(fognodes[j]->getCapacity() > 0 ){
+                                 if(sourceID == fognodes[j]->getNodeID()){
+                                     tarIndex = j;
+                                     break;
+                                 }
+                                 if(totalDj[j] < minDelay){
+                                     tarIndex = j;
+                                     minDelay = totalDj[j];
+
+                                 }
+                             }
+                         }
+                   }
+
+                   if(tarIndex == -1){
                        if(this->fognetworks->getFogNodes().size() > fognetworks->getH() && monitorIncrease){
                            this->fognetworks->increaseHops();
                            monitorIncrease = false;
