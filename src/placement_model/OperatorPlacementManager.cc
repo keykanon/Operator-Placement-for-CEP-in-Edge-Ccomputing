@@ -1864,7 +1864,7 @@ vector<vector<StreamPath*>> OperatorPlacementManager::getLoadBalance(double thet
                    minDelay = 1e12;
                    tarIndex = -1;
                    for(int j = 0; j < fognodes.size(); j ++){
-                       if(flow[esIndex][j] > 0 && fognodes[j]->getCapacity() > 0 && fogUse[j] < (flow[esIndex][j]/(ogModel.size()-i))+1){
+                       if(flow[esIndex][j] > 0 && fognodes[j]->getCapacity() > 0 && fogUse[j] <= (flow[esIndex][j]/(ogModel.size()-i))+1){
                            if(sourceID == fognodes[j]->getNodeID()){
                                tarIndex = j;
                                break;
