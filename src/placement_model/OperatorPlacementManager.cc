@@ -331,10 +331,6 @@ vector<vector<StreamPath*>> OperatorPlacementManager::getIterationOptimization(v
             ans.push_back((ogModel[index]->getStreamPath()));
         }
 
-        for(int index = 0; index < ogModel.size(); index ++){
-            ogModel[index]->calResponseTime(averageW, averageThroughput, distable,eventTable);
-        }
-
 
         return ans;
     }
@@ -419,6 +415,13 @@ vector<vector<StreamPath*>> OperatorPlacementManager::getIterationOptimization(v
 
         if(stream_paths[maxIndex].size() == 0){
             ogEnd[maxRTR_index] = true;
+            end_condition = true;
+            for(int i = 0; i < ogEnd.size(); ++ i){
+                if(!ogEnd[i]){
+                    end_condition = false;
+                    break;
+                }
+            }
             continue;
         }
 
