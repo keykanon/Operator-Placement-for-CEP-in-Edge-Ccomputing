@@ -1096,7 +1096,7 @@ void EventStorage::handleMessage(cMessage *msg)
 
                 OperatorGraphModel* og = opm[nodeIndex]->getOperatorGraph(appIndex);
 
-                og->setResponseTime(response_time);
+                og->setResponseTime(tid, response_time);
                 //record response time
                 updateRecord(response_time_record,tid, appIndex, response_time);
 //                if(response_time > RT_MAX_CONSTRAINTS[appIndex]){
@@ -1125,7 +1125,7 @@ void EventStorage::handleMessage(cMessage *msg)
                 eedStats.collect(response_time);
 
 
-                opm[nodeIndex]->updateResponsetime(monitor_message->getAppNum(), response_time);
+                opm[nodeIndex]->updateResponsetime(monitor_message->getAppNum(), tid, response_time);
 
             }
         }

@@ -177,7 +177,7 @@ public:
 	//update event number
 	void updateEventNumber(int app_num, int operatorType,int time, int eventNum);
 
-	void updateResponsetime(int app_num, double);
+	void updateResponsetime(int app_num, int, double);
 
 	//reset the fog node of one operator graph which placed in
 	void resetOperatorGraph(int index);

@@ -434,9 +434,15 @@ double OperatorGraphModel::getRTR(){
     return predicted_response_time / response_time_constraints;
 }
 
-void OperatorGraphModel::setResponseTime(double response_time){
+void OperatorGraphModel::setResponseTime(int tid, double response_time){
     this->response_time = response_time;
-    rt_record.push_back(response_time);
+    if( (rt_record.count(tid) == 0)  || (rt_record[tid] < response_time)){
+        rt_record[tid] = response_time;
+    }
+    if(last_tid < tid){
+        last_tid = tid;
+    }
+
 }
 
 double OperatorGraphModel::getResponseTime(){
@@ -476,12 +482,12 @@ bool OperatorGraphModel::isAllPlaced(){
 //judge whether the operators need to be replaced
 bool OperatorGraphModel::isNeedReplaced(){
     double avg = 0.0;
-    int begin = rt_record.size() - monitor_interval;
+    int begin = last_tid - monitor_interval;
     if(begin < 0){
         begin = 0;
     }
 
-    for(; begin < rt_record.size(); ++ begin){
+    for(; begin <= last_tid; ++ begin){
         avg += rt_record[begin];
     }
 

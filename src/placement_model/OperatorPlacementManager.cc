@@ -2811,8 +2811,8 @@ void OperatorPlacementManager::updateEventNumber(int app_num, int operatorType,i
 }
 
 //update response time of app_num
-void OperatorPlacementManager::updateResponsetime(int app_num, double response_time){
-    getOperatorGraph(app_num)->setResponseTime(response_time);
+void OperatorPlacementManager::updateResponsetime(int app_num, int tid, double response_time){
+    getOperatorGraph(app_num)->setResponseTime(tid, response_time);
 }
 
 //reset the fog node of one operator graph which placed in

@@ -22,8 +22,9 @@ private:
 
 	double response_time_constraints;
 
-	vector<double> rt_record;
+	map<int,double> rt_record;
 	int monitor_interval;
+	int last_tid = -1;
 
 	void initialOG3();
 
@@ -79,7 +80,7 @@ public:
 	int getReFirstServicedStreamPathIndex(double averageW, double averageThroughput, map<int, map<int, double>>& distable, map<int,int>& eventTable);
 	//calculate response time of the operator graph
 	int getFirstServicedStreamPathIndex(double averageW, double averageThroughput, map<int, map<int, double>>& distable,map<int,int>& eventTable);
-	void setResponseTime(double);
+	void setResponseTime(int,double);
 	double getResponseTime();
 	double getPredictedResponseTime();
 	//get response time constraint
