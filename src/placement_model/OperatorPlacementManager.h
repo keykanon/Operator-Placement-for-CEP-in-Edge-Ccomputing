@@ -49,8 +49,8 @@ private:
 	const int Wt = 100;
 public:
 	static const int markerTime = 1;
-	OperatorPlacementManager(vector<double> rt_constraints,vector<int> type, vector<int> ogID);
-	OperatorPlacementManager(FogNode* es, vector<double> rt_constraints, vector<int> type, vector<int> ogID);
+	OperatorPlacementManager(vector<double> rt_constraints,vector<int> type, vector<int> ogID, int monitor_interval);
+	OperatorPlacementManager(FogNode* es, vector<double> rt_constraints, vector<int> type, vector<int> ogID, int monitor_interval);
 	~OperatorPlacementManager(void);
 
 	//init Operator Graph and Fog networks to test

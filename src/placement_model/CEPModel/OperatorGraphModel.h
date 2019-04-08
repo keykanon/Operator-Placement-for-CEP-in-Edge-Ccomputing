@@ -22,8 +22,8 @@ private:
 
 	double response_time_constraints;
 
-
-
+	vector<double> rt_record;
+	int monitor_interval;
 
 	void initialOG3();
 
@@ -31,7 +31,7 @@ private:
 public:
 	int randSeed = 0;
 
-	OperatorGraphModel(double rt_constraint,int type, int ogID);
+	OperatorGraphModel(double rt_constraint,int type, int ogID, int monitor_interval);
 	~OperatorGraphModel(void);
 
 	//get StreamPath through operators and streams

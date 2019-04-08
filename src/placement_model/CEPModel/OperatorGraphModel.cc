@@ -1,11 +1,11 @@
 #include "OperatorGraphModel.h"
 
 
-OperatorGraphModel::OperatorGraphModel(double rt_constraint, int type, int ogID)
+OperatorGraphModel::OperatorGraphModel(double rt_constraint, int type, int ogID, int monitor_interval)
 {
 
     this->operatorGraphID = ogID;
-
+    this->monitor_interval = monitor_interval;
     randomOG(type);
 
 
@@ -436,6 +436,7 @@ double OperatorGraphModel::getRTR(){
 
 void OperatorGraphModel::setResponseTime(double response_time){
     this->response_time = response_time;
+    rt_record.push_back(response_time);
 }
 
 double OperatorGraphModel::getResponseTime(){
@@ -474,7 +475,19 @@ bool OperatorGraphModel::isAllPlaced(){
 
 //judge whether the operators need to be replaced
 bool OperatorGraphModel::isNeedReplaced(){
-    return response_time >= this->response_time_constraints;
+    double avg = 0.0;
+    int begin = rt_record.size() - monitor_interval;
+    if(begin < 0){
+        begin = 0;
+    }
+
+    for(; begin < rt_record.size(); ++ begin){
+        avg += rt_record[begin];
+    }
+
+    avg /= 10;
+
+    return avg >= this->response_time_constraints;
 
 }
 

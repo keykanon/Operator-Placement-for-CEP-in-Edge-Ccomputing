@@ -1,6 +1,6 @@
 #include "OperatorPlacementManager.h"
 
-OperatorPlacementManager::OperatorPlacementManager(vector<double> rt_constraints, vector<int> type, vector<int> ogID)
+OperatorPlacementManager::OperatorPlacementManager(vector<double> rt_constraints, vector<int> type, vector<int> ogID, int monitor_interval)
 {
     rlearner = new Reinforcement_Learning(minimum_input_rate,maximum_input_rate);
 	FogNode* es = new FogNode(0);
@@ -8,7 +8,7 @@ OperatorPlacementManager::OperatorPlacementManager(vector<double> rt_constraints
 	//ogModel = new vector<OperatorGraphModel*>();
 
 	for(int i = 0; i < rt_constraints.size(); i ++){
-	    OperatorGraphModel* ogm = new OperatorGraphModel(rt_constraints[i], type[i] , ogID[i]);
+	    OperatorGraphModel* ogm = new OperatorGraphModel(rt_constraints[i], type[i] , ogID[i], monitor_interval);
 	    vector<OperatorModel*> source = ogm->getSource();
         for(int i = 0; i < source.size(); i ++){
             source[i]->setFogNode(es);
@@ -28,7 +28,7 @@ OperatorPlacementManager::OperatorPlacementManager(vector<double> rt_constraints
     //rlearner = new Reinforcement_Learning(minimum_input_rate, maximum_input_rate);
 	//Wt = 100;
 }
-OperatorPlacementManager::OperatorPlacementManager(FogNode* es,vector<double> rt_constraints, vector<int> type, vector<int> ogID)
+OperatorPlacementManager::OperatorPlacementManager(FogNode* es,vector<double> rt_constraints, vector<int> type, vector<int> ogID, int monitor_interval)
 
 {
     rlearner = new Reinforcement_Learning(minimum_input_rate,maximum_input_rate);
@@ -36,7 +36,7 @@ OperatorPlacementManager::OperatorPlacementManager(FogNode* es,vector<double> rt
 	fognetworks = new FogNetworks(es);
 	//ogModel = new vector<OperatorGraphModel*>();
 	for(int i = 0; i < rt_constraints.size(); i ++){
-	    OperatorGraphModel* ogm = new OperatorGraphModel(rt_constraints[i], type[i], ogID[i]);
+	    OperatorGraphModel* ogm = new OperatorGraphModel(rt_constraints[i], type[i], ogID[i], monitor_interval);
         vector<OperatorModel*> source = ogm->getSource();
         for(int i = 0; i < source.size(); i ++){
             source[i]->setFogNode(es);

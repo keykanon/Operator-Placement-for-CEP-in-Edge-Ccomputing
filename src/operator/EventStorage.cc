@@ -668,7 +668,7 @@ void EventStorage::initialize()
             ognum.push_back(type[ogvec[vecIndex]]);
         }
 
-        OperatorPlacementManager* opm_i = new OperatorPlacementManager(es, rtc, ognum,it->second);
+        OperatorPlacementManager* opm_i = new OperatorPlacementManager(es, rtc, ognum,it->second, monitor_interval);
         opm[it->first] = opm_i;
 
         it ++;
