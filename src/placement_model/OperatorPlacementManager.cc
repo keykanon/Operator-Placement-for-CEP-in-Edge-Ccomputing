@@ -186,17 +186,25 @@ void OperatorPlacementManager::OptimalPlacementTravel(map<OperatorModel*, FogNod
 
     map<int, FogNode*> fognodes = fognetworks->getFogNodes();
     map<int, FogNode*>::iterator fit = fognodes.begin();
+    int nextOgIndex = ogIndex, nextOpIndex = opIndex;
+    if(opIndex + 1 >= ops.size()){
+        nextOgIndex = ogIndex + 1;
+        nextOpIndex = 0;
+    }
     while(fit != fognodes.end()){
+        if(fit->second->getCapacity() < op->getResourceRequire()){
+            fit ++;
+            continue;
+        }
+
+        //setting the mapping and capacity
         op->setFogNode(fit->second);
         M[op] = fit->second;
+        fit->second->setCapacity(fit->second->getCapacity() - op->getResourceRequire());
 
-        if(opIndex + 1 >= ops.size()){
-            ogIndex ++;
-            opIndex = 0;
-        }
-        OptimalPlacementTravel(M, ogIndex, opIndex+1,
+        OptimalPlacementTravel(M, nextOgIndex, nextOpIndex+1,
                 minResponseTime, bestM);
-
+        fit->second->setCapacity(fit->second->getCapacity() + op->getResourceRequire());
         fit ++;
     }
 }
