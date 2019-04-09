@@ -125,6 +125,127 @@ bool isStreamPathsEmpty(vector<StreamPath> stream_path){
 }
 
 
+//used for getOptimalPlacement travel
+void OperatorPlacementManager::OptimalPlacementTravel(map<OperatorModel*, FogNode*>& M, int ogIndex, int opIndex,
+        double& minResponseTime, map<OperatorModel*, FogNode*>& bestM){
+
+    //end condition
+    if(ogIndex >= ogModel.size()){
+        double avg_response_time = 0.0;
+
+        double averageW = fognetworks->getAverageW();
+        double averageThroughput = fognetworks->getAverageExecutionSpeed();
+
+        map<int, FogNode*> fognodes = fognetworks->getFogNodes();
+
+        map<int, map<int, double>> distable = Floyd();
+
+        //calculate event table
+        map<int,int> eventTable;
+        map<int, FogNode*>::iterator fit = fognodes.begin();
+        while(fit != fognodes.end()){
+            int eventNum = 0;
+            for(int ogI = 0; ogI < ogModel.size(); ++ ogI){
+                vector<OperatorModel*> ops = ogModel[ogI]->getOperatorModel();
+                for(int opI = 0; opI < ops.size(); ++ opI){
+                    if(ops[opI]->getFogNode() == fit->second){
+                        eventNum += ops[opI]->getPredictEventNumber();
+                    }
+                }
+            }
+            eventTable[fit->first] = eventNum;
+            fit ++;
+        }
+
+        for(int ogi = 0; ogi < ogModel.size(); ++ ogi){
+            ogModel[ogi]->calResponseTime(averageW, averageThroughput, distable, eventTable);
+            avg_response_time += ogModel[ogi]->getPredictedResponseTime();
+        }
+        avg_response_time /= 3.0;
+
+        if(avg_response_time < minResponseTime){
+            minResponseTime = avg_response_time;
+            bestM = M;
+        }
+        return;
+    }
+    vector<OperatorModel*> ops = ogModel[ogIndex]->getOperatorModel();
+    if(opIndex >= ops.size()){
+        ogIndex ++;
+        opIndex -= ops.size();
+        if(opIndex == 0){
+            opIndex = 1;
+        }
+        OptimalPlacementTravel(M, ogIndex, opIndex,
+                        minResponseTime, bestM);
+        return;
+    }
+
+
+    OperatorModel* op = ops[opIndex];
+
+    map<int, FogNode*> fognodes = fognetworks->getFogNodes();
+    map<int, FogNode*>::iterator fit = fognodes.begin();
+    while(fit != fognodes.end()){
+        op->setFogNode(fit->second);
+        M[op] = fit->second;
+
+        if(opIndex + 1 >= ops.size()){
+            ogIndex ++;
+            opIndex = 0;
+        }
+        OptimalPlacementTravel(M, ogIndex, opIndex+1,
+                minResponseTime, bestM);
+
+        fit ++;
+    }
+}
+
+//get optimal operator placement. it takes a lot of time
+vector<vector<StreamPath*>> OperatorPlacementManager::getOptimalPlacement(vector<bool>& replace){
+    resetCapacity();
+
+    double min_avg_response_time = 1e12;
+    double avg_response_time = 0.0;
+    map<OperatorModel*, FogNode*> M;
+    map<OperatorModel*, FogNode*> bestM;
+
+    int ogIndex = 0, opIndex = 1;
+//    for(int ogIndex = 0; ogIndex < ogModel.size(); ++ ogIndex){
+//        vector<OperatorModel*> ops = ogModel[ogIndex]->getOperatorModel();
+//        for(int opIndex = 1; opIndex < ops.size(); ++ opIndex){
+//            map<int, FogNode*> fognodes = fognetworks->getFogNodes();
+//            map<int, FogNode*>::iterator fit = fognodes.begin();
+//            while(fit != fognodes->end()){
+//                ops[opIndex]->setFogNode(fit->second);
+//                M[ops[opIndex]] = fit->second;
+//                fit ++;
+//            }
+//        }
+//    }
+
+    OptimalPlacementTravel(M, ogIndex, opIndex, min_avg_response_time, bestM);
+
+    //set optimal placement
+    for(int ogIndex = 0; ogIndex < ogModel.size(); ++ ogIndex){
+        vector<OperatorModel*> ops = ogModel[ogIndex]->getOperatorModel();
+        for(int opIndex = 1; opIndex < ops.size(); ++ opIndex){
+            OperatorModel* op = ops[opIndex];
+            op->setFogNode(bestM[op]);
+        }
+    }
+
+    //get return
+    vector<vector<StreamPath*>> ans;
+    for(int index = 0; index < ogModel.size(); index ++){
+        ans.push_back((ogModel[index]->getStreamPath()));
+    }
+
+
+    return ans;
+}
+
+
 
 //multiple operator graph placement according to QoS constraints ratio
 vector<vector<StreamPath*>> OperatorPlacementManager::getReMultiOperatorGraphPlacement(vector<bool>& replace){

@@ -73,11 +73,11 @@ class EventStorage : public cSimpleModule
     ofstream out;
 
     //strategy
-    int strategy = 2;
-    int algorithm =  2;
+    int strategy = 0;
+    int algorithm =  -1;
 
-    int sendDelayType = 1;
-    int poisson_lambda = 30;
+    int sendDelayType = 0;
+    int poisson_lambda = 50;
     int rl_type = 1; // 0 for train, 1 for test
     //bool first_monte_carlo_policy = true;
 

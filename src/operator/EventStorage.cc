@@ -1418,7 +1418,10 @@ void EventStorage::replacement_decision(){
    }
     switch(strategy){
     case 0:
-        if(algorithm == 0){
+        if(algorithm == -1){
+            placement[nodeIndex] = opm[nodeIndex]->getOptimalPlacement(replace);
+        }
+        else if(algorithm == 0){
             placement[nodeIndex] = opm[nodeIndex]->getReMultiOperatorGraphPlacement(replace);
             //newPlacement = opm->getReMultiOperatorGraphPlacement();
         }
@@ -1439,6 +1442,7 @@ void EventStorage::replacement_decision(){
         }
     break;
     case 1:
+
         if(algorithm == 0){
             //------simple greedy(nearest) operator graph placement-------------
             placement[nodeIndex] = opm[nodeIndex]->getSimpleGreedyPlacement(replace);

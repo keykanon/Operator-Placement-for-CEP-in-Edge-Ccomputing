@@ -56,6 +56,13 @@ public:
 	//init Operator Graph and Fog networks to test
 	void test_init();
 
+	//used for getOptimalPlacement travel
+	void OptimalPlacementTravel(map<OperatorModel*, FogNode*>& M, int ogIndex, int opIndex,
+	        double& minResponseTime, map<OperatorModel*, FogNode*>& bestM);
+
+	//get optimal operator placement. it takes a lot of time
+	vector<vector<StreamPath*>> getOptimalPlacement(vector<bool>& replace);
+
 	//multi operator graph placement using reschedule
 	vector<vector<StreamPath*>> getReMultiOperatorGraphPlacement(vector<bool>& replace);
 
