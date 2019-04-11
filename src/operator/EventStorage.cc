@@ -449,7 +449,7 @@ void EventStorage::processMessage(cMessage* msg){
                   case 0:
                       //10组3个operator, 30组4个operator，60组5个operator
 
-                      if(sendTime[app_num] > 10){
+                      if(sendTime[app_num] > 10 && sendTime[app_num] <= 40){
                           type = {4,4,4};
 
                       }
