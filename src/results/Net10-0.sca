@@ -1,0 +1,20 @@
+version 2
+run Net10-0-20190411-18:12:42-2808
+attr configname Net10
+attr datetime 20190411-18:12:42
+attr experiment Net10
+attr inifile omnetpp.ini
+attr iterationvars ""
+attr iterationvarsf ""
+attr measurement ""
+attr network mogp.networks.Net10
+attr processid 2808
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 0
+param **.eventStorage.packetLength "1024 byte"
+param **.node[*].operator[*].packetLength "1024 byte"
+
+

@@ -50,7 +50,7 @@ class EventStorage : public cSimpleModule
 {
   private:
     //≤‚ ‘ƒ£ Ω
-    int test_type = 1;
+    int test_type = 0;
 
     int monitor_type = 0;
 
@@ -65,28 +65,28 @@ class EventStorage : public cSimpleModule
     //operator graph response time constraints
     vector<int> intensiveAddr;
     int intensiveAddrNum = 1;
-    vector<double> RT_CONSTRAINTS = {1,1,1};//,1,1,1,1,1,1};
+    vector<double> RT_CONSTRAINTS = {0.1,0.1,0.1};//,1,1,1,1,1,1};
     vector<double> RT_MAX_CONSTRAINTS = {10,10,10};
-    vector<int> type = {3,3,3};//,4,5,3,4,5};
+    vector<int> type = {5,5,5};//,4,5,3,4,5};
     const int OGNUM = 3;
     map<int, vector<int>> edgeCepMap;
     ofstream out;
 
     //strategy
-    int strategy = 0;
-    int algorithm =  -1;
+    int strategy = 1;
+    int algorithm =  4;
 
     int sendDelayType = 0;
-    int poisson_lambda = 50;
+    int poisson_lambda = 30;
     int rl_type = 1; // 0 for train, 1 for test
     //bool first_monte_carlo_policy = true;
 
-    const int TOTALSENDTIME = 1;
+    const int TOTALSENDTIME = 10;
     vector<int> sendTime = {1,1,1};
     double initial_send_delay = 600 * intensiveAddrNum;
     double sendDelay =  600 * intensiveAddrNum;
     double delayChange = 50 * OGNUM * intensiveAddrNum;
-    int intensiveNodeID = 0;
+    int intensiveNodeID = 7;
 //record result
     cOutVector endToEndDelayVec;
     cStdDev eedStats;

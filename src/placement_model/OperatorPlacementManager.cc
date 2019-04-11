@@ -1970,7 +1970,7 @@ vector<vector<StreamPath*>> OperatorPlacementManager::getLoadBalance(double thet
             if(ops[opIndex]->getFogNode() == NULL){
 
                 int esSize = es->getCapacity()/(ogModel.size()-i) ;
-               if(es->getCapacity() > 0 && (fogUse[esIndex] < esSize)){
+               if(es->getCapacity() > 0 && (fogUse[esIndex] <= esSize)){
                    ops[opIndex]->setFogNode(es);
                    es->setCapacity(es->getCapacity() - ops[opIndex]->getResourceRequire());
                    es->setOpNum(es->getOpNum()+1);
@@ -2016,7 +2016,6 @@ vector<vector<StreamPath*>> OperatorPlacementManager::getLoadBalance(double thet
                                  if(totalDj[j] < minDelay){
                                      tarIndex = j;
                                      minDelay = totalDj[j];
-
                                  }
                              }
                          }

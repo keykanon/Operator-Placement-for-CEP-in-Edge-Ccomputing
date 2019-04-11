@@ -867,7 +867,7 @@ void EventStorage::handleMessage(cMessage *msg)
             cGate* outGate = gateHalf("gate" , cGate::OUTPUT, intensiveNodeID);
             //simtime_t endTransmission = outGate->getTransmissionChannel()->getTransmissionFinishTime();
             //if(endTransmission < tnow){
-            //    send(monitorFlag, outGate);
+            send(monitorFlag, outGate);
             //}
             //else{
              //   sendDelayed(monitorFlag, endTransmission, outGate);
